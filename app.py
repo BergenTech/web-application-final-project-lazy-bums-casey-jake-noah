@@ -59,7 +59,7 @@ def login():
 def logout():
     session.pop('token', None)
     logout_user()
-    flash("successfully logged out.", "success")
+    flash("Successfully logged out.", "success")
     return redirect(url_for('home'))
 
 
@@ -68,7 +68,7 @@ def authorized():
     nonce = session.get('nonce')
     if nonce is None:
         token = google.authorize_access_token()
-
+        message = ""
         #get the user data from google
         user = google.parse_id_token(token, nonce=None)
         session['token'] = token
@@ -80,9 +80,10 @@ def authorized():
         if google_user_data==[]:
             new_user = User(None, user.given_name, user.family_name, user.email)
             register_user(new_user)
-
+            message =  "Registered successfully!"
             google_user_data = search_user(user.email)
-        
+        else: 
+           message =  "Logged in successfully!"
         #add user to user object (id!) with session id token
         google_user_object = load_user(google_user_data[0][0])
 
@@ -90,7 +91,7 @@ def authorized():
         session['id'] = google_user_data[0][0]
 
         login_user(google_user_object)
-        flash("Logged in successfully!", "success")
+        flash(message, "success")
         return redirect(url_for('home'))
 
 #set mail 
@@ -117,62 +118,9 @@ def load_user(user_id):
 
 
 @app.route('/profile', methods=['GET','POST'])
+@login_required  
 def profile():
     return render_template('profile.html')
-
-@app.route('/register', methods=['GET','POST'])
-def register():
-    if request.method == "POST":
-        # Get form data
-        name = request.form.get("name")
-        last_name = request.form.get("last_name")
-        email = request.form.get("email")
-        password = request.form.get("password")
-        confirm_password = request.form.get("confirm_password")
-        # image_file = request.files.get("image")
-        # is_mfa_enabled = request.form.get("mfa")
-        # phoneNumber = request.form.get("phoneNumber")
-
-        # Validate form data (add your own validation logic)
-        if not (
-            name
-            and last_name
-            and email
-            and password
-            and confirm_password
-            # and image_file
-            # and accept_terms
-        ):
-            
-        # Handle invalid input
-            flash("Please fill in all fields.", "danger")
-            return render_template("register.html")
-        
-        #handle if existing user
-        # user = User.query.filter_by(email=email).first()
-        user = search_user(email)
-        print(user)
-        if user:
-            flash("User already exist! Try a different email", "danger")
-            return render_template("register.html")
-        if password != confirm_password:
-            # Handle password mismatch
-            flash("Passwords do not match.", "danger")
-            return render_template("register.html")
-
-        # Get image data
-        # image_data = image_file.read()
-
-        # Create a new user instance
-        new_user = User(None, name, last_name, email, set_password(password))
-            # image_data=image_data,
-            # email_verification_token=generate_verification_token(),
-            # is_mfa_enabled= True if is_mfa_enabled else False,
-            # phoneNumber = phoneNumber
-        register_user(new_user)
-        flash("Account created successfully! Please check your email to verify.", "success")
-        return redirect(url_for('home'))
-    return render_template("register.html")
 
 ### CLUB FUNCTIONALITIES
 @app.route('/clubs', methods=['GET', 'POST'])
@@ -192,7 +140,7 @@ def join_club(club_name):
     user_id = session.get('id')
     #need to add this
     if user_club_exists(user_id, club_id):
-        flash("already added this club!", "warning")
+        flash("Already added this club!", "warning")
         return redirect(url_for('clubs'))
     add_club_to_user(user_id, club_id)
     flash("Added club!", "success")
@@ -222,13 +170,20 @@ def myclubs():
 @app.route('/stream/<club_name>', methods=['GET','POST'])
 @login_required
 def stream(club_name):
-    # change this to any value
     max_message_count = 3
 
     #get the id of the club
     club_id = search_clubs(club_name)[0][0]
     #check if the user is an owner of the club
     user_id = session.get('id')
+    user_clubs = get_user_clubs(user_id)
+    user_clubs_name = []
+    print(user_clubs)
+    #get the names of the clubs specified by the club id
+    for i in range(len(user_clubs)):
+        club = search_club_by_id(user_clubs[i][2])[0][2]
+        user_clubs_name.append(club)
+    print(user_clubs_name)
     #ownership of club CHANGE THIS LATER!!!!
     ownership = False
     messages = get_messages(club_id)
@@ -238,7 +193,7 @@ def stream(club_name):
             ownership = True
         #get the messages of the club to get ready to output
         #need club name just in case of routing?
-        return render_template('stream.html', ownership=ownership, messages=messages, club_name=club_name)
+        return render_template('stream.html', ownership=ownership, messages=messages, club_name=club_name, user_clubs = user_clubs_name)
     #for now can only make announcements
     #if the user is an owner, allow for the post announcements functionality
     elif request.method == 'POST':
@@ -250,13 +205,11 @@ def stream(club_name):
         #post the message into the database
         post_message(user_id, club_id, message, current_time)
 
-        # code that removes messages after reaching a certain limit
-        print('test')
-        if len(messages) > max_message_count:
+        if len(messages) + 1 > max_message_count:
             delete_message(club_id,max_message_count)
 
         #redirect to the stream and flash that post has been successful (? hopefully the posts are there? )
-        return redirect(url_for('stream', club_name=club_name))
+        return redirect(url_for('stream', club_name=club_name,  user_clubs = user_clubs_name))
 
 @app.route('/calendar')
 def calendar():

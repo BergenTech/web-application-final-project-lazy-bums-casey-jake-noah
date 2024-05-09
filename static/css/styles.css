@@ -11655,7 +11655,73 @@ textarea.form-control-lg {
 }
 
 .club {
-  background-color: #f0f0f0;
+  background-color: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex; 
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; 
+  text-align: center;
+  color:black;
+  min-height:200px;
+  transition: transform 0.3s; /* Add a transition for smooth animation */
+}
+
+.club:hover {
+  transform: scale(1.1); /* Scale up by 10% on hover */
+}
+
+.clubsdb {
+  padding-top:3rem;
+  padding-left:100px;
+  padding-right:100px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjust the minimum and maximum width as needed */
+  grid-gap: 40px;
+  
+}
+
+.clubdb {
+  background-color: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex; 
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; 
+  text-align: center;
+  color:black;
+  min-height:200px;
+  transition: transform 0.3s; /* Add a transition for smooth animation */
+}
+
+.clubdb:hover {
+  transform: scale(1.1); /* Scale up by 10% on hover */
+}
+
+.clubdb a{
+  margin-bottom: 20px;
+}
+
+.link-container {
+  display: flex;
+  justify-content: space-around; /* Adjust as needed */
+  width: 100%;
+  padding-left:40px;
+  padding-right:40px;
+}
+
+.messages{
+  padding-top:3rem;
+  padding-left:240px;
+  padding-right:40px;
+}
+
+.message{
+  background-color: white;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -11665,9 +11731,5 @@ textarea.form-control-lg {
   text-align: center;
   color:black;
   min-height:200px;
-  transition: transform 0.3s; /* Add a transition for smooth animation */
-}
-
-.club:hover {
-  transform: scale(1.1); /* Scale up by 10% on hover */
+  margin-top:40px
 }
