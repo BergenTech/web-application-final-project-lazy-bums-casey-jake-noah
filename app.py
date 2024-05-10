@@ -18,6 +18,7 @@ from user import *
 from user import User
 from clubs import *
 from messages import *
+from admin import *
 import os
 
 app = Flask(__name__)
@@ -128,6 +129,10 @@ def clubs():
     if request.method=='GET':
         all_clubs = get_all_clubs()
         return render_template("clubs.html", clubs=all_clubs)
+    elif request.method=='POST':
+        club_name = request.form.get('search').strip()
+        club = search_clubs(club_name)
+        return render_template("clubs.html", clubs=club)
 
 @app.route('/join_club/<club_name>', methods=['GET', 'POST'])
 @login_required  
@@ -170,8 +175,6 @@ def myclubs():
 @app.route('/stream/<club_name>', methods=['GET','POST'])
 @login_required
 def stream(club_name):
-    max_message_count = 3
-
     #get the id of the club
     club_id = search_clubs(club_name)[0][0]
     #check if the user is an owner of the club
@@ -205,9 +208,6 @@ def stream(club_name):
         #post the message into the database
         post_message(user_id, club_id, message, current_time)
 
-        if len(messages) + 1 > max_message_count:
-            delete_message(club_id,max_message_count)
-
         #redirect to the stream and flash that post has been successful (? hopefully the posts are there? )
         return redirect(url_for('stream', club_name=club_name,  user_clubs = user_clubs_name))
 
@@ -219,6 +219,21 @@ def calendar():
 @login_required
 def admin():
     return render_template("admin.html")
+
+@app.route('/admin/manage_users',methods=['GET','POST'])
+@login_required
+def manage_users():
+    if request.method == 'GET':
+        all_users = access_to_all_users()
+        return render_template("manage_users.html",users=all_users)
+
+@app.route('/admin/manage_clubs')
+def manage_clubs():
+    pass
+
+@app.route('/admin/manage_attendance')
+def manage_attendance():
+    pass
 
 if __name__ == "__main__":
     #create the tables

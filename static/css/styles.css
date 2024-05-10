@@ -11695,11 +11695,11 @@ textarea.form-control-lg {
   text-align: center;
   color:black;
   min-height:200px;
-  transition: transform 0.3s; /* Add a transition for smooth animation */
+  transition: transform 0.3s; 
 }
 
 .clubdb:hover {
-  transform: scale(1.1); /* Scale up by 10% on hover */
+  transform: scale(1.1); 
 }
 
 .clubdb a{
@@ -11732,4 +11732,32 @@ textarea.form-control-lg {
   color:black;
   min-height:200px;
   margin-top:40px
+}
+
+.searchbar{
+  text-align:center; 
+  border-radius:30px;
+  border-width:0px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding:15px 20px;
+  font-size:20px;
+  margin-top:30px;
+  width:80%;
+}
+
+.submitbutton{
+  border-radius: 30px;
+  border: none;
+  background-color: gold; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: white;
+  padding: 15px 20px;
+  margin-top:30px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.3s; 
+}
+
+.submitbutton:hover{
+  transform: scale(1.1); 
 }

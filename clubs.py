@@ -74,7 +74,7 @@ def search_clubs(name):
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor() 
     #prepared statement to prevent sql injection    
-    db_cursor.execute("SELECT * FROM clubs WHERE club_name LIKE ?", (name,))
+    db_cursor.execute("SELECT * FROM clubs WHERE club_name LIKE ?", ('%' + name + '%',))
     data = db_cursor.fetchall()
     db.close()
     return data

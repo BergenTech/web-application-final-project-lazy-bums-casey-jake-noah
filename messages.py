@@ -33,21 +33,6 @@ def post_message(user_id, club_id, message_content, message_date):
         print('successful!')
     except Exception as e:
         db.rollback()
-
-# def delete_message(club_id,message_limit):
-#     db = sqlite3.connect('db/database.db')
-#     db_cursor = db.cursor()
-
-#     print('test')
-#     try: 
-#         db_cursor.execute(
-#             """Delete from messages where rowid IN (Select rowid from messages limit message_limit);""",
-#             (message_limit,)
-#         )
-#         db.commit()
-#         print('successful!')
-#     except Exception as e:
-#         db.rollback()
         
 #LATER UNABLE TO EDIT ADMIN OR TEACHER MESSAGES
 def edit_message(message_id, new_message):
