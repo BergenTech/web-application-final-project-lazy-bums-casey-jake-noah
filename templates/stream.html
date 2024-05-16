@@ -17,16 +17,16 @@
             <h1 class="display-5 fw-bold">
             {{club_name}}
             </h1>
+            {% if ownership %}
             <div class="message">
-                {% if ownership %}
                 make event / attendance / make announcement
                 <form action="{{ url_for('stream', club_name=club_name) }}" method="post">
                     <label for="message">Enter your message:</label><br>
                     <textarea id="message" name="message" rows="4" cols="50"></textarea><br>
                     <input type="submit" value="Submit">
                 </form>
-                {% endif %}
-            </div>  
+            </div> 
+            {% endif %}
             {% for message in messages %}
                 <div class="message">
                 {{ message[1] }}

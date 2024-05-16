@@ -11742,7 +11742,7 @@ textarea.form-control-lg {
   padding:15px 20px;
   font-size:20px;
   margin-top:30px;
-  width:80%;
+  width:1080px;
 }
 
 .submitbutton{
@@ -11760,4 +11760,28 @@ textarea.form-control-lg {
 
 .submitbutton:hover{
   transform: scale(1.1); 
+}
+
+.profile{
+  display:flex;
+  padding:100px;
+  padding-top:70px;
+  justify-content: space-between;
+}
+
+.profile_a{
+  background-color: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex: 0.3; 
+}
+
+.profile_b{
+  background-color: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex: 0.6; 
+  min-height:500px
 }
