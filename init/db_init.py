@@ -5,9 +5,9 @@ def create_tables():
     db = db_master.cursor()
     #just to make sure initalization does not get appended rather than a new thing being created
     db.execute("DROP TABLE IF EXISTS clubs")
-    db.execute("DROP TABLE IF EXISTS users")
-    db.execute("DROP TABLE IF EXISTS my_clubs")
-    db.execute("DROP TABLE IF EXISTS messages")
+    #db.execute("DROP TABLE IF EXISTS users")
+    # db.execute("DROP TABLE IF EXISTS my_clubs")
+    # db.execute("DROP TABLE IF EXISTS messages")
     db_master.commit()
     #the queries to create the user and clubs table
     '''is_verified BOOLEAN DEFAULT FALSE,
@@ -19,7 +19,9 @@ def create_tables():
            first_name VARCHAR(255) NOT NULL,
            last_name VARCHAR(255) DEFAULT NULL,
            email VARCHAR UNIQUE,
-           isAdmin DEFAULT NULL
+           major TEXT DEFAULT NULL,
+           interests TEXT DEFAULT NULL,
+           isAdmin BOOLEAN DEFAULT NULL
            ) """,
         """CREATE TABLE IF NOT EXISTS clubs (
             id INTEGER PRIMARY KEY,
@@ -27,7 +29,9 @@ def create_tables():
             club_name VARCHAR(50) UNIQUE,
             club_description TEXT,
             meeting_location VARCHAR(50),
-            meeting_days VARCHAR(50)
+            meeting_days VARCHAR(50),
+            leaders TEXT DEFAULT NULL,
+            tags TEXT
         ) """,
         """CREATE TABLE IF NOT EXISTS my_clubs (
             id INTEGER PRIMARY KEY,
@@ -35,8 +39,7 @@ def create_tables():
             club_id INTEGER,
             owner_id INTEGER,
             FOREIGN KEY (user_id) REFERENCES users(id),
-            FOREIGN KEY (club_id) REFERENCES clubs(id),
-            FOREIGN KEY (owner_id) REFERENCES users(id)
+            FOREIGN KEY (club_id) REFERENCES clubs(id)
         )
         """,
         """CREATE TABLE IF NOT EXISTS messages (
@@ -48,8 +51,17 @@ def create_tables():
             FOREIGN KEY (user_id) REFERENCES users(id),
             FOREIGN KEY (club_id) REFERENCES clubs(id)
         )
-        """
-        ,
+        """,
+        """CREATE TABLE IF NOT EXISTS events (
+            id INTEGER PRIMARY KEY,
+            event_name TEXT,
+            event_content TEXT,
+            event_date TEXT,
+            club_id INTEGER,
+            FOREIGN KEY (club_id) REFERENCES clubs
+    
+        )
+        """,
         """CREATE TABLE IF NOT EXISTS attendance (
             id INTEGER PRIMARY KEY,
             user_id INTEGER,

@@ -7,14 +7,15 @@ import secrets
 class User(UserMixin):
 #initialize club object with its parameters
     #future parameters: google classroom code(?)
-    def __init__(self, id, first_name, last_name, email):
+    def __init__(self, id, first_name, last_name, email, isAdmin, major, interests):
         self.id = id
         self.first_name = first_name
         self.last_name = last_name
         self.email = email 
-        # self.email_verification_token = ""
-        # self.is_verified = False
-        # self.is_admin = False
+        self.isAdmin = isAdmin
+        self.major = major
+        self.interests = interests
+        
 def set_password(password):
         password_hash = generate_password_hash(password)
         return password_hash
@@ -32,7 +33,7 @@ def register_user(User):
     db.commit()
     db.close()
 
-
+### USER SEARCHING FUNCTIONS
 def search_user(email):
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()
@@ -46,6 +47,25 @@ def search_user(email):
     db.close()
     print(data)
     return data
+#get user by id
+def get_user_by_id(user_id):
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    db_cursor.execute(
+            #have to add the other parameters later
+                """SELECT * FROM users
+                WHERE id=?""",
+                (user_id,)
+            )
+    data = db_cursor.fetchall()
+    db.close()
+    print(data)
+    return data
+#getting the users for the club (need for attendance)
+def get_users_in_club(club_id):
+    pass
+
+
 
 # Generate a Verification Token:
 def generate_verification_token():

@@ -4,7 +4,7 @@
 {%block content%}
 <!-- Page Content-->
 <!-- Header-->
-<header class="pt-5 background-img">
+<header class="pt-5">
     <div class="container px-lg-5 text-center">
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -18,6 +18,10 @@
         {% endfor %}
         {% endif %}
         {% endwith %}
+        <h1>User: {{user[0][1]}} {{user[0][2]}}</h1>
+
+        <h1>Major: </h1>
+        <h1>Interests: </h1>
     </div>
     
 </header>

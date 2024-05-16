@@ -19,7 +19,7 @@
             </h1>
             <div class="message">
                 {% if ownership %}
-                make event / attendance / make announcement
+                <a href="events">events</a><a href="/attendance">attendance</a><a href="/announcements">make announcement</a>
                 <form action="{{ url_for('stream', club_name=club_name) }}" method="post">
                     <label for="message">Enter your message:</label><br>
                     <textarea id="message" name="message" rows="4" cols="50"></textarea><br>

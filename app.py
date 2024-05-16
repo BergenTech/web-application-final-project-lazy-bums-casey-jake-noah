@@ -78,7 +78,7 @@ def authorized():
 
         #register new user
         if google_user_data==[]:
-            new_user = User(None, user.given_name, user.family_name, user.email)
+            new_user = User(None, user.given_name, user.family_name, user.email, None, None)
             register_user(new_user)
             message =  "Registered successfully!"
             google_user_data = search_user(user.email)
@@ -114,13 +114,17 @@ def load_user(user_id):
     if lu is None:
         return None
     else:
-        return User(int(lu[0]), lu[1], lu[2], lu[3])
+        return User(int(lu[0]), lu[1], lu[2], lu[3], None, None, None)
 
 
 @app.route('/profile', methods=['GET','POST'])
 @login_required  
 def profile():
-    return render_template('profile.html')
+    #get the user id in the form of a session variable
+    user_id = session.get('id')
+    #retrieve the user using the session id
+    user = get_user_by_id(user_id)
+    return render_template('profile.html', user=user)
 
 ### CLUB FUNCTIONALITIES
 @app.route('/clubs', methods=['GET', 'POST'])
@@ -158,6 +162,8 @@ def myclubs():
         user_clubs = get_user_clubs(user_id)
         user_clubs_name = []
         print(user_clubs)
+        for clubs in user_clubs:
+            pass
         #get the names of the clubs specified by the club id
         for i in range(len(user_clubs)):
             club = search_club_by_id(user_clubs[i][2])[0][2]
@@ -166,12 +172,9 @@ def myclubs():
         return render_template("dashboard.html", user_clubs = user_clubs_name)
 
 ### STREAM OF THE CLASSROOM
-
 @app.route('/stream/<club_name>', methods=['GET','POST'])
 @login_required
 def stream(club_name):
-    max_message_count = 3
-
     #get the id of the club
     club_id = search_clubs(club_name)[0][0]
     #check if the user is an owner of the club
@@ -186,14 +189,15 @@ def stream(club_name):
     print(user_clubs_name)
     #ownership of club CHANGE THIS LATER!!!!
     ownership = False
-    messages = get_messages(club_id)
+    messages = (get_messages(club_id))[::-1]
+    #if statement to reverse messages so newest is frist
     if request.method == 'GET':
         #determine ownership of club
         if is_club_owner(user_id, club_id):
             ownership = True
         #get the messages of the club to get ready to output
         #need club name just in case of routing?
-        return render_template('stream.html', ownership=ownership, messages=messages, club_name=club_name, user_clubs = user_clubs_name)
+        return render_template('stream.html', ownership=ownership, messages=messages, club_name=club_name, edit_access=True, user_clubs = user_clubs_name)
     #for now can only make announcements
     #if the user is an owner, allow for the post announcements functionality
     elif request.method == 'POST':
@@ -205,11 +209,8 @@ def stream(club_name):
         #post the message into the database
         post_message(user_id, club_id, message, current_time)
 
-        if len(messages) + 1 > max_message_count:
-            delete_message(club_id,max_message_count)
-
         #redirect to the stream and flash that post has been successful (? hopefully the posts are there? )
-        return redirect(url_for('stream', club_name=club_name,  user_clubs = user_clubs_name))
+        return redirect(url_for('stream', club_name=club_name, user_clubs = user_clubs_name))
 
 @app.route('/calendar')
 def calendar():
@@ -226,5 +227,5 @@ if __name__ == "__main__":
     #create the clubs list
     initialize_clubs()
     #make jake admiN!
-    make_jake_club_owner()
+    make_jake_owner()
     app.run(host="localhost", port=5000, debug=True)
