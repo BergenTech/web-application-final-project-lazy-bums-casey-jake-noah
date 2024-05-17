@@ -50,7 +50,7 @@ class My_Clubs():
 def initialize_clubs():
     current_directory = os.path.dirname(os.path.abspath(__file__))
     csv_file_path = os.path.join(current_directory, 'init', '2324ClubList.csv')
-    with open(csv_file_path, 'r') as file:
+    with open(csv_file_path, 'r', encoding='utf-8') as file:
         add_csv_data_to_database(file)
 
 #initialize teacher owners
