@@ -212,6 +212,20 @@ def stream(club_name):
         #redirect to the stream and flash that post has been successful (? hopefully the posts are there? )
         return redirect(url_for('stream', club_name=club_name, user_clubs = user_clubs_name))
 
+@app.route('/stream/attendance/<club_name>')
+@login_required
+def attendance(club_name):
+    club_id = search_clubs(club_name)[0][0]
+    users = search_users_of_a_club(club_id)
+    if request.method == 'GET':
+        return render_template('attendance.html', users=users)
+    elif request.method == 'POST':
+        pass
+
+@app.route('/stream/create_events/<club_name>')
+def create_events():
+    pass
+
 @app.route('/calendar')
 def calendar():
     return render_template("calendar.html")

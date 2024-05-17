@@ -1,0 +1,8 @@
+{%extends "base.html"%}
+{%block title%}BT CLUB APP{%endblock%}
+{%set active_page = 'clubs'%}
+{%block content%}
+{%for user in users%}
+{{user}}
+{%endfor%}
+{%endblock%}

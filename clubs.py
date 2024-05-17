@@ -86,6 +86,23 @@ def search_club_by_id(id):
     data = db_cursor.fetchall()
     db.close()
     return data
+#search users of a club
+def search_users_of_a_club(id):
+    #db intialization
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor() 
+    #prepared statement to prevent sql injection    
+    db_cursor.execute("SELECT user_id FROM my_clubs WHERE club_id = ?", (id,))
+    data = db_cursor.fetchall()
+    print(data)
+    users = []
+    #get the username
+    for user_id in data:
+        users.append(get_user_by_id(user_id[0])[0][1])
+    db.close()
+    print(users)
+    return users
+
 
 ##### USER CLUB STUFF
 #need to pass user parameters of user id, club id, and later on if there is edit functionality?
