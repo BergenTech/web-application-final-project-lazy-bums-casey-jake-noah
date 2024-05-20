@@ -7,11 +7,23 @@
 <div class="background-img">
     <header class="pt-5" style="background-color:rgba(255,255,255,0.8); min-height: 100vh; padding:100px;">
         <div class="profile">
-            <div class="profile_a">
-                
-            </div>
-            <div class="profile_b">
-
+            <h1 class="display-5 fw-bold">Profile</h1>
+            <div class="profile_container">
+                <div class="profile_a">
+                    <img src="static\images\placeholder.png" class="pfp"alt="">
+                </div>
+                <div class="profile_b">
+                    <div class="fw-bold" style="margin-bottom:30px">Update Information</div>
+                    <form action="/profile">
+                        <div><input type="text" class="updprofile" name="fn" placeholder="first"></div>
+                        <div><input type="text" class="updprofile" name="ln" placeholder="last"></div>
+                        <div><input type="text" class="updprofile" name="email" placeholder="email"> </div>
+                        <div><input type="text" class="updprofile" name="major" placeholder="major"> </div>
+                        <div><input type="text" class="updprofile" name="grad_year" placeholder="grad_year"> </div>
+                        
+                        <input type="submit" value="Update Information" class="updbtn">
+                    </form>
+                </div>
             </div>
         </div>
     </header>

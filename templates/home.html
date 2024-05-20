@@ -5,22 +5,21 @@
 <!-- Page Content-->
 <!-- Header-->
 <div class="background-img">
-<header class="pt-5" style="min-height: 100vh; background-color:rgba(255,255,255,0.3)">
-    <div class="title">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        {% for category, message in messages %}
-        <div class="alert alert-{{ category }} alert-dismissible fade show  container" role="alert">
-           <strong>{{ message }}</strong>
-           <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
-    <div style="margin-top:100px">
-        <div class="p-4 p-lg-5 bg-light rounded-3">
-            <img src="static\images\TeterboroLogo.png" style="float:right" alt="">
-            <div class="m-4 m-lg-5">                
+    <header class="pt-5" style="background-color:rgba(255,255,255,0.2); ">
+        <div class="title">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show container" role="alert" style="margin-top:50px">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}    
+            
+            <div class="title_card">
+                <img src="static\images\TeterboroLogo.png" style="float:right" alt="">
                 <h1 class="display-5 fw-bold">Bergen Tech Club App</h1>
                 <p class="fs-4" style="width:50%; margin-top:20px">Welcome to the Official Club Management Website for Bergen Tech! </p> <br>
                 {%if current_user.is_authenticated%}
@@ -30,7 +29,6 @@
                 {% endif %}
             </div>
         </div>
-    </div>
 </header>
 <section style="background-color:rgba(255,255,255,0.8);border-top:5px solid #FFD700;">
     <h1 class="py-5 display-5 fw-bold text-center">Club Events</h1>
