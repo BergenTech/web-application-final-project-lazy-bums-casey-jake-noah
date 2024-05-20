@@ -10,17 +10,20 @@
             <h1 class="display-5 fw-bold">Profile</h1>
             <div class="profile_container">
                 <div class="profile_a">
-                    <img src="static\images\placeholder.png" class="pfp"alt="">
+                    <img src="static\images\placeholder.png" class="pfp" alt="">
+                    <p class="fs-4" style="margin-top:40px">{{user[0][1]}} {{user[0][2]}}</p>
+                    <p class="fs-4" style="margin-top:40px">{{user[0][3]}}</p>
                 </div>
                 <div class="profile_b">
                     <div class="fw-bold" style="margin-bottom:30px">Update Information</div>
                     <form action="/profile">
-                        <div><input type="text" class="updprofile" name="fn" placeholder="first"></div>
-                        <div><input type="text" class="updprofile" name="ln" placeholder="last"></div>
-                        <div><input type="text" class="updprofile" name="email" placeholder="email"> </div>
-                        <div><input type="text" class="updprofile" name="major" placeholder="major"> </div>
-                        <div><input type="text" class="updprofile" name="grad_year" placeholder="grad_year"> </div>
-                        
+                        <div><input type="text" class="updprofile" name="grad_year" placeholder="Enter Your Graduation Year"></div>
+                        <div><input type="text" class="updprofile" name="major" placeholder="Enter Your Major"> </div>
+                        <select id="dropdown" name="dropdown">
+                            <option value="option1">Option 1</option>
+                            <option value="option2">Option 2</option>
+                            <option value="option3">Option 3</option>
+                        </select>                       
                         <input type="submit" value="Update Information" class="updbtn">
                     </form>
                 </div>

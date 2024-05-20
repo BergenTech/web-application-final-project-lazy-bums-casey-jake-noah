@@ -2807,7 +2807,7 @@ textarea.form-control-lg {
     transition: none;
   }
 }
-.btn:hover {
+/* .btn:hover {
   color: var(--bs-btn-hover-color);
   background-color: var(--bs-btn-hover-bg);
   border-color: var(--bs-btn-hover-border-color);
@@ -2828,7 +2828,7 @@ textarea.form-control-lg {
   border-color: var(--bs-btn-hover-border-color);
   outline: 0;
   box-shadow: var(--bs-btn-focus-box-shadow);
-}
+} */
 .btn-check:checked + .btn, :not(.btn-check) + .btn:active, .btn:first-child:active, .btn.active, .btn.show {
   color: var(--bs-btn-active-color);
   background-color: var(--bs-btn-active-bg);
@@ -11745,7 +11745,7 @@ textarea.form-control-lg {
   padding:15px 20px;
   font-size:20px;
   margin-top:30px;
-  width:1080px;
+  width:100%;
 }
 
 .submitbutton{
@@ -11754,7 +11754,7 @@ textarea.form-control-lg {
   background-color: gold; 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   color: white;
-  padding: 15px 20px;
+  padding: 15px 50px;
   margin-top:30px;
   font-size: 20px;
   cursor: pointer;

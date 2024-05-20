@@ -23,7 +23,9 @@
                 <h1 class="display-5 fw-bold">Bergen Tech Club App</h1>
                 <p class="fs-4" style="width:50%; margin-top:20px">Welcome to the Official Club Management Website for Bergen Tech! </p> <br>
                 {%if current_user.is_authenticated%}
-                <a class="btn btn-primary btn-lg bg-dark" href="/dashboard" style="opacity:1">My Dashboard</a>
+
+                <a class="btn submitbutton" href="/dashboard" style="background-color:black;text-decoration:none">My Dashboard</a>
+                <a class="btn submitbutton" href="/profile" style="margin-left:40px;text-decoration:none">My Profile</a>
                 {% else %}
                 <a class="btn btn-primary btn-lg bg-dark" href="/login" style="opacity:1">Login</a>
                 {% endif %}

@@ -90,6 +90,7 @@ def authorized():
 
         #save the id of the user in a session variable
         session['id'] = google_user_data[0][0]
+        session['email'] = google_user_data[0][3]
 
         login_user(google_user_object)
         flash(message, "success")
@@ -121,7 +122,12 @@ def load_user(user_id):
 @app.route('/profile', methods=['GET','POST'])
 @login_required  
 def profile():
-    return render_template('profile.html')
+    if request.method == 'GET':
+        user_email = session.get('email')
+        user = search_user(user_email)
+    elif request.method == 'POST':
+        pass
+    return render_template('profile.html', user=user)
 
 ### CLUB FUNCTIONALITIES
 @app.route('/clubs', methods=['GET', 'POST'])
