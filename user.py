@@ -34,6 +34,17 @@ def register_user(User):
     db.close()
 
 ### USER SEARCHING FUNCTIONS
+def get_all_users():
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    db_cursor.execute(
+            #have to add the other parameters later
+                "SELECT * FROM users"
+            )
+    data = db_cursor.fetchall()
+    db.close()
+    print(data)
+    return data
 def search_user(email):
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()

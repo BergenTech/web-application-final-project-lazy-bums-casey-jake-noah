@@ -230,10 +230,27 @@ def create_events():
 def calendar():
     return render_template("calendar.html")
 
-@app.route('/admin')
+
+###ADMIN STUFF
+
+@app.route('/admin', methods=["GET", "POST"])
 @login_required
 def admin():
-    return render_template("admin.html")
+    if request.method == 'GET':
+        return render_template("admin_base.html")
+@app.route('/manage_users', methods=["GET", "POST"])
+@login_required
+def manage_users():
+    if request.method == 'GET':
+        users = get_all_users()
+        return render_template("admin_users.html", users = users)
+@app.route('/manage_clubs', methods=["GET", "POST"])
+@login_required
+def manage_clubs():
+    if request.method == 'GET':
+        clubs = get_all_clubs()
+        return render_template("admin_clubs.html", clubs=clubs)
+    
 
 if __name__ == "__main__":
     #create the tables

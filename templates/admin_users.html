@@ -1,0 +1,19 @@
+{%extends "admin_base.html"%}
+{%block title%}BT CLUB APP{%endblock%}
+{%block content%}
+<div class="clubsdb">
+    {% for row in users %}
+            <div class="clubdb">
+                    <h1><p class="fs-6">Location : {{ row[1] }}</p></h1>
+                    <p class="fs-6">Location : {{ row[1] }}</p>
+                    <p class="fs-6">Club Dates : {{ row[2] }}</p>
+                    <p class="fs-6">Location : {{ row[3] }}</p>
+                    <p class="fs-6">Location : {{ row[4] }}</p>
+                    <p class="fs-5">{{ row[5] }}</p><br>
+                    <div class="link-container">
+                    <a href="#" class="btn btn-primary link" style="background-color:gold">View Info</a>
+                    </div>
+            </div>
+    {% endfor %}
+</div>
+{%endblock%}
