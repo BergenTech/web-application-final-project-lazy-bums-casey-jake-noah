@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from authlib.integrations.flask_client import OAuth
 import json
 import sqlite3
@@ -31,18 +31,14 @@ google = oauth.register(
     client_id='954980088912-ukn276fifnqm5g5fncnptb9pnl3esmhs.apps.googleusercontent.com',
     client_secret='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',
     authorize_params=None,
-    authorize_params_callback=None,
-    authorize_url_params=None,
     access_token_params=None,
     access_token_params_callback=None,
     access_token_method='POST',
-    refresh_token_url=None,
-    refresh_token_params=None,
-    refresh_token_params_callback=None,
     redirect_uri='http://localhost:5000/login/callback',  # Local URI for callback
     client_kwargs={'scope': 'openid email profile',
                    'jwks_uri': 'https://www.googleapis.com/oauth2/v3/certs'
                    },
+    userinfo_endpoint='https://openidconnect.googleapis.com/v1/userinfo',  # This is Google's OpenID Connect user info endpoint
     server_metadata_url= 'https://accounts.google.com/.well-known/openid-configuration'
 )
 
@@ -59,6 +55,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('token', None)
+    session.pop('user_data')
     logout_user()
     flash("Successfully logged out.", "success")
     return redirect(url_for('home'))
@@ -67,33 +64,38 @@ def logout():
 @app.route('/login/callback')
 def authorized():
     nonce = session.get('nonce')
-    if nonce is None:
-        token = google.authorize_access_token()
-        message = ""
-        #get the user data from google
-        user = google.parse_id_token(token, nonce=None)
-        session['token'] = token
+    try:
+        if nonce is None:
+            token = google.authorize_access_token()
+            message = ""
+            #get the user data from google
+            user = google.parse_id_token(token, nonce=None)
+            session['token'] = token
 
-        #check if the user exists
-        google_user_data = search_user(user.email)
-
-        #register new user
-        if google_user_data==[]:
-            new_user = User(None, user.given_name, user.family_name, user.email)
-            register_user(new_user)
-            message =  "Registered successfully!"
+            #check if the user exists
             google_user_data = search_user(user.email)
-        else: 
-           message =  "Logged in successfully!"
-        #add user to user object (id!) with session id token
-        google_user_object = load_user(google_user_data[0][0])
 
-        #save the id of the user in a session variable
-        session['id'] = google_user_data[0][0]
-        session['email'] = google_user_data[0][3]
+            #register new user
+            if google_user_data==[]:
+                new_user = User(None, user.given_name, user.family_name, user.email)
+                register_user(new_user)
+                message =  "Registered successfully!"
+                google_user_data = search_user(user.email)
+            else: 
+                message =  "Logged in successfully!"
 
-        login_user(google_user_object)
-        flash(message, "success")
+            #add user to user object (id!) with session id token
+            google_user_object = load_user(google_user_data[0][0])
+
+            #save the id of the user in a session variable
+            session['id'] = google_user_data[0][0]
+            session['user_data'] = user
+
+            login_user(google_user_object)
+            flash(message, "success")
+            return redirect(url_for('home'))
+    except Exception as e:
+        flash('An error occurred: ' + str(e))
         return redirect(url_for('home'))
 
 #set mail 
@@ -123,9 +125,10 @@ def load_user(user_id):
 @login_required  
 def profile():
     if request.method == 'GET':
-        user_email = session.get('email')
-        user = search_user(user_email)
+        user = session.get('user_data')
+        print(user['picture'])
     elif request.method == 'POST':
+        grad_year = request.form.get('grad_year').strip()
         pass
     return render_template('profile.html', user=user)
 

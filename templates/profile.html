@@ -10,20 +10,26 @@
             <h1 class="display-5 fw-bold">Profile</h1>
             <div class="profile_container">
                 <div class="profile_a">
-                    <img src="static\images\placeholder.png" class="pfp" alt="">
-                    <p class="fs-4" style="margin-top:40px">{{user[0][1]}} {{user[0][2]}}</p>
-                    <p class="fs-4" style="margin-top:40px">{{user[0][3]}}</p>
+                    <img src="{{user['picture']}}" referrerPolicy="no-referrer" class="pfp" alt="">
+                    <p class="fs-4" style="margin-top:40px">{{user['name']}}</p>
+                    <p class="fs-4" style="margin-top:40px">{{user['email']}}</p>
                 </div>
                 <div class="profile_b">
                     <div class="fw-bold" style="margin-bottom:30px">Update Information</div>
                     <form action="/profile">
-                        <div><input type="text" class="updprofile" name="grad_year" placeholder="Enter Your Graduation Year"></div>
-                        <div><input type="text" class="updprofile" name="major" placeholder="Enter Your Major"> </div>
-                        <select id="dropdown" name="dropdown">
-                            <option value="option1">Option 1</option>
-                            <option value="option2">Option 2</option>
-                            <option value="option3">Option 3</option>
-                        </select>                       
+                        <div><input type="text" class="updprofile" name="grad_year" value="" placeholder="Enter Your Graduation Year" maxlength="4"></div>
+                        <div><select class="updprofile "id="dropdown" name="major" value="" placeholder="Select Your Major" style="border-width:1px solid black;">
+                            <option value="">Computer Science</option>
+                            <option value="">Aerospace Engineering</option>
+                            <option value="">Automotive Engineering</option>
+                            <option value="">Business</option>
+                            <option value="">Fashion</option>
+                            <option value="">Culinary</option>
+                            <option value="">Law and Justice</option>
+                            <option value="">Commercial Art</option>
+                            <option value="">Digital Media</option>
+                        </select>   
+                        </div>       
                         <input type="submit" value="Update Information" class="updbtn">
                     </form>
                 </div>

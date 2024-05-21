@@ -47,6 +47,10 @@ def search_user(email):
     print(data)
     return data
 
+
+def add_to_user():
+    pass
+
 # Generate a Verification Token:
 def generate_verification_token():
     return secrets.token_urlsafe(50)  # Adjust the token length as needed

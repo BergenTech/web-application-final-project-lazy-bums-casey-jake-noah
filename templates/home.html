@@ -10,9 +10,9 @@
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
             {% for category, message in messages %}
-            <div class="alert alert-{{ category }} alert-dismissible fade show container" role="alert" style="margin-top:50px">
-            <strong>{{ message }}</strong>
-            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
+            <div class="alert alert-{{ category }} alert-dismissible fw-bold" role="alert" style="margin-top:50px">
+                <div>{{message}}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             {% endfor %}
             {% endif %}
@@ -24,10 +24,10 @@
                 <p class="fs-4" style="width:50%; margin-top:20px">Welcome to the Official Club Management Website for Bergen Tech! </p> <br>
                 {%if current_user.is_authenticated%}
 
-                <a class="btn submitbutton" href="/dashboard" style="background-color:black;text-decoration:none">My Dashboard</a>
-                <a class="btn submitbutton" href="/profile" style="margin-left:40px;text-decoration:none">My Profile</a>
+                <a class="submitbutton" href="/dashboard" style="background-color:black;text-decoration:none">My Dashboard</a>
+                <a class="submitbutton" href="/profile" style="margin-left:40px;text-decoration:none">My Profile</a>
                 {% else %}
-                <a class="btn btn-primary btn-lg bg-dark" href="/login" style="opacity:1">Login</a>
+                <a class="submitbutton" href="/login" style="background-color:black;text-decoration:none">Login/Register</a>
                 {% endif %}
             </div>
         </div>
