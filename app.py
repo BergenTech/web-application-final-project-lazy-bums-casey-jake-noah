@@ -77,7 +77,7 @@ def authorized():
 
         #register new user
         if google_user_data==[]:
-            new_user = User(None, user.given_name, user.family_name, user.email, None, None)
+            new_user = User(None, user.given_name, user.family_name, user.email, None, None, None)
             register_user(new_user)
             message =  "Registered successfully!"
             google_user_data = search_user(user.email)
@@ -232,7 +232,7 @@ def attendance(club_name):
         pass
 
 @app.route('/stream/create_events/<club_name>')
-def create_events():
+def create_events(club_name):
     pass
 
 @app.route('/calendar')
@@ -247,33 +247,26 @@ def calendar():
 def admin():
     if request.method == 'GET':
         return render_template("admin_base.html")
-@app.route('/manage_users', methods=["GET", "POST"])
+@app.route('/admin/manage_users', methods=["GET", "POST"])
 @login_required
 def manage_users():
     if request.method == 'GET':
         users = get_all_users()
         return render_template("admin_users.html", users = users)
-@app.route('/manage_clubs', methods=["GET", "POST"])
+    
+@app.route('/admin/manage_clubs', methods=["GET", "POST"])
 @login_required
 def manage_clubs():
     if request.method == 'GET':
         clubs = get_all_clubs()
         return render_template("admin_clubs.html", clubs=clubs)
-    
-
-@app.route('/admin/manage_users',methods=['GET','POST'])
-@login_required
-def manage_users():
-    if request.method == 'GET':
-        all_users = access_to_all_users()
-        return render_template("manage_users.html",users=all_users)
-
-@app.route('/admin/manage_clubs')
-def manage_clubs():
-    pass
 
 @app.route('/admin/manage_attendance')
 def manage_attendance():
+    pass
+
+@app.route('/admin/manage_events', methods=['GET', 'POST'])
+def manage_events():
     pass
 
 if __name__ == "__main__":

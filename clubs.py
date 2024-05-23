@@ -2,6 +2,8 @@ import sqlite3
 import csv
 import os
 from user import *
+#need to use for NOAH cus the * import is messed up 
+from user import search_user
 #create the club class just for some parity with sqlalchemy. Will serve useful when creating a club.
 class Club():
     #initialize club object with its parameters
@@ -158,21 +160,22 @@ def make_jake_owner():
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()
     #find jake
-    jake_user_id = search_user("jakepark2908@gmail.com")[0][0]
-
-    #process the user_id to a string
-
-    #search for jake's clubs
-    jakes_clubs = get_user_clubs(jake_user_id)
-    jakes_clubs = [clubs[2] for clubs in jakes_clubs]
-    print(jakes_clubs)
-    for jake_club in jakes_clubs:
+    try:
+        jake_user_id = search_user("jakepark2908@gmail.com")[0][0]
+        jakes_clubs = get_user_clubs(jake_user_id)
+        jakes_clubs = [clubs[2] for clubs in jakes_clubs]
+        print(jakes_clubs)
+        for jake_club in jakes_clubs:
     #enumerate using a for loop for all the club_ids specified
     #grant jake ownership 
-
-        db_cursor.execute("""UPDATE clubs SET leaders = ? WHERE id= ? """, (jake_user_id, jake_club,))
+            db_cursor.execute("""UPDATE clubs SET leaders = ? WHERE id= ? """, (jake_user_id, jake_club,))
         db.commit()
-    db.close()
+        db.close()
+    except IndexError:
+        pass
+    #process the user_id to a string
+
+    #search for jake's club
 
     #give jake the admin access to the clubs he joined
     pass

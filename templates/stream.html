@@ -13,21 +13,28 @@
                     </a>
                 {% endfor %}
         </div>
-        <div class="messages">
-            <h1 class="display-5 fw-bold">
+        <div class="stream">
+            <h1 class="display-7 fw-bold clubtitle">
             {{club_name}}
             </h1>
-            {% if ownership %}
-            <div class="message">
+            <div class="messages">
+                <div class="stream_event">
+                    
+                </div>
                 {% if ownership %}
-                <a href="events">events</a><a href="{{url_for('attendance', club_name=club_name)}}">attendance</a><a href="/announcements">make announcement</a>
-                <form action="{{ url_for('stream', club_name=club_name) }}" method="post">
-                    <label for="message">Enter your message:</label><br>
-                    <textarea id="message" name="message" rows="4" cols="50"></textarea><br>
-                    <input type="submit" value="Submit">
-                </form>
-            </div> 
-            {% endif %}
+                <div class="message">
+                    {% if ownership %}
+                    <a href="events">events</a><a href="{{url_for('attendance', club_name=club_name)}}">attendance</a><a href="/announcements">make announcement</a>
+                    <form action="{{ url_for('stream', club_name=club_name) }}" method="post">
+                        <label for="message">Enter your message:</label><br>
+                        <textarea id="message" name="message" rows="4" cols="50"></textarea><br>
+                        <input type="submit" value="Submit">
+                    </form>
+                    {%endif%}
+                </div> 
+                {% endif %}
+            </div>
+
             {% for message in messages %}
                 <div class="message">
                 {{ message[1] }}
