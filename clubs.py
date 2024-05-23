@@ -51,7 +51,7 @@ class My_Clubs():
 def initialize_clubs():
     current_directory = os.path.dirname(os.path.abspath(__file__))
     csv_file_path = os.path.join(current_directory, 'init', '2324ClubList.csv')
-    with open(csv_file_path, 'r') as file:
+    with open(csv_file_path, 'r', encoding='utf-8') as file:
         add_csv_data_to_database(file)
 
 #### CLUB SEARCHING AND GETTING
@@ -72,7 +72,7 @@ def search_clubs(name):
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor() 
     #prepared statement to prevent sql injection    
-    db_cursor.execute("SELECT * FROM clubs WHERE club_name LIKE ?", (name,))
+    db_cursor.execute("SELECT * FROM clubs WHERE club_name LIKE ?", ('%' + name + '%',))
     data = db_cursor.fetchall()
     db.close()
     return data

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from authlib.integrations.flask_client import OAuth
 import json
 import sqlite3
@@ -18,6 +18,7 @@ from user import *
 from user import User
 from clubs import *
 from messages import *
+from admin import *
 import os
 
 app = Flask(__name__)
@@ -30,18 +31,14 @@ google = oauth.register(
     client_id='954980088912-ukn276fifnqm5g5fncnptb9pnl3esmhs.apps.googleusercontent.com',
     client_secret='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',
     authorize_params=None,
-    authorize_params_callback=None,
-    authorize_url_params=None,
     access_token_params=None,
     access_token_params_callback=None,
     access_token_method='POST',
-    refresh_token_url=None,
-    refresh_token_params=None,
-    refresh_token_params_callback=None,
     redirect_uri='http://localhost:5000/login/callback',  # Local URI for callback
     client_kwargs={'scope': 'openid email profile',
                    'jwks_uri': 'https://www.googleapis.com/oauth2/v3/certs'
                    },
+    userinfo_endpoint='https://openidconnect.googleapis.com/v1/userinfo',  # This is Google's OpenID Connect user info endpoint
     server_metadata_url= 'https://accounts.google.com/.well-known/openid-configuration'
 )
 
@@ -58,6 +55,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('token', None)
+    session.pop('user_data')
     logout_user()
     flash("Successfully logged out.", "success")
     return redirect(url_for('home'))
@@ -66,15 +64,16 @@ def logout():
 @app.route('/login/callback')
 def authorized():
     nonce = session.get('nonce')
-    if nonce is None:
-        token = google.authorize_access_token()
-        message = ""
-        #get the user data from google
-        user = google.parse_id_token(token, nonce=None)
-        session['token'] = token
+    try:
+        if nonce is None:
+            token = google.authorize_access_token()
+            message = ""
+            #get the user data from google
+            user = google.parse_id_token(token, nonce=None)
+            session['token'] = token
 
-        #check if the user exists
-        google_user_data = search_user(user.email)
+            #check if the user exists
+            google_user_data = search_user(user.email)
 
         #register new user
         if google_user_data==[]:
@@ -89,9 +88,13 @@ def authorized():
 
         #save the id of the user in a session variable
         session['id'] = google_user_data[0][0]
+        session['user_data'] = user
 
         login_user(google_user_object)
         flash(message, "success")
+        return redirect(url_for('home'))
+    except Exception as e:
+        flash('An error occurred: ' + str(e))
         return redirect(url_for('home'))
 
 #set mail 
@@ -120,10 +123,12 @@ def load_user(user_id):
 @app.route('/profile', methods=['GET','POST'])
 @login_required  
 def profile():
-    #get the user id in the form of a session variable
-    user_id = session.get('id')
-    #retrieve the user using the session id
-    user = get_user_by_id(user_id)
+    if request.method == 'GET':
+        user = session.get('user_data')
+        print(user['picture'])
+    elif request.method == 'POST':
+        grad_year = request.form.get('grad_year').strip()
+        pass
     return render_template('profile.html', user=user)
 
 ### CLUB FUNCTIONALITIES
@@ -132,6 +137,10 @@ def clubs():
     if request.method=='GET':
         all_clubs = get_all_clubs()
         return render_template("clubs.html", clubs=all_clubs)
+    elif request.method=='POST':
+        club_name = request.form.get('search').strip()
+        club = search_clubs(club_name)
+        return render_template("clubs.html", clubs=club)
 
 @app.route('/join_club/<club_name>', methods=['GET', 'POST'])
 @login_required  
@@ -251,6 +260,21 @@ def manage_clubs():
         clubs = get_all_clubs()
         return render_template("admin_clubs.html", clubs=clubs)
     
+
+@app.route('/admin/manage_users',methods=['GET','POST'])
+@login_required
+def manage_users():
+    if request.method == 'GET':
+        all_users = access_to_all_users()
+        return render_template("manage_users.html",users=all_users)
+
+@app.route('/admin/manage_clubs')
+def manage_clubs():
+    pass
+
+@app.route('/admin/manage_attendance')
+def manage_attendance():
+    pass
 
 if __name__ == "__main__":
     #create the tables

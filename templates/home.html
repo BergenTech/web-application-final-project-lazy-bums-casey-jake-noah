@@ -5,36 +5,34 @@
 <!-- Page Content-->
 <!-- Header-->
 <div class="background-img">
-<header class="pt-5" style="min-height: 100vh;">
-    <div class="title">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        {% for category, message in messages %}
-        <br>
-        <div class="alert alert-{{ category }} alert-dismissible fade show  container" role="alert">
-           <strong>{{ message }}</strong>
-           <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
-        </div>
-        <br>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
-    <div style="margin-top:100px">
-        <div class="p-4 p-lg-5 bg-light rounded-3">
-            <img src="static\images\TeterboroLogo.png" style="float:right" alt="">
-            <div class="m-4 m-lg-5">                
+    <header class="pt-5" style="background-color:rgba(255,255,255,0.2); ">
+        <div class="title">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fw-bold" role="alert" style="margin-top:50px">
+                <div>{{message}}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}    
+            
+            <div class="title_card">
+                <img src="static\images\TeterboroLogo.png" style="float:right" alt="">
                 <h1 class="display-5 fw-bold">Bergen Tech Club App</h1>
                 <p class="fs-4" style="width:50%; margin-top:20px">Welcome to the Official Club Management Website for Bergen Tech! </p> <br>
                 {%if current_user.is_authenticated%}
-                <a class="btn btn-primary btn-lg bg-dark" href="/dashboard" style="opacity:1">My Dashboard</a>
+
+                <a class="submitbutton" href="/dashboard" style="background-color:black;text-decoration:none">My Dashboard</a>
+                <a class="submitbutton" href="/profile" style="margin-left:40px;text-decoration:none">My Profile</a>
                 {% else %}
-                <a class="btn btn-primary btn-lg bg-dark" href="/login" style="opacity:1">Login</a>
+                <a class="submitbutton" href="/login" style="background-color:black;text-decoration:none">Login/Register</a>
                 {% endif %}
             </div>
         </div>
-    </div>
 </header>
-<section style="background-color:rgba(255,255,255,0.9);border-top:5px solid #FFD700;">
+<section style="background-color:rgba(255,255,255,0.8);border-top:5px solid #FFD700;">
     <h1 class="py-5 display-5 fw-bold text-center">Club Events</h1>
     <div class="container px-lg-5">
         <div class="row gx-lg-5">

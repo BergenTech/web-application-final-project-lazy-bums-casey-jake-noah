@@ -19,9 +19,10 @@ def create_tables():
            first_name VARCHAR(255) NOT NULL,
            last_name VARCHAR(255) DEFAULT NULL,
            email VARCHAR UNIQUE,
-           major TEXT DEFAULT NULL,
-           interests TEXT DEFAULT NULL,
-           isAdmin BOOLEAN DEFAULT NULL
+           isAdmin BOOLEAN DEFAULT NULL,
+           major VARCHAR(255) DEFAULT NULL,
+           grad_year INTEGER,
+           interests TEXT DEFAULT NULL
            ) """,
         """CREATE TABLE IF NOT EXISTS clubs (
             id INTEGER PRIMARY KEY,

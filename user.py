@@ -78,6 +78,10 @@ def get_users_in_club(club_id):
 
 
 
+
+def add_to_user():
+    pass
+
 # Generate a Verification Token:
 def generate_verification_token():
     return secrets.token_urlsafe(50)  # Adjust the token length as needed

@@ -17,6 +17,7 @@
             <h1 class="display-5 fw-bold">
             {{club_name}}
             </h1>
+            {% if ownership %}
             <div class="message">
                 {% if ownership %}
                 <a href="events">events</a><a href="{{url_for('attendance', club_name=club_name)}}">attendance</a><a href="/announcements">make announcement</a>
@@ -25,8 +26,8 @@
                     <textarea id="message" name="message" rows="4" cols="50"></textarea><br>
                     <input type="submit" value="Submit">
                 </form>
-                {% endif %}
-            </div>  
+            </div> 
+            {% endif %}
             {% for message in messages %}
                 <div class="message">
                 {{ message[1] }}
