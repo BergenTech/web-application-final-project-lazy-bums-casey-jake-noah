@@ -7,6 +7,7 @@
 <div class="background-img" >
     <header class="pt-5" style="background-color:rgba(255,255,255,0.8); min-height: 100vh">
         <div class="sidebar">
+                <a href="/dashboard">Dashboard</a>
                 {% for club_name in user_clubs%}
                     <a href="{{ url_for('stream', club_name=club_name) }}">
                     <span>{{club_name}}</span>
@@ -19,28 +20,27 @@
             </h1>
             <div class="messages">
                 <div class="stream_event">
-                    
+                    <p class="fw-bold">Events</p>
+                    <p>No Events Currently...</p>
                 </div>
-                {% if ownership %}
-                <div class="message">
+                <div class="message_box">
                     {% if ownership %}
-                    <a href="events">events</a><a href="{{url_for('attendance', club_name=club_name)}}">attendance</a><a href="/announcements">make announcement</a>
-                    <form action="{{ url_for('stream', club_name=club_name) }}" method="post">
-                        <label for="message">Enter your message:</label><br>
-                        <textarea id="message" name="message" rows="4" cols="50"></textarea><br>
-                        <input type="submit" value="Submit">
-                    </form>
+                        <form action="{{ url_for('stream', club_name=club_name) }}" method="post">
+                            <div class="messages">
+                                <input type="text" class="post_message" name="message" placeholder="Post an Announcement">
+                                <input type="submit" class="post_btn" value="Post">
+                            </div>
+                        </form>
                     {%endif%}
+                    {% for message in messages %}
+                    <div class="message">
+                    {{ message[1] }}
+                    </div>
+                    {% endfor %}
                 </div> 
-                {% endif %}
             </div>
 
-            {% for message in messages %}
-                <div class="message">
-                {{ message[1] }}
-                </div>
-                {% endfor %}
-            </h1>
+
         </div>
 </div>
 

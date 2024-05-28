@@ -79,8 +79,15 @@ def get_users_in_club(club_id):
 
 
 
-def add_to_user():
-    pass
+def add_to_user(user_id,grad_year,major):
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    db_cursor.execute("""UPDATE users 
+                      SET grad_year = ?, major = ? 
+                      WHERE id = ? """, 
+                      (grad_year,major,user_id))  
+    db.commit()
+    db.close()
 
 # Generate a Verification Token:
 def generate_verification_token():

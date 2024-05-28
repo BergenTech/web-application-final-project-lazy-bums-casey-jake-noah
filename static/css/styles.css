@@ -8115,6 +8115,9 @@ textarea.form-control-lg {
 .fs-6 {
   font-size: 1rem !important;
 }
+.fs-7 {
+  font-size: .75rem !important;
+}
 
 .fst-italic {
   font-style: italic !important;
@@ -11657,18 +11660,32 @@ textarea.form-control-lg {
 }
  
 .club {
-  background-color: white;
+  background-color: whitesmoke;
   padding: 20px;
   border-radius: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex; 
   flex-direction: column;
-  align-items: center;
   justify-content: space-between; 
-  text-align: center;
   color:black;
   min-height:200px;
+  max-width:1fr;
   transition: transform 0.3s; /* Add a transition for smooth animation */ 
+}
+ 
+.recentmsg {
+  background-color: white;
+  margin-top:20px;
+  min-height:140px;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex; 
+  flex-direction: column;
+  justify-content: space-between; 
+  color:black;
+  word-wrap: break-word; 
+  overflow-wrap: break-word;
 }
  
 .club:hover {
@@ -11721,12 +11738,12 @@ textarea.form-control-lg {
 
 .clubtitle{
   background-color: white;
-  padding-top: 100px;
-  padding-bottom: 20px;
+  padding-top: 20px;
+  padding-bottom: 120px;
   padding-left:20px;
   padding-right:20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .messages{
@@ -11736,26 +11753,85 @@ textarea.form-control-lg {
 
 .stream_event{
   background-color: white;
-  margin-top:40px;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align:center;
-  flex: 0.2; 
+  flex: 0.15; 
+  min-height:200px;
+  max-height:400px;
+  margin-top:20px;
+}
+
+.message_box{
+  flex: 0.8; 
+  text-align:center
 }
 
 .message{
   background-color: white;
-  padding: 20px;
-  border-radius: 5px;
+  padding: 40px;
+  border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  display: flex; 
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  color:black;
-  margin-top:40px;
-  flex: 0.6; 
+  margin-top:20px;
+  text-align:left;    
+  max-width:920px;        
+  word-wrap: break-word; 
+  overflow-wrap: break-word;
+}
+
+.stream_buttons{
+  display:flex;
+  justify-content: space-between;
+}
+
+.post_message{
+  text-align:center; 
+  border-radius:30px;
+  border-width:0px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding:15px 20px;
+  font-size:20px;
+  margin-top:20px;
+  width:100%;
+}
+
+.post_btn{
+  border-radius: 30px;
+  border: none;
+  background-color: gold; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: white;
+  padding: 15px 30px;
+  font-size: 20px;
+  margin-top:20px;
+  cursor: pointer;
+}
+
+.attendance_btn{
+  border-radius: 30px;
+  border: none;
+  background-color: black; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: white;
+  padding: 15px 50px;
+  margin-top:30px;
+  font-size: 20px;
+  cursor: pointer;
+  flex:0.45;
+}
+
+.event_btn{
+  border-radius: 30px;
+  border: none;
+  background-color: gold; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: white;
+  padding: 15px 50px;
+  margin-top:30px;
+  font-size: 20px;
+  cursor: pointer;
+  flex:0.45;
 }
 
 .searchbar{

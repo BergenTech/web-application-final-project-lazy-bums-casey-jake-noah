@@ -153,6 +153,22 @@ def invite_leader(user_id, club_id):
     pass
 
 ##TEMPORARY FOR DEMO! DELETE BC VERY BAD!
+#make the user
+def give_teacher_initial_leadership():
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    try:
+        #call the current directory
+        current_directory = os.path.dirname(os.path.abspath(__file__))
+        csv_file_path = os.path.join(current_directory, 'init', '2324ClubList.csv')
+        with open(csv_file_path, 'r', encoding='utf-8') as file:
+            csv_data = parse_csv_data(file)
+            #parse the teachers into emails
+            
+            for club in csv_data:
+                db_cursor.execute("""UPDATE clubs SET leaders = ? WHERE id= ? """, (jake_user_id, jake_club,))
+    except IndexError:
+        pass
 #this is the demo to verify that once I register I am able to be an owner of specific club (ex. code club)
 def make_jake_owner():
     commands = []
@@ -161,7 +177,7 @@ def make_jake_owner():
     db_cursor = db.cursor()
     #find jake
     try:
-        jake_user_id = search_user("jakepark2908@gmail.com")[0][0]
+        jake_user_id = search_user("ceasylee@gmail.com")[0][0]
         jakes_clubs = get_user_clubs(jake_user_id)
         jakes_clubs = [clubs[2] for clubs in jakes_clubs]
         print(jakes_clubs)
@@ -178,7 +194,6 @@ def make_jake_owner():
     #search for jake's club
 
     #give jake the admin access to the clubs he joined
-    pass
 
 # check if you are club owner of a specific club
 def is_club_owner(user_id, club_id):
@@ -199,4 +214,3 @@ def invite_leaders():
 def grant_ownership_access_to_teacher():
     #enumerate teacher names and prepare them as owners once they register
     pass
-

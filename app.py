@@ -55,7 +55,9 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('token', None)
-    session.pop('user_data')
+    session.pop('id')
+    session.pop('email')
+    session.pop('google_data')
     logout_user()
     flash("Successfully logged out.", "success")
     return redirect(url_for('home'))
@@ -88,10 +90,12 @@ def authorized():
 
         #save the id of the user in a session variable
         session['id'] = google_user_data[0][0]
-        session['user_data'] = user
+        session['email'] = google_user_data[0][3]
+        session['google_data'] = user
 
         login_user(google_user_object)
         flash(message, "success")
+        
         return redirect(url_for('home'))
     except Exception as e:
         flash('An error occurred: ' + str(e))
@@ -124,11 +128,16 @@ def load_user(user_id):
 @login_required  
 def profile():
     if request.method == 'GET':
-        user = session.get('user_data')
-        print(user['picture'])
+        user_id = session.get('id')
+        user_email = session.get('email')
+        user = search_user(user_email)
     elif request.method == 'POST':
         grad_year = request.form.get('grad_year').strip()
-        pass
+        major = request.form['major']
+        user_id = session.get('id')
+        add_to_user(user_id,major,grad_year)
+        user_email = session.get('email')
+        user = search_user(user_email)
     return render_template('profile.html', user=user)
 
 ### CLUB FUNCTIONALITIES
@@ -170,15 +179,21 @@ def myclubs():
         #need to get all the user's clubs
         user_clubs = get_user_clubs(user_id)
         user_clubs_name = []
+        recent_messages = []
         print(user_clubs)
         for clubs in user_clubs:
             pass
         #get the names of the clubs specified by the club id
         for i in range(len(user_clubs)):
             club = search_club_by_id(user_clubs[i][2])[0][2]
+            recent_message_from_club = get_most_recent_message(user_clubs[i][2])
             user_clubs_name.append(club)
+            recent_messages.append(recent_message_from_club)
+            print(recent_messages)
+            #print(recent_messages)
+            #get the most recent messages
         print(user_clubs_name)
-        return render_template("dashboard.html", user_clubs = user_clubs_name)
+        return render_template("dashboard.html", user_clubs = user_clubs_name, recent_club_messages = recent_messages)
 
 ### STREAM OF THE CLASSROOM
 @app.route('/stream/<club_name>', methods=['GET','POST'])

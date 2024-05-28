@@ -16,6 +16,17 @@ def get_messages(club_id):
     db.close()
     return data
 
+#get most recent message
+def get_most_recent_message(club_id):
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    #get all messages by the club_id 
+    db_cursor.execute("SELECT * FROM messages WHERE club_id = ? ORDER BY id DESC LIMIT 1", (club_id,))
+    data = db_cursor.fetchall()
+    db.close()
+    print(data)
+    return data
+
 #OWNERS OF THE CLUB ONLY!
 def post_message(user_id, club_id, message_content, message_date):
     db = sqlite3.connect('db/database.db')

@@ -16,18 +16,18 @@
                 </div>
                 <div class="profile_b">
                     <div class="fw-bold" style="margin-bottom:30px">Update Information</div>
-                    <form action="/profile">
-                        <div><input type="text" class="updprofile" name="grad_year" value="" placeholder="Enter Your Graduation Year" maxlength="4"></div>
-                        <div><select class="updprofile "id="dropdown" name="major" value="" placeholder="Select Your Major" style="border-width:1px solid black;">
-                            <option value="">Computer Science</option>
-                            <option value="">Aerospace Engineering</option>
-                            <option value="">Automotive Engineering</option>
-                            <option value="">Business</option>
-                            <option value="">Fashion</option>
-                            <option value="">Culinary</option>
-                            <option value="">Law and Justice</option>
-                            <option value="">Commercial Art</option>
-                            <option value="">Digital Media</option>
+                    <form method='POST' action="/profile">
+                        <div><input type="text" class="updprofile" id="grad_year" name="grad_year" value="{{user['grad_year']}}" placeholder="Enter Your Graduation Year" maxlength="4"></div>
+                        <div><select class="updprofile "id="dropdown" name="major" value="{{user['major']}}" placeholder="Select Your Major" style="border-width:1px solid black;">
+                            <option value="Computer Science" >Computer Science</option>
+                            <option value="Aerospace Engineering">Aerospace Engineering</option>
+                            <option value="Automotive Engineering">Automotive Engineering</option>
+                            <option value="Business">Business</option>
+                            <option value="Fashion">Fashion</option>
+                            <option value="Culinary">Culinary</option>
+                            <option value="Law and Justice">Law and Justice</option>
+                            <option value="Commercial Art">Commercial Art</option>
+                            <option value="Digital Media">Digital Media</option>
                         </select>   
                         </div>       
                         <input type="submit" value="Update Information" class="updbtn">

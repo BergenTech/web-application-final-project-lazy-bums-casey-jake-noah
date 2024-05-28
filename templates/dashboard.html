@@ -8,6 +8,7 @@
 <div class="background-img" >
     <header class="pt-5" style="background-color:rgba(255,255,255,0.8); min-height: 100vh">
         <div class="sidebar">
+                <a href="/dashboard">Dashboard</a>
                 {% for club_name in user_clubs%}
                     <a href="{{ url_for('stream', club_name=club_name) }}">
                     <span>{{club_name}}</span>
@@ -21,6 +22,9 @@
                     <div class="club">
                         <div style="font-weight:bold">
                             {{club_name}}
+                        </div>
+                        <div class="recentmsg fs-7">
+                            
                         </div>
                     </div>
                 </a>
