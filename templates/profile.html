@@ -10,15 +10,15 @@
             <h1 class="display-5 fw-bold">Profile</h1>
             <div class="profile_container">
                 <div class="profile_a">
-                    <img src="{{user['picture']}}" referrerPolicy="no-referrer" class="pfp" alt="">
-                    <p class="fs-4" style="margin-top:40px">{{user['name']}}</p>
-                    <p class="fs-4" style="margin-top:40px">{{user['email']}}</p>
+                    <img src="{{picture}}" referrerPolicy="no-referrer" class="pfp" alt="">
+                    <p class="fs-4" style="margin-top:40px">{{user[0][1] + ' ' + user[0][2]}}</p>
+                    <p class="fs-4" style="margin-top:40px">{{user[0][3]}}</p>
                 </div>
                 <div class="profile_b">
                     <div class="fw-bold" style="margin-bottom:30px">Update Information</div>
                     <form method='POST' action="/profile">
-                        <div><input type="text" class="updprofile" id="grad_year" name="grad_year" value="{{user['grad_year']}}" placeholder="Enter Your Graduation Year" maxlength="4"></div>
-                        <div><select class="updprofile "id="dropdown" name="major" value="{{user['major']}}" placeholder="Select Your Major" style="border-width:1px solid black;">
+                        <div><input type="text" class="updprofile" id="grad_year" name="grad_year" value="{{user[0][5]}}" placeholder="Enter Your Graduation Year" maxlength="4"></div>
+                        <div><select class="updprofile "id="dropdown" name="major" value="{{user[0][6]}}" placeholder="Select Your Major" style="border-width:1px solid black;">
                             <option value="Computer Science" >Computer Science</option>
                             <option value="Aerospace Engineering">Aerospace Engineering</option>
                             <option value="Automotive Engineering">Automotive Engineering</option>

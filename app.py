@@ -138,7 +138,10 @@ def profile():
         add_to_user(user_id,major,grad_year)
         user_email = session.get('email')
         user = search_user(user_email)
-    return render_template('profile.html', user=user)
+
+    google_data = session.get('google_data')
+    user_picture = google_data['picture']
+    return render_template('profile.html', user=user, picture=user_picture)
 
 ### CLUB FUNCTIONALITIES
 @app.route('/clubs', methods=['GET', 'POST'])
