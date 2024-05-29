@@ -25,7 +25,7 @@ def create_event(club_id, event_title, event_content, event_start_date, event_en
         db_cursor.execute(
             """INSERT INTO events
             (event_title, event_content, event_start_date, event_end_date, event_tags, club_id) VALUES (?,?,?,?,?,?)""",
-            (new_event.even_title, new_event.event_content, new_event.event_start_date, new_event.event_end_date, new_event.event_tags, new_event.club_id,)
+            (new_event.event_title, new_event.event_content, new_event.event_start_date, new_event.event_end_date, new_event.event_tags, new_event.club_id,)
         )
         db.commit()
         print('successful!')
@@ -35,17 +35,15 @@ def create_event(club_id, event_title, event_content, event_start_date, event_en
 def edit_event(event_content, event_start_date, event_end_date, event_tags):
     pass
 
-###EVENT APPROVAL FUNCTIONS 
-def approve_event(event_id):
-    db = sqlite3.connect('db/database.db')
-    db_cursor = db.cursor()
-    try: 
-        db_cursor.execute("""UPDATE clubs SET isApproved = TRUE WHERE id = ?""", (event_id,))
-        db.commit()
-        print('successful!')
-    except Exception as e:
-        db.rollback()
-
 #### EVENT SEARCHING FUNCTIONS
 def search_event():
-    pass
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    db_cursor.execute("")
+def get_all_events():
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    db_cursor.execute("SELECT * FROM events")
+    data = db_cursor.fetchall()
+    db.close()
+    return data 

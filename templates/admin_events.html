@@ -1,0 +1,28 @@
+{%extends "admin_base.html"%}
+{%block title%}BT CLUB APP{%endblock%}
+{%block content%}
+{% for row in events %}
+<div class="clubdb py-5">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible fw-bold" role="alert" style="margin-top:50px">
+        <div>{{message}}</div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %} 
+    <p class="fs-6">{{ row[0] }} </p>
+    <p class="fs-3 fw-bold">{{ row[2] }}</p>
+        <p class="fs-6">{{ row[1] }} </p>
+        <p class="fs-6">{{ row[4] }}</p>
+        <p class="fs-6">{{ row[5] }}</p>
+        <p class="fs-5">{{ row[3] }}</p><br>
+        <p class="fs-5">{{ row[6] }}</p><br>
+        <div class="link-container">
+            <a href="{{ url_for('approve_event', club_name=row[0]) }}" class="btn btn-primary bg-dark" style="border-radius:30px; padding:10px 15px;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">Approve</a>
+        </div>
+</div>
+{% endfor %}
+{%endblock%}
