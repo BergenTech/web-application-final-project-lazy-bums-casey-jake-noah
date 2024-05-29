@@ -40,15 +40,7 @@ def add_csv_data_to_database(file):
         except Exception as e:
             db.rollback()
     db.close()
-
-#create my clubs class for the clubs the user adds
-class My_Clubs():
-    def __init__(self, id, user_id, clubs_id):
-        self.id = id
-        self.user_id = user_id
-        self.clubs_id = clubs_id
       
-
 #initialize official clubs using club list from official 2324 club list
 def initialize_clubs():
     current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -89,55 +81,64 @@ def search_club_by_id(id):
     db.close()
     return data
 #search users of a club
-def search_users_of_a_club(id):
-    #db intialization
-    db = sqlite3.connect('db/database.db')
-    db_cursor = db.cursor() 
-    #prepared statement to prevent sql injection    
-    db_cursor.execute("SELECT user_id FROM my_clubs WHERE club_id = ?", (id,))
-    data = db_cursor.fetchall()
-    print(data)
-    users = []
-    #get the username
-    for user_id in data:
-        users.append(get_user_by_id(user_id[0])[0][1])
-    db.close()
-    print(users)
-    return users
-
+# def search_users_of_a_club(id):
+#     #db intialization
+#     db = sqlite3.connect('db/database.db')
+#     db_cursor = db.cursor() 
+#     #prepared statement to prevent sql injection    
+#     db_cursor.execute("SELECT user_id FROM my_clubs WHERE club_id = ?", (id,))
+#     data = db_cursor.fetchall()
+#     print(data)
+#     users = []
+#     #get the username
+#     for user_id in data:
+#         users.append(get_user_by_id(user_id[0])[0][1])
+#     db.close()
+#     print(users)
+#     return users
 
 ##### USER CLUB STUFF
-#need to pass user parameters of user id, club id, and later on if there is edit functionality?
-def add_club_to_user(user_id, club_id):
-    print(user_id, club_id)
+#search for users:
+def search_joined_clubs(user_id):
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()
+    #search for joined_clubs field of users where user_id is the user_id specified
+    db_cursor.execute("SELECT clubs_joined FROM users WHERE id = ?", (user_id,))
+    data = db_cursor.fetchall()
+    print(data)
+    return data
+
+#need to pass user parameters of user id, club id, and later on if there is edit functionality?
+def add_club_to_user(user_id, club_id):
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    total_user_clubs = []
     #add to the my_clubs table
     try: 
-        db_cursor.execute(
-                    """INSERT INTO my_clubs
-                    (user_id, club_id) VALUES (?,?)""",
-                    (user_id, club_id)
-        )
+        #extract the current list of clubs from the user
+        user_clubs = search_joined_clubs(user_id)[0][0]
+        print(user_clubs)
+        #append the searched clubs into the list
+        total_user_clubs.append(user_clubs)
+        #append the club id into the list
+        total_user_clubs.append(club_id)
+        print(total_user_clubs)
+        #stringify the user_clubs list
+        total_user_clubs = str(total_user_clubs)
+        #push to database
+        db_cursor.execute("""UPDATE users SET clubs_joined = ?""", (total_user_clubs,))
         db.commit()
     except Exception as e:
         db.rollback()
     db.close()
 
-def user_club_exists(user_id, club_id):
-    db = sqlite3.connect('db/database.db')
-    db_cursor = db.cursor()
-    #search for my_clubs where user_id is the user_id specified
-    db_cursor.execute("SELECT * FROM my_clubs WHERE user_id = ? AND club_id = ?", (user_id, club_id,))
-    data = db_cursor.fetchall()
-    db.close()
-    return data 
-
+def user_club_exists(club_id):
+    pass
 def get_user_clubs(user_id):
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()
-    #search for my_clubs where user_id is the user_id specified
-    db_cursor.execute("SELECT * FROM my_clubs WHERE user_id = ?", (user_id,))
+    #search for joined_clubs field of users where user_id is the user_id specified
+    db_cursor.execute("SELECT clubs_joined FROM users WHERE id = ?", (user_id,))
     data = db_cursor.fetchall()
     print(data)
     db.close()
@@ -153,6 +154,8 @@ def invite_leader(user_id, club_id):
     pass
 
 ##TEMPORARY FOR DEMO! DELETE BC VERY BAD!
+
+#needs teacher email list
 #make the user
 def give_teacher_initial_leadership():
     db = sqlite3.connect('db/database.db')
@@ -208,9 +211,5 @@ def is_club_owner(user_id, club_id):
     #if it doesnt, return false
     return data
 
-def invite_leaders():
-    pass
-#this is when the app is verified (NEEDS TO BE AUTOMATIC)
-def grant_ownership_access_to_teacher():
-    #enumerate teacher names and prepare them as owners once they register
+def invite_leaders(user_id, club_id):
     pass

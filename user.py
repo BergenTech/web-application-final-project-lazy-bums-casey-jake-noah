@@ -7,12 +7,15 @@ import secrets
 class User(UserMixin):
 #initialize club object with its parameters
     #future parameters: google classroom code(?)
-    def __init__(self, id, first_name, last_name, email, isAdmin, major, interests):
+    def __init__(self, id, first_name, last_name, email, isAdmin, clubs_owned, clubs_joined, major, interests):
         self.id = id
         self.first_name = first_name
         self.last_name = last_name
         self.email = email 
         self.isAdmin = isAdmin
+        #stringified list of clubs that the user owns
+        self.clubs_owned = clubs_owned
+        self.clubs_joined = clubs_joined
         self.major = major
         self.interests = interests
         
@@ -76,9 +79,19 @@ def get_user_by_id(user_id):
 def get_users_in_club(club_id):
     pass
 
+#checking if teacher of a SPECIFIC CLUB
+def is_teacher_of_club(user_id, club_id):
+    #need to break down the clubs owned by user
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    db_cursor.execute("""SELECT * FROM users WHERE id=? AND """, (user_id,))
+    data = db_cursor.fetchall()
+    db.close()
+    print(data)
+    return data
+   
 
-
-
+### ????
 def add_to_user(user_id,grad_year,major):
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()

@@ -20,6 +20,8 @@ def create_tables():
            last_name VARCHAR(255) DEFAULT NULL,
            email VARCHAR UNIQUE,
            isAdmin BOOLEAN DEFAULT NULL,
+           clubs_owned TEXT DEFAULT NULL,
+           clubs_joined TEXT DEFAULT NULL,
            major VARCHAR(255) DEFAULT NULL,
            grad_year INTEGER,
            interests TEXT DEFAULT NULL
@@ -31,18 +33,8 @@ def create_tables():
             club_description TEXT,
             meeting_location VARCHAR(50),
             meeting_days VARCHAR(50),
-            leaders TEXT DEFAULT NULL,
             tags TEXT
         ) """,
-        """CREATE TABLE IF NOT EXISTS my_clubs (
-            id INTEGER PRIMARY KEY,
-            user_id INTEGER,
-            club_id INTEGER,
-            owner_id INTEGER,
-            FOREIGN KEY (user_id) REFERENCES users(id),
-            FOREIGN KEY (club_id) REFERENCES clubs(id)
-        )
-        """,
         """CREATE TABLE IF NOT EXISTS messages (
             id INTEGER PRIMARY KEY,
             message_content TEXT,
@@ -55,9 +47,13 @@ def create_tables():
         """,
         """CREATE TABLE IF NOT EXISTS events (
             id INTEGER PRIMARY KEY,
-            event_name TEXT,
+            event_title TEXT,
             event_content TEXT,
-            event_date TEXT,
+            event_start_date TEXT,
+            event_end_date TEXT,
+            event_tags TEXT,
+            people_interested TEXT,
+            isApproved BOOLEAN DEFAULT NULL,
             club_id INTEGER,
             FOREIGN KEY (club_id) REFERENCES clubs
     

@@ -23,7 +23,7 @@ import os
 
 app = Flask(__name__)
 app.secret_key = "SUPER_SECRET_KEY"  # Change this to a secure ENCRYPTED key
-
+#### set login functionality
 CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
 oauth = OAuth(app)
 google = oauth.register(
@@ -41,7 +41,9 @@ google = oauth.register(
     userinfo_endpoint='https://openidconnect.googleapis.com/v1/userinfo',  # This is Google's OpenID Connect user info endpoint
     server_metadata_url= 'https://accounts.google.com/.well-known/openid-configuration'
 )
-
+####set mail 
+mail = Mail(app)
+#main function
 @app.route('/')
 def home():
     return render_template("home.html")
@@ -51,9 +53,9 @@ def home():
 def login():
     return google.authorize_redirect(redirect_uri=url_for('authorized', _external=True))
 
-
 @app.route('/logout')
 def logout():
+    #destroy all session data 
     session.pop('token', None)
     session.pop('id')
     session.pop('email')
@@ -79,7 +81,7 @@ def authorized():
 
         #register new user
         if google_user_data==[]:
-            new_user = User(None, user.given_name, user.family_name, user.email, None, None, None)
+            new_user = User(None, user.given_name, user.family_name, user.email, None, None, None, None, None)
             register_user(new_user)
             message =  "Registered successfully!"
             google_user_data = search_user(user.email)
@@ -101,10 +103,6 @@ def authorized():
         flash('An error occurred: ' + str(e))
         return redirect(url_for('home'))
 
-#set mail 
-mail = Mail(app)
-#main page
-
 #login manager
 login_manager = LoginManager(app)
 login_manager.login_view = 'login' #specify the login route
@@ -121,8 +119,9 @@ def load_user(user_id):
     if lu is None:
         return None
     else:
-        return User(int(lu[0]), lu[1], lu[2], lu[3], None, None, None)
+        return User(int(lu[0]), lu[1], lu[2], lu[3], None, None, None, None, None)
 
+#### USER STUFF 
 
 @app.route('/profile', methods=['GET','POST'])
 @login_required  
@@ -164,7 +163,8 @@ def join_club(club_name):
     #get the user id in the form of a session variable
     user_id = session.get('id')
     #need to add this
-    if user_club_exists(user_id, club_id):
+    #change this to user_id only -- 5/28/24
+    if user_club_exists(user_id):
         flash("Already added this club!", "warning")
         return redirect(url_for('clubs'))
     add_club_to_user(user_id, club_id)
@@ -180,7 +180,9 @@ def myclubs():
         user_id = session.get('id')
         ### HIGHLY INEFFICIENT
         #need to get all the user's clubs
-        user_clubs = get_user_clubs(user_id)
+        #change this to user_id only -- 5/28/24
+        user_clubs = list(get_user_clubs(user_id))
+        print(user_clubs)
         user_clubs_name = []
         recent_messages = []
         print(user_clubs)
@@ -188,7 +190,8 @@ def myclubs():
             pass
         #get the names of the clubs specified by the club id
         for i in range(len(user_clubs)):
-            club = search_club_by_id(user_clubs[i][2])[0][2]
+            club = search_club_by_id(user_clubs[i][2])
+            print(club)
             recent_message_from_club = get_most_recent_message(user_clubs[i][2])
             user_clubs_name.append(club)
             recent_messages.append(recent_message_from_club)
@@ -239,7 +242,7 @@ def stream(club_name):
         #redirect to the stream and flash that post has been successful (? hopefully the posts are there? )
         return redirect(url_for('stream', club_name=club_name, user_clubs = user_clubs_name))
 
-@app.route('/stream/attendance/<club_name>')
+@app.route('/stream/attendance/<club_name>', methods=['GET','POST'])
 @login_required
 def attendance(club_name):
     club_id = search_clubs(club_name)[0][0]
@@ -249,9 +252,14 @@ def attendance(club_name):
     elif request.method == 'POST':
         pass
 
-@app.route('/stream/create_events/<club_name>')
+@app.route('/stream/events/<club_name>', methods=['GET','POST'])
+@login_required
 def create_events(club_name):
-    pass
+    if request.method == 'GET':
+        #check if the user is a teacher
+        return render_template('events.html')
+    elif request.method == 'POST':
+        pass
 
 @app.route('/calendar')
 def calendar():
@@ -259,30 +267,31 @@ def calendar():
 
 
 ###ADMIN STUFF
-
+#base admin page for stats and recent stuff
 @app.route('/admin', methods=["GET", "POST"])
 @login_required
 def admin():
     if request.method == 'GET':
         return render_template("admin_base.html")
+#manage all users 
 @app.route('/admin/manage_users', methods=["GET", "POST"])
 @login_required
 def manage_users():
     if request.method == 'GET':
         users = get_all_users()
         return render_template("admin_users.html", users = users)
-    
+#manage all clubs
 @app.route('/admin/manage_clubs', methods=["GET", "POST"])
 @login_required
 def manage_clubs():
     if request.method == 'GET':
         clubs = get_all_clubs()
         return render_template("admin_clubs.html", clubs=clubs)
-
-@app.route('/admin/manage_attendance')
+#manage all attendance sent per club
+@app.route('/admin/manage_clubs/manage_attendance')
 def manage_attendance():
     pass
-
+#manage all unapproved events
 @app.route('/admin/manage_events', methods=['GET', 'POST'])
 def manage_events():
     pass
