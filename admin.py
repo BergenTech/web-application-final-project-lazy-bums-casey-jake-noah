@@ -1,28 +1,20 @@
 import sqlite3
-from flask_login import LoginManager, UserMixin
-from werkzeug.security import generate_password_hash, check_password_hash
-import secrets
 
-def access_to_all_clubs():
+###EVENT STUFF
+def approve_event():
+    pass
+def reject_event():
     pass
 
-def access_to_all_users():
+### CLUB STUFF
+def remove_club():
     pass
 
-def view_all_users():
-    # db initialization
-    db = sqlite3.connect('db/database.db')
-    db_cursor = db.cursor()
-    
-    # get all users
-    db_cursor.execute("SELECT * FROM users")
-    data = db_cursor.fetchall()
-    db.close()
-    return data
-
+###USER STUFF
+def promote_leader():
+    pass
 def demote_leader():
     pass
-
 def remove_user():
     pass
 
