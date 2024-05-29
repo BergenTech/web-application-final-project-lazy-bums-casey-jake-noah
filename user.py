@@ -7,14 +7,16 @@ import secrets
 class User(UserMixin):
 #initialize club object with its parameters
     #future parameters: google classroom code(?)
-    def __init__(self, id, first_name, last_name, email, isAdmin, major, interests):
+    def __init__(self, id, first_name, last_name, email, isAdmin, major, grad_year, interests, picture):
         self.id = id
         self.first_name = first_name
         self.last_name = last_name
         self.email = email 
         self.isAdmin = isAdmin
         self.major = major
+        self.grad_year = grad_year
         self.interests = interests
+        self.picture = picture
         
 def set_password(password):
         password_hash = generate_password_hash(password)
@@ -76,7 +78,7 @@ def get_users_in_club(club_id):
 def change_pfp(user_id,picture):
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()
-    db.cursor.execute("""UPDATE users
+    db_cursor.execute("""UPDATE users
                       SET picture = ?
                       WHERE id = ? """,
                       (picture,user_id))

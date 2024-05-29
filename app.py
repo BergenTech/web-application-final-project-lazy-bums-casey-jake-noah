@@ -66,42 +66,41 @@ def logout():
 @app.route('/login/callback')
 def authorized():
     nonce = session.get('nonce')
-    try:
-        if nonce is None:
-            token = google.authorize_access_token()
-            message = ""
-            #get the user data from google
-            user = google.parse_id_token(token, nonce=None)
-            print(user)
-            session['token'] = token
+    # try:
+    if nonce is None:
+        token = google.authorize_access_token()
+        message = ""
+        #get the user data from google
+        user = google.parse_id_token(token, nonce=None)
+        session['token'] = token
 
-            #check if the user exists
-            google_user_data = search_user(user.email)
+        #check if the user exists
+        google_user_data = search_user(user.email)
 
-        #register new user
-        if google_user_data==[]:
-            new_user = User(None, user.given_name, user.family_name, user.email, None, None, None, user['picture'])
-            register_user(new_user)
-            message =  "Registered successfully!"
-            google_user_data = search_user(user.email)
-        else: 
-           change_pfp(google_user_data[0][0],user['picture'])
-           message =  "Logged in successfully!"
-        #add user to user object (id!) with session id token
-        google_user_object = load_user(google_user_data[0][0])
+    #register new user
+    if google_user_data==[]:
+        new_user = User(None, user.given_name, user.family_name, user.email, None, None, None, None, user['picture'])
+        register_user(new_user)
+        message =  "Registered successfully!"
+        google_user_data = search_user(user.email)
+    else: 
+        change_pfp(google_user_data[0][0],user['picture'])
+        message =  "Logged in successfully!"
+    #add user to user object (id!) with session id token
+    google_user_object = load_user(google_user_data[0][0])
 
-        #save the id of the user in a session variable
-        session['id'] = google_user_data[0][0]
-        session['email'] = google_user_data[0][3]
-        session['google_data'] = user
+    #save the id of the user in a session variable
+    session['id'] = google_user_data[0][0]
+    session['email'] = google_user_data[0][3]
+    session['google_data'] = user
 
-        login_user(google_user_object)
-        flash(message, "success")
-        
-        return redirect(url_for('home'))
-    except Exception as e:
-        flash('An error occurred: ' + str(e))
-        return redirect(url_for('home'))
+    login_user(google_user_object)
+    flash(message, "success")
+    
+    return redirect(url_for('home'))
+    # except Exception as e:
+    #     flash('An error occurred: ' + str(e))
+    #     return redirect(url_for('home'))
 
 #set mail 
 mail = Mail(app)
@@ -123,7 +122,7 @@ def load_user(user_id):
     if lu is None:
         return None
     else:
-        return User(int(lu[0]), lu[1], lu[2], lu[3], None, None, None)
+        return User(int(lu[0]), lu[1], lu[2], lu[3], None, None, None, None, None)
 
 
 @app.route('/profile', methods=['GET','POST'])
