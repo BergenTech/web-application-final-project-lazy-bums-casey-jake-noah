@@ -28,9 +28,9 @@
                         {% endwith %}
                     </div>
                     <form method='POST' action="/profile">
-                        <div><input type="text" class="updprofile" id="grad_year" name="grad_year" value="{{user[0][5]}}" placeholder="Enter Your Graduation Year" maxlength="4"></div>
-                        <div><select class="updprofile "id="dropdown" name="major" value="{{user[0][6]}}" style="border-width:1px solid black;">
-                            <option value="" disabled{{'selected' if user[0][6] == None}}>Select Your Major</option>
+                        <div><input type="text" class="updprofile" id="grad_year" name="grad_year" value="{% if user[0][5] %}{{ user[0][5] }}{% else %}{% endif %}"  placeholder="Enter Your Graduation Year" maxlength="4"></div>
+                        <div><select class="updprofile "id="dropdown" name="major" style="border-width:1px solid black;">
+                            <option value='None' disabled {{ 'selected' if user[0][6] is none or user[0][6] == 'None'}}>Select Your Major</option>
                             <option value="Computer Science" {{'selected' if user[0][6] == 'Computer Science'}}>Computer Science</option>
                             <option value="Aerospace Engineering" {{'selected' if user[0][6] == 'Aerospace Engineering'}}>Aerospace Engineering</option>
                             <option value="Automotive Engineering"{{'selected' if user[0][6] == 'Automotive Engineering'}}>Automotive Engineering</option>

@@ -6,13 +6,12 @@
 <!-- Header-->
 <div class="background-img" >
     <header class="pt-5" style="background-color:rgba(255,255,255,0.8); min-height: 100vh">
-        <div class="sidebar">
-                <a href="/dashboard">Dashboard</a>
-                {% for club_name in user_clubs%}
-                    <a href="{{ url_for('stream', club_name=club_name) }}">
-                    <span>{{club_name}}</span>
-                    </a>
-                {% endfor %}
+        <div class="sidebar" style="padding-bottom:100px">
+            {% for club_name in user_clubs%}
+                <a href="{{ url_for('stream', club_name=club_name) }}">
+                <span style="color:black;font-weight:450">{{club_name}}</span>
+                </a>
+            {% endfor %}
         </div>
         <div class="stream">
             <h1 class="display-7 fw-bold clubtitle">
@@ -28,16 +27,22 @@
                     {% if ownership %}
                         <form action="{{ url_for('stream', club_name=club_name) }}" method="post">
                             <div class="messages">
-                                <input type="text" class="post_message" name="message" placeholder="Post an Announcement">
+                                <input type="text" class="post_message" name="message" placeholder="Post an Announcement" required >
                                 <input type="submit" class="post_btn" value="Post">
                             </div>
                         </form>
                     {%endif%}
                     {% for i in range(messages|length)%}
                     <div class="message">
-                        <div class="fs-6 fw-bold">{{message_names[i]}}</div>
-                        <div class='fs-7'>{{message_dates[i][0]}} - {{message_dates[i][1]}}</div>
-                        <div>{{messages[i][1]}}</div>
+
+                        <div style="display:flex; flex-direction:row; align-items:center">
+                            <img src="{{message_pictures[i]}}" alt="" style="height:40px;width:40px;border-radius:50%;margin-right:20px">
+                            <div style="display: flex; flex-direction: column;">
+                                <div class="fs-6 fw-bold">{{message_names[i]}}</div>
+                                <div class='fs-7'>{{message_dates[i][0]}} - {{message_dates[i][1]}}</div>
+                            </div>
+                        </div>
+                        <div style="margin-top:20px">{{messages[i][1]}}</div>
                     </div>
                     {% endfor %}
                 </div> 

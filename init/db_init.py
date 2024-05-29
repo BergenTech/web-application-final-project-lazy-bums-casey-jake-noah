@@ -23,7 +23,7 @@ def create_tables():
            major VARCHAR(255) DEFAULT NULL,
            grad_year INTEGER,
            interests TEXT DEFAULT NULL,
-           profile_picture BLOB NOT NULL
+           picture BLOB DEFAULT NULL
            ) """,
         """CREATE TABLE IF NOT EXISTS clubs (
             id INTEGER PRIMARY KEY,
@@ -50,6 +50,7 @@ def create_tables():
             message_date TEXT,
             user_id INTEGER,
             club_id INTEGER,
+            picture BLOB DEFAULT NULL,
             FOREIGN KEY (user_id) REFERENCES users(id),
             FOREIGN KEY (club_id) REFERENCES clubs(id)
         )

@@ -11625,12 +11625,13 @@ textarea.form-control-lg {
   margin-top: 0;
   padding: 0;
   width: 200px;
-  background-color: rgb(33, 37, 41) ;
+  background-color: whitesmoke ;
   position: fixed;
   height: 100%;
   overflow: auto;
   z-index:1;
-  border-right:3px solid #FFD700
+  color:black;
+  border-right:2px solid black
 }
 
 .sidebar a {
@@ -11641,13 +11642,17 @@ textarea.form-control-lg {
 }
  
 .sidebar a.active {
-  background-color: #FFD700;
-  color: white;
+  background-color: white;
+  color: black;
+  border-bottom:2px solid black;
+  border-top:2px solid black
 }
 
 .sidebar a:hover:not(.active) {
-  background-color: #555;
-  color: white;
+  background-color: white;
+  color: black;
+  border-bottom:2px solid black;
+  border-top:2px solid black
 }
 
 .clubs{
@@ -11668,7 +11673,7 @@ textarea.form-control-lg {
   flex-direction: column;
   justify-content: space-between; 
   color:black;
-  min-height:200px;
+  min-height:150px;
   max-width:1fr;
   transition: transform 0.3s; /* Add a transition for smooth animation */ 
 }
@@ -11676,16 +11681,14 @@ textarea.form-control-lg {
 .recentmsg {
   background-color: white;
   margin-top:20px;
-  min-height:140px;
   padding: 20px;
+  text-align:left;
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  display: flex; 
-  flex-direction: column;
-  justify-content: space-between; 
-  color:black;
-  word-wrap: break-word; 
-  overflow-wrap: break-word;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
  
 .club:hover {
@@ -11777,8 +11780,8 @@ textarea.form-control-lg {
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-top:20px;
-  text-align:left;    
-  max-width:920px;        
+  text-align:left;  
+  max-width: 920px;
   word-wrap: break-word; 
   overflow-wrap: break-word;
 }
@@ -11902,7 +11905,7 @@ textarea.form-control-lg {
 .updprofile{
   text-align:center; 
   border-radius:30px;
-  border-width:1px solid black;
+  border-width:1px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding:10px;
   margin-bottom:30px;
