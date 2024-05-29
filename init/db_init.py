@@ -22,7 +22,8 @@ def create_tables():
            isAdmin BOOLEAN DEFAULT NULL,
            major VARCHAR(255) DEFAULT NULL,
            grad_year INTEGER,
-           interests TEXT DEFAULT NULL
+           interests TEXT DEFAULT NULL,
+           profile_picture BLOB NOT NULL
            ) """,
         """CREATE TABLE IF NOT EXISTS clubs (
             id INTEGER PRIMARY KEY,

@@ -11770,7 +11770,10 @@ textarea.form-control-lg {
 
 .message{
   background-color: white;
-  padding: 40px;
+  padding-top: 20px;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-bottom: 20px;
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-top:20px;

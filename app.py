@@ -72,6 +72,7 @@ def authorized():
             message = ""
             #get the user data from google
             user = google.parse_id_token(token, nonce=None)
+            print(user)
             session['token'] = token
 
             #check if the user exists
@@ -79,11 +80,12 @@ def authorized():
 
         #register new user
         if google_user_data==[]:
-            new_user = User(None, user.given_name, user.family_name, user.email, None, None, None)
+            new_user = User(None, user.given_name, user.family_name, user.email, None, None, None, user['picture'])
             register_user(new_user)
             message =  "Registered successfully!"
             google_user_data = search_user(user.email)
         else: 
+           change_pfp(google_user_data[0][0],user['picture'])
            message =  "Logged in successfully!"
         #add user to user object (id!) with session id token
         google_user_object = load_user(google_user_data[0][0])
@@ -141,7 +143,8 @@ def profile():
 
     google_data = session.get('google_data')
     user_picture = google_data['picture']
-    return render_template('profile.html', user=user, picture=user_picture)
+    flash("Updated Profile!", "success")
+    return render_template('profile.html', user=user, picture=user_picture, name=google_data['name'])
 
 ### CLUB FUNCTIONALITIES
 @app.route('/clubs', methods=['GET', 'POST'])
@@ -183,7 +186,6 @@ def myclubs():
         user_clubs = get_user_clubs(user_id)
         user_clubs_name = []
         recent_messages = []
-        print(user_clubs)
         for clubs in user_clubs:
             pass
         #get the names of the clubs specified by the club id
@@ -192,10 +194,7 @@ def myclubs():
             recent_message_from_club = get_most_recent_message(user_clubs[i][2])
             user_clubs_name.append(club)
             recent_messages.append(recent_message_from_club)
-            print(recent_messages)
-            #print(recent_messages)
             #get the most recent messages
-        print(user_clubs_name)
         return render_template("dashboard.html", user_clubs = user_clubs_name, recent_club_messages = recent_messages)
 
 ### STREAM OF THE CLASSROOM
@@ -208,15 +207,25 @@ def stream(club_name):
     user_id = session.get('id')
     user_clubs = get_user_clubs(user_id)
     user_clubs_name = []
-    print(user_clubs)
     #get the names of the clubs specified by the club id
     for i in range(len(user_clubs)):
         club = search_club_by_id(user_clubs[i][2])[0][2]
         user_clubs_name.append(club)
-    print(user_clubs_name)
     #ownership of club CHANGE THIS LATER!!!!
     ownership = False
     messages = (get_messages(club_id))[::-1]
+    message_dates = []
+    message_names = []
+    for message in messages:
+        datetime_str = message[2]
+        datetime_obj = datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S')
+        month_day = datetime_obj.strftime('%B %d')
+        time = datetime_obj.strftime('%H:%M')
+        message_dates.append([month_day,time])
+
+        message_poster = get_user_by_id(message[3])
+        message_name = message_poster[0][1] + ' ' + message_poster[0][2]
+        message_names.append(message_name)
     #if statement to reverse messages so newest is frist
     if request.method == 'GET':
         #determine ownership of club
@@ -224,7 +233,7 @@ def stream(club_name):
             ownership = True
         #get the messages of the club to get ready to output
         #need club name just in case of routing?
-        return render_template('stream.html', ownership=ownership, messages=messages, club_name=club_name, edit_access=True, user_clubs = user_clubs_name)
+        return render_template('stream.html', ownership=ownership, messages=messages, club_name=club_name, edit_access=True, user_clubs=user_clubs_name, message_dates=message_dates, message_names=message_names)
     #for now can only make announcements
     #if the user is an owner, allow for the post announcements functionality
     elif request.method == 'POST':

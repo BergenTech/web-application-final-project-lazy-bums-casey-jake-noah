@@ -24,7 +24,6 @@ def get_most_recent_message(club_id):
     db_cursor.execute("SELECT * FROM messages WHERE club_id = ? ORDER BY id DESC LIMIT 1", (club_id,))
     data = db_cursor.fetchall()
     db.close()
-    print(data)
     return data
 
 #OWNERS OF THE CLUB ONLY!
@@ -41,7 +40,6 @@ def post_message(user_id, club_id, message_content, message_date):
             (new_message.message_content, new_message.message_date, new_message.user_id, new_message.club_id,)
         )
         db.commit()
-        print('successful!')
     except Exception as e:
         db.rollback()
 
@@ -49,14 +47,12 @@ def delete_message(club_id,message_limit):
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()
 
-    print('test')
     try: 
         db_cursor.execute(
             """Delete from messages where rowid IN (Select rowid from messages limit message_limit);""",
             (message_limit,)
         )
         db.commit()
-        print('successful!')
     except Exception as e:
         db.rollback()
         

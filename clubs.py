@@ -96,20 +96,17 @@ def search_users_of_a_club(id):
     #prepared statement to prevent sql injection    
     db_cursor.execute("SELECT user_id FROM my_clubs WHERE club_id = ?", (id,))
     data = db_cursor.fetchall()
-    print(data)
     users = []
     #get the username
     for user_id in data:
         users.append(get_user_by_id(user_id[0])[0][1])
     db.close()
-    print(users)
     return users
 
 
 ##### USER CLUB STUFF
 #need to pass user parameters of user id, club id, and later on if there is edit functionality?
 def add_club_to_user(user_id, club_id):
-    print(user_id, club_id)
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()
     #add to the my_clubs table
@@ -139,7 +136,6 @@ def get_user_clubs(user_id):
     #search for my_clubs where user_id is the user_id specified
     db_cursor.execute("SELECT * FROM my_clubs WHERE user_id = ?", (user_id,))
     data = db_cursor.fetchall()
-    print(data)
     db.close()
     return data
 
@@ -180,7 +176,6 @@ def make_jake_owner():
         jake_user_id = search_user("ceasylee@gmail.com")[0][0]
         jakes_clubs = get_user_clubs(jake_user_id)
         jakes_clubs = [clubs[2] for clubs in jakes_clubs]
-        print(jakes_clubs)
         for jake_club in jakes_clubs:
     #enumerate using a for loop for all the club_ids specified
     #grant jake ownership 

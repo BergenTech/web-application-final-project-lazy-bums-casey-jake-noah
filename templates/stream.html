@@ -32,9 +32,11 @@
                             </div>
                         </form>
                     {%endif%}
-                    {% for message in messages %}
+                    {% for i in range(messages|length)%}
                     <div class="message">
-                    {{ message[1] }}
+                        <div class="fs-6 fw-bold">{{message_names[i]}}</div>
+                        <div class='fs-7'>{{message_dates[i][0]}} - {{message_dates[i][1]}}</div>
+                        <div>{{messages[i][1]}}</div>
                     </div>
                     {% endfor %}
                 </div> 

@@ -43,7 +43,6 @@ def get_all_users():
             )
     data = db_cursor.fetchall()
     db.close()
-    print(data)
     return data
 def search_user(email):
     db = sqlite3.connect('db/database.db')
@@ -56,7 +55,6 @@ def search_user(email):
             )
     data = db_cursor.fetchall()
     db.close()
-    print(data)
     return data
 #get user by id
 def get_user_by_id(user_id):
@@ -70,13 +68,20 @@ def get_user_by_id(user_id):
             )
     data = db_cursor.fetchall()
     db.close()
-    print(data)
     return data
 #getting the users for the club (need for attendance)
 def get_users_in_club(club_id):
     pass
 
-
+def change_pfp(user_id,picture):
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    db.cursor.execute("""UPDATE users
+                      SET picture = ?
+                      WHERE id = ? """,
+                      (picture,user_id))
+    db.commit()
+    db.close()
 
 
 def add_to_user(user_id,grad_year,major):
