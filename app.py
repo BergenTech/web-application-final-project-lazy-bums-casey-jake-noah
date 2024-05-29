@@ -305,7 +305,6 @@ def manage_users():
 def manage_clubs():
     if request.method == 'GET':
         clubs = get_all_clubs()
-        
         return render_template("admin_clubs.html", clubs=clubs)
 
 @app.route('/admin/manage_clubs/members/<club_name>', methods=["GET", "POST"])
