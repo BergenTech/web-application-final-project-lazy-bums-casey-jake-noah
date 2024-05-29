@@ -66,41 +66,42 @@ def logout():
 @app.route('/login/callback')
 def authorized():
     nonce = session.get('nonce')
-    # try:
-    if nonce is None:
-        token = google.authorize_access_token()
-        message = ""
-        #get the user data from google
-        user = google.parse_id_token(token, nonce=None)
-        session['token'] = token
+    try:
+        if nonce is None:
+            token = google.authorize_access_token()
+            message = ""
+            #get the user data from google
+            user = google.parse_id_token(token, nonce=None)
+            session['token'] = token
 
-        #check if the user exists
-        google_user_data = search_user(user.email)
+            #check if the user exists
+            google_user_data = search_user(user.email)
 
-    #register new user
-    if google_user_data==[]:
-        new_user = User(None, user.given_name, user.family_name, user.email, None, None, None, None, user['picture'])
-        register_user(new_user)
-        message =  "Registered successfully!"
-        google_user_data = search_user(user.email)
-    else: 
+        #register new user
+        if google_user_data==[]:
+            new_user = User(None, user.given_name, user.family_name, user.email, None, None, None, None, user['picture'])
+            register_user(new_user)
+            message =  "Registered successfully!"
+            google_user_data = search_user(user.email)
+        else: 
+            message =  "Logged in successfully!"
+        #add user to user object (id!) with session id token
+        google_user_object = load_user(google_user_data[0][0])
+
         change_pfp(google_user_data[0][0],user['picture'])
-        message =  "Logged in successfully!"
-    #add user to user object (id!) with session id token
-    google_user_object = load_user(google_user_data[0][0])
 
-    #save the id of the user in a session variable
-    session['id'] = google_user_data[0][0]
-    session['email'] = google_user_data[0][3]
-    session['google_data'] = user
+        #save the id of the user in a session variable
+        session['id'] = google_user_data[0][0]
+        session['email'] = google_user_data[0][3]
+        session['google_data'] = user
 
-    login_user(google_user_object)
-    flash(message, "success")
-    
-    return redirect(url_for('home'))
-    # except Exception as e:
-    #     flash('An error occurred: ' + str(e))
-    #     return redirect(url_for('home'))
+        login_user(google_user_object)
+        flash(message, "success")
+        
+        return redirect(url_for('home'))
+    except Exception as e:
+        flash('An error occurred: ' + str(e))
+        return redirect(url_for('home'))
 
 #set mail 
 mail = Mail(app)
@@ -134,15 +135,15 @@ def profile():
         user = search_user(user_email)
     elif request.method == 'POST':
         grad_year = request.form.get('grad_year').strip()
-        major = request.form['major']
+        major = request.form.get('major')
         user_id = session.get('id')
         add_to_user(user_id,major,grad_year)
         user_email = session.get('email')
         user = search_user(user_email)
+        flash("Updated Profile!", "success")
 
     google_data = session.get('google_data')
     user_picture = google_data['picture']
-    flash("Updated Profile!", "success")
     return render_template('profile.html', user=user, picture=user_picture, name=google_data['name'])
 
 ### CLUB FUNCTIONALITIES
@@ -188,13 +189,21 @@ def myclubs():
         for clubs in user_clubs:
             pass
         #get the names of the clubs specified by the club id
+        poster_names = []
         for i in range(len(user_clubs)):
             club = search_club_by_id(user_clubs[i][2])[0][2]
             recent_message_from_club = get_most_recent_message(user_clubs[i][2])
             user_clubs_name.append(club)
             recent_messages.append(recent_message_from_club)
-            #get the most recent messages
-        return render_template("dashboard.html", user_clubs = user_clubs_name, recent_club_messages = recent_messages)
+            if recent_message_from_club != []:
+                poster_id = recent_message_from_club[0][3]
+                poster = get_user_by_id(poster_id)
+                poster_name = poster[0][1] + ' ' + poster[0][2]
+                poster_names.append(poster_name)
+                #get the most recent messages
+            else:
+                poster_names.append(None)
+        return render_template("dashboard.html", user_clubs = user_clubs_name, recent_club_messages = recent_messages, poster_names=poster_names)
 
 ### STREAM OF THE CLASSROOM
 @app.route('/stream/<club_name>', methods=['GET','POST'])
@@ -204,6 +213,7 @@ def stream(club_name):
     club_id = search_clubs(club_name)[0][0]
     #check if the user is an owner of the club
     user_id = session.get('id')
+    user = get_user_by_id(user_id)
     user_clubs = get_user_clubs(user_id)
     user_clubs_name = []
     #get the names of the clubs specified by the club id
@@ -213,8 +223,7 @@ def stream(club_name):
     #ownership of club CHANGE THIS LATER!!!!
     ownership = False
     messages = (get_messages(club_id))[::-1]
-    message_dates = []
-    message_names = []
+    message_dates, message_names, message_pictures = [],[],[]
     for message in messages:
         datetime_str = message[2]
         datetime_obj = datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S')
@@ -225,6 +234,9 @@ def stream(club_name):
         message_poster = get_user_by_id(message[3])
         message_name = message_poster[0][1] + ' ' + message_poster[0][2]
         message_names.append(message_name)
+
+        message_picture = message_poster[0][8]
+        message_pictures.append(message_picture)
     #if statement to reverse messages so newest is frist
     if request.method == 'GET':
         #determine ownership of club
@@ -232,7 +244,7 @@ def stream(club_name):
             ownership = True
         #get the messages of the club to get ready to output
         #need club name just in case of routing?
-        return render_template('stream.html', ownership=ownership, messages=messages, club_name=club_name, edit_access=True, user_clubs=user_clubs_name, message_dates=message_dates, message_names=message_names)
+        return render_template('stream.html', ownership=ownership, messages=messages, club_name=club_name, edit_access=True, user_clubs=user_clubs_name, message_dates=message_dates, message_names=message_names, message_pictures=message_pictures)
     #for now can only make announcements
     #if the user is an owner, allow for the post announcements functionality
     elif request.method == 'POST':
@@ -241,8 +253,10 @@ def stream(club_name):
         message = request.form.get("message")
         #get the current time
         current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        # get the user profile picture
+        picture = user[0][8]
         #post the message into the database
-        post_message(user_id, club_id, message, current_time)
+        post_message(user_id, club_id, message, current_time, picture)
 
         #redirect to the stream and flash that post has been successful (? hopefully the posts are there? )
         return redirect(url_for('stream', club_name=club_name, user_clubs = user_clubs_name))

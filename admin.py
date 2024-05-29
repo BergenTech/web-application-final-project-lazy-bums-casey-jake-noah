@@ -17,5 +17,3 @@ def demote_leader():
     pass
 def remove_user():
     pass
-
-
