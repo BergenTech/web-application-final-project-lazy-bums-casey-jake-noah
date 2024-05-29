@@ -1,17 +1,18 @@
 {%extends "admin_base.html"%}
 {%block title%}BT CLUB APP{%endblock%}
 {%block content%}
-<div class="clubsdb">
+<div class="clubsdb py-5">
     {% for row in users %}
             <div class="clubdb">
-                    <h1><p class="fs-6">Location : {{ row[1] }}</p></h1>
-                    <p class="fs-6">Location : {{ row[1] }}</p>
-                    <p class="fs-6">Club Dates : {{ row[2] }}</p>
-                    <p class="fs-6">Location : {{ row[3] }}</p>
-                    <p class="fs-6">Location : {{ row[4] }}</p>
+                <p class="fs-6">{{ row[0] }} </p>
+                    <h1><p class="fs-6">{{ row[1] }}</p></h1>
+                    <p class="fs-6">{{ row[1] }}</p>
+                    <p class="fs-6">{{ row[2] }}</p>
+                    <p class="fs-6">{{ row[3] }}</p>
+                    <p class="fs-6">{{ row[4] }}</p>
                     <p class="fs-5">{{ row[5] }}</p><br>
                     <div class="link-container">
-                    <a href="#" class="btn btn-primary link" style="background-color:gold">View Info</a>
+                        <a href="{{ url_for('approve_event', club_name=row[0]) }}" class="btn btn-primary bg-dark" style="border-radius:30px; padding:10px 15px;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">Make Teacher</a>
                     </div>
             </div>
     {% endfor %}

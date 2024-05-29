@@ -76,10 +76,11 @@ def create_tables():
             FOREIGN KEY (club_id) REFERENCES clubs(id)
         )        
         """,
-        """CREATE TABLE IF NOT EXISTS leaders(
+        """CREATE TABLE IF NOT EXISTS leaders (
             id INTEGER PRIMARY KEY,
             user_id INTEGER,
             club_id INTEGER,
+            isTeacher BOOLEAN DEFAULT FALSE,
             FOREIGN KEY (user_id) REFERENCES users(id),
             FOREIGN KEY (club_id) REFERENCES clubs(id)
         )"""

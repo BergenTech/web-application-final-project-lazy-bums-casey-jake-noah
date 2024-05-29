@@ -19,7 +19,9 @@ from user import User
 from clubs import *
 from messages import *
 from admin import *
+from events import *
 import os
+from functools import wraps
 
 app = Flask(__name__)
 app.secret_key = "SUPER_SECRET_KEY"  # Change this to a secure ENCRYPTED key
@@ -124,6 +126,17 @@ def load_user(user_id):
         return None
     else:
         return User(int(lu[0]), lu[1], lu[2], lu[3], None, None, None)
+
+def admin_required(func):
+    @wraps(func)
+    def decorated_view(*args, **kwargs):
+        if not current_user.is_authenticated:
+            return login_manager.unauthorized()
+        elif not current_user.isAdmin:
+            return "You do not have the necessary permissions to access this page.", 403
+        return func(*args, **kwargs)
+    return decorated_view
+
 
 
 @app.route('/profile', methods=['GET','POST'])
@@ -258,9 +271,12 @@ def attendance(club_name):
     elif request.method == 'POST':
         pass
 
-@app.route('/stream/create_events/<club_name>')
+@app.route('/stream/create_events/<club_name>', methods=['GET', 'POST'])
 def create_events(club_name):
-    pass
+    if request.method == 'GET':
+        return render_template('events.html', club_name = club_name)
+    elif request.method == 'POST':
+        pass
 
 @app.route('/calendar')
 def calendar():
@@ -271,11 +287,13 @@ def calendar():
 
 @app.route('/admin', methods=["GET", "POST"])
 @login_required
+@admin_required
 def admin():
     if request.method == 'GET':
-        return render_template("admin_base.html")
+        return render_template("admin_index.html")
 @app.route('/admin/manage_users', methods=["GET", "POST"])
 @login_required
+@admin_required
 def manage_users():
     if request.method == 'GET':
         users = get_all_users()
@@ -283,18 +301,40 @@ def manage_users():
     
 @app.route('/admin/manage_clubs', methods=["GET", "POST"])
 @login_required
+@admin_required
 def manage_clubs():
     if request.method == 'GET':
         clubs = get_all_clubs()
+        
         return render_template("admin_clubs.html", clubs=clubs)
 
-@app.route('/admin/manage_attendance')
-def manage_attendance():
-    pass
-
+@app.route('/admin/manage_clubs/members/<club_name>', methods=["GET", "POST"])
+@login_required
+@admin_required
+def manage_members(club_name):
+    if request.method == 'GET':
+        club_id = search_clubs(club_name)
+        members = search_users_of_a_club(club_id)
+        return render_template("admin_members",members=members)
+    if request.method == 'POST':
+        
+        pass
 @app.route('/admin/manage_events', methods=['GET', 'POST'])
+@login_required
+@admin_required
 def manage_events():
-    pass
+    if request.method == 'GET':
+        events = get_all_events()
+        return render_template("admin_events.html", events=events)    
+    if request.method == 'POST':
+        pass
+@app.route('/admin/approve_event/<event_id>')
+@login_required
+@admin_required
+def approve_events(event_id):
+    approve_event(event_id)
+    flash("Approved Event!", "success")
+    return redirect(url_for('manage_events'))
 
 if __name__ == "__main__":
     #create the tables

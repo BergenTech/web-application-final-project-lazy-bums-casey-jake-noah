@@ -97,3 +97,13 @@ def add_to_user(user_id,grad_year,major):
 # Generate a Verification Token:
 def generate_verification_token():
     return secrets.token_urlsafe(50)  # Adjust the token length as needed
+
+class Leader():
+    def __init__(self, id, user_id, club_id, isTeacher):
+        self.id = id
+        self.user_id = user_id
+        self.club_id = club_id
+        self.isTeacher = isTeacher
+
+
+        
