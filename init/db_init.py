@@ -56,9 +56,13 @@ def create_tables():
         """,
         """CREATE TABLE IF NOT EXISTS events (
             id INTEGER PRIMARY KEY,
-            event_name TEXT,
+            event_title TEXT,
             event_content TEXT,
-            event_date TEXT,
+            event_start_date TEXT,
+            event_end_date TEXT,
+            event_tags TEXT,
+            people_interested TEXT,
+            isApproved BOOLEAN DEFAULT NULL,
             club_id INTEGER,
             FOREIGN KEY (club_id) REFERENCES clubs
     
@@ -71,7 +75,14 @@ def create_tables():
             FOREIGN KEY (user_id) REFERENCES users(id),
             FOREIGN KEY (club_id) REFERENCES clubs(id)
         )        
-        """
+        """,
+        """CREATE TABLE IF NOT EXISTS leaders(
+            id INTEGER PRIMARY KEY,
+            user_id INTEGER,
+            club_id INTEGER,
+            FOREIGN KEY (user_id) REFERENCES users(id),
+            FOREIGN KEY (club_id) REFERENCES clubs(id)
+        )"""
     ]
     for create_query in creation_queries:
         db.execute(create_query)
