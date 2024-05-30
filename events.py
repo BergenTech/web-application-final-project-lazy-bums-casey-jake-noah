@@ -28,7 +28,6 @@ def create_event(club_id, event_title, event_content, event_start_date, event_en
             (new_event.event_title, new_event.event_content, new_event.event_start_date, new_event.event_end_date, new_event.event_tags, new_event.club_id,)
         )
         db.commit()
-        print('successful!')
     except Exception as e:
         db.rollback()
 ## EVENT EDITING FUNCTIONS (needs to do before approval)
@@ -46,7 +45,6 @@ def get_event_by_club(club_id):
     db_cursor = db.cursor()
     db_cursor.execute("SELECT event_title FROM events WHERE club_id=?", (club_id,))
     data = db_cursor.fetchall()
-    print(data)
     if data == None:
         data = []
     db.close()

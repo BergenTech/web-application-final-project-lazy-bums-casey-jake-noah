@@ -115,6 +115,20 @@ def check_is_leader(user_id, club_id):
     db_cursor = db.cursor()
     db_cursor.execute("""SELECT * FROM leaders WHERE user_id=? AND club_id=?""", (user_id, club_id))
     result = db_cursor.fetchone()
-    print(result)
     db.close()
     return result
+def remove_when_leaving(user_id, club_id):
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    #add to the my_clubs table
+    try: 
+        db_cursor.execute(
+                    """DELETE FROM leaders
+                    WHERE user_id=? AND club_id=?""",
+                    (user_id, club_id)
+        )
+        db.commit()
+    except Exception as e:
+        db.rollback()
+    db.close()
+    pass

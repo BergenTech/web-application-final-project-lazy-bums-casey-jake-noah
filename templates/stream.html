@@ -14,9 +14,20 @@
             {% endfor %}
         </div>
         <div class="stream">
-            <h1 class="display-7 fw-bold clubtitle">
-            {{club_name}}
-            </h1>
+            <div class="display-7 clubtitle" style="">
+                <div class="display-6 fw-bold" style="">{{club_name}}</div>
+                    <div style="margin-top:25px">
+                    {% if ownership %}
+                    <form action="{{url_for('stream',club_name=club_name)}}" method="POST" enctype="multipart/form-data">
+                        <input type="file" name="logo">
+                        <input type="submit" name="logo_submit" class="" value="Upload Logo">
+                    </form>
+                    {%endif%}
+                    <form action="{{url_for("leave_club", club_name=club_name)}}" style="margin-top:25px">
+                        <input type="submit" class="leave" value="Leave Club" style="background-color:black">
+                    </form>
+                    </div>
+            </div>
             <div class="messages">
                 <div class="stream_event">
                     <p class="fw-bold">Events</p>
@@ -35,7 +46,7 @@
                         <form action="{{ url_for('stream', club_name=club_name) }}" method="post">
                             <div class="messages">
                                 <input type="text" class="post_message" name="message" placeholder="Post an Announcement" required >
-                                <input type="submit" class="post_btn" value="Post">
+                                <input type="submit" class="post_btn" name="message_submit" value="Post">
                             </div>
                         </form>
                     {%endif%}

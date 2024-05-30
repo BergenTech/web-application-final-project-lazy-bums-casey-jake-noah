@@ -5,28 +5,50 @@
 <!-- Page Content-->
 <!-- Header-->
 <div class="background-img" >
-    <header class="pt-5" style="background-color:rgba(255,255,255,0.8); min-height: 100vh;padding:100px;padding-top:50px;;padding-bottom:10px">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        {% for category, message in messages %}
-        <div class="alert alert-{{ category }} alert-dismissible fw-bold" role="alert" style="margin-top:50px">
-            <div>{{message}}</div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <header class="pt-5" style="background-color:rgba(255,255,255,0.8); min-height: 100vh; ">
+        <div class="eventpage">
+            <div class="display-5 fw-bold">Upcoming Events</div>
+            <div style="display:flex;justify-content: center;text-align:center;">
+                <div class="calendar-container" style="text-align:center">
+                    <div class="calendar-header">
+                        <button id="prevWeek" class="fw-bold fs-5" style="margin-left:20%">&lt;</button>
+                        <div id="currentWeek"></div>
+                        <button id="nextWeek" class="fw-bold fs-5" style="margin-right:20%">&gt;</button>
+                    </div>
+                    <div class="calendar-grid">
+                        <div class="day-label">Sun</div>
+                        <div class="day-label">Mon</div>
+                        <div class="day-label">Tue</div>
+                        <div class="day-label">Wed</div>
+                        <div class="day-label">Thu</div>
+                        <div class="day-label">Fri</div>
+                        <div class="day-label">Sat</div>
+                        <div id="calendarDays" class="fs-5" style="display: contents;"></div>
+
+                        <div class="day-box"></div>
+                        <div class="day-box"></div>
+                        <div class="day-box"></div>
+                        <div class="day-box"></div>
+                        <div class="day-box"></div>
+                        <div class="day-box"></div>
+                        <div class="day-box"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %} 
-       <div class="clubsdb" style="padding-bottom:40px">
-           {% for row in events %}
-           <div class="clubdb">
-               <p class="fs-3 fw-bold">{{ row[2] }}</p>
-               <p class="fs-6">Advisor : {{ row[1] }} </p>
-               <p class="fs-6 hiddenText" id="hiddenText{{ loop.index }}">Location : {{ row[4] }} <br><br> Club Dates : {{ row[5] }} <br><br> {{ row[3] }}</p>
-              {{row[5]}}
-              {{club_names}}
-           </div>
-       {% endfor %}
-       </div>
+
+ 
+            <!-- {% for row in events %}
+            <div class="event">
+                <p class="fs-3 fw-bold">{{ row[1] }}</p>
+                <p class="fs-6">Club Name</p>
+                <p class="fs-6">{{ row[2] }} </p>
+                <p class="fs-6">{{ row[3] }} </p>
+                <p class="fs-6"> </p>
+                <p class="fs-6">{{ row[4] }} </p>
+                <p class="fs-6">{{ row[5] }} </p>
+            </div>
+        {% endfor %} -->
     </header>
-    </div>
+</div>
 {%endblock%}

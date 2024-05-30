@@ -46,7 +46,8 @@ google = oauth.register(
 
 @app.route('/')
 def home():
-    return render_template("home.html")
+    events = get_approved_events()
+    return render_template("home.html" ,events=events)
 
 ### LOGIN FUNCTIONALITIES
 @app.route('/login')
@@ -201,6 +202,15 @@ def join_club(club_name):
     flash("Added club!", "success")
     return redirect(url_for('clubs'))
 
+@app.route('/leave_club/<club_name>', methods=['GET'])
+@login_required
+def leave_club(club_name):
+    user_id = session.get('id')
+    club_id = search_clubs(club_name)[0][0]
+    remove_club_to_user(user_id, club_id)
+    #remove leadership if leader
+    remove_when_leaving(user_id,club_id)
+    return redirect(url_for('myclubs'))
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
@@ -233,7 +243,6 @@ def myclubs():
             if recent_message_from_club != []:
                 poster_id = recent_message_from_club[0][3]
                 poster = get_user_by_id(poster_id)
-                print(poster)
                 if poster[0][2] != None:
                     poster_name = poster[0][1] + ' ' + poster[0][2]
                 else:
@@ -294,18 +303,24 @@ def stream(club_name):
     #for now can only make announcements
     #if the user is an owner, allow for the post announcements functionality
     elif request.method == 'POST':
-        #get the text from the textarea form?
-        #parse it and add it to the relational text database 
-        message = request.form.get("message")
-        #get the current time
-        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        # get the user profile picture
-        picture = user[0][8]
-        #post the message into the database
-        post_message(user_id, club_id, message, current_time, picture)
+        if 'message_submit' in request.form:
+            #get the text from the textarea form?
+            #parse it and add it to the relational text database 
+            message = request.form.get("message")
+            #get the current time
+            current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            # get the user profile picture
+            picture = user[0][8]
+            #post the message into the database
+            post_message(user_id, club_id, message, current_time, picture)
 
-        #redirect to the stream and flash that post has been successful (? hopefully the posts are there? )
-        return redirect(url_for('stream', club_name=club_name, user_clubs = user_clubs_name))
+            #redirect to the stream and flash that post has been successful (? hopefully the posts are there? )
+            return redirect(url_for('stream', club_name=club_name, user_clubs = user_clubs_name))
+        elif 'logo_submit' in request.form:
+            image_file = request.files['logo']
+            image_data = image_file.read()
+            print(image_data)
+            return redirect(url_for('home'))
 
 @app.route('/stream/attendance/<club_name>')
 @login_required
@@ -417,15 +432,12 @@ def manage_members(club_name):
     club_id = search_clubs(club_name)[0][0]
     if request.method == 'GET':
         members = search_users_of_a_club(club_id)
-        print(members)
         #format the jinja to show approved and unapproved clubs (use the field in the tuple!!)
         return render_template("admin_members.html", members=members, club_name=club_name)
     if request.method == 'POST':
         user_id_group = request.form.getlist("user_id")
-        print(user_id_group)
         for user_id in user_id_group:
-            promote_teacher(user_id, club_id)
-            print('this works!')
+            promote_teacher(user_id, club_id)   
         flash("Leaders create successfully!", "success")
         return redirect(url_for('manage_members', club_name=club_name))
     
@@ -435,7 +447,6 @@ def manage_members(club_name):
 def manage_events():
     if request.method == 'GET':
         events = get_all_events()
-        print(events)
         return render_template("admin_events.html", events=events)    
     elif request.method == 'POST':
         #the value of the form will be the event_id(?)

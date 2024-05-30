@@ -18,32 +18,35 @@
             {% endif %}
             {% endwith %}    
             
-            <div class="title_card" >
-                <div style="flex:0.8; text-align:center">
-                    <h1 class="display-4 fw-bold" style="margin-bottom:50px">Bergen Tech Club App</h1>
-                    <p class="fs-4">Welcome to the Official Club Management Website for Bergen Tech! </p> <br>
-                    {%if current_user.is_authenticated%}
-                    <div style="display:flex; justify-content: center; justify-content: space-around;padding:0px 50px">
-                        <form action="/dashboard">
-                            <input type="submit" class="homebtn" value="My Dashboard" style="background-color:black;">
-                        </form>
-                        <form action="/profile">
-                            <input type="submit" class="homebtn" value="My Profile">
-                        </form>
-                    </div>
-                    {% else %}
-                        <form action="/login">
-                            <input type="submit" class="homebtn" value="Login / Register" style="background-color:black;">
-                        </form>
-                    {% endif %}
+            <div class="title_card" style="display:flex;  justify-content: center; gap: 10%;">
+                <div style="flex:0.8; ; text-align:center">
+                        <h1 class="display-4 fw-bold" style="margin-bottom:50px">Bergen Tech Club App</h1>
+                        <p class="fs-4">Welcome to the Official Club Management Website for Bergen Tech! </p> <br>
+                        {%if current_user.is_authenticated%}
+                        <div style="display:flex; justify-content: center; justify-content: space-around;padding:0px 50px">
+                            <form action="/dashboard">
+                                <input type="submit" class="homebtn" value="My Dashboard" style="background-color:black;">
+                            </form>
+                            <form action="/profile">
+                                <input type="submit" class="homebtn" value="My Profile">
+                            </form>
+                        </div>
+                        {% else %}
+                            <form action="/login">
+                                <input type="submit" class="homebtn" value="Login / Register" style="background-color:black;">
+                            </form>
+                        {% endif %}
                 </div>
-                <div style='text-align: right;'>
+                <div style="display: flex;justify-content: center; align-items: center">
                     <img src="static\images\TeterboroLogo.png" alt="">
                 </div>
+                
             </div>
     
         <div class="display-4 fw-bold event_title">Club Events</div>
-        
+        {%for event in events%}
+            {{event}}
+        {%endfor%}
         </div>
     </header>
 </div>

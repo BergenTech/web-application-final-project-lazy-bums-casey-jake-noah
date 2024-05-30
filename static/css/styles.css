@@ -11763,10 +11763,11 @@ textarea.form-control-lg {
 .clubtitle{
   background-color: white;
   padding-top: 20px;
-  padding-bottom: 120px;
-  padding-left:20px;
-  padding-right:20px;
-  border-radius: 10px;
+  min-height:140px;
+  padding-left:40px;
+  padding-right:40px;
+  padding-bottom:20px;
+  border-radius: 20px 100px 100px 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -11778,7 +11779,7 @@ textarea.form-control-lg {
 .stream_event{
   background-color: white;
   padding: 40px;
-  border-radius: 15px;
+  border-radius: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align:center;
   flex: 0.15; 
@@ -11799,7 +11800,7 @@ textarea.form-control-lg {
   padding-left: 40px;
   padding-right: 40px;
   padding-bottom: 20px;
-  border-radius: 15px;
+  border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-top:20px;
   text-align:left;  
@@ -11887,6 +11888,21 @@ textarea.form-control-lg {
 }
 
 .submitbutton:hover{
+  transform: scale(1.1); 
+}
+
+.leave{
+  border-radius: 30px;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: white;
+  padding: 1%;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.3s; 
+}
+
+.leave:hover{
   transform: scale(1.1); 
 }
 
@@ -12025,4 +12041,82 @@ th, td {
 
 .event_form:hover{
   transform: scale(1.02); 
+}
+
+.eventpage{
+  padding:40px 170px;
+}
+
+.event{
+  padding:20px;
+  background-color:white;
+  border-radius:15px;
+  margin-top:10px
+}
+
+.calendar-container {
+  width: 100%;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding:20px;
+  background-color:white;
+  border-radius:15px;
+  margin-top:40px;
+  height:500px
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  background-color: white;
+  border-bottom: 1px solid #ccc;
+}
+
+.calendar-header button {
+  background-color: white;
+  color: var(--bs-gray);
+  border: none;
+  border-radius:50%;
+  padding: 0.5em 1em;
+  cursor: pointer;
+}
+
+.calendar-header button:hover {
+  background-color: whitesmoke;
+}
+
+#currentWeek {
+  font-size: 1.2em;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  padding: 1em;
+}
+
+.day-label {
+  text-align: center;
+  padding: 0.5em 0;
+  border:1px solid var(--bs-gray-300);
+  border-bottom: none;
+  border-collapse: collapse;
+}
+
+.day-box {
+  text-align: center;
+  padding: 0.5em 0;
+  border:1px solid var(--bs-gray-300);
+  border-collapse: collapse;
+  min-height:250px
+}
+
+.day {
+  text-align: center;
+  padding: 0.5em;
+  border-left:1px solid var(--bs-gray-300);
+  border-right:1px solid var(--bs-gray-300);
+  border-collapse: collapse;
 }

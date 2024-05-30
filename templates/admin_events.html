@@ -17,12 +17,11 @@
 
     {% for row in events%}
     <p class="fs-6">{{ row[0] }} </p>
-    <p class="fs-3 fw-bold">{{ row[2] }}</p>
-        <p class="fs-6">{{ row[1] }} </p>
+    <p class="fs-3 fw-bold">{{ row[1] }}</p>
+        <p class="fs-6">{{ row[2] }} </p>
+        <p class="fs-6">{{ row[3] }}</p>
         <p class="fs-6">{{ row[4] }}</p>
-        <p class="fs-6">{{ row[5] }}</p>
-        <p class="fs-5">{{ row[3] }}</p><br>
-        <p class="fs-5">{{ row[6] }}</p><br>
+        <p class="fs-5">{{ row[5] }}</p><br>
         <form action="{{ url_for('manage_events')}}" method="POST">
             <input type="submit" class="adminbtn" name="approved" value="{{row[0]}}">
         </form>

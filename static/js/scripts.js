@@ -67,3 +67,61 @@ window.onload = function() {
       document.getElementById("dropdown").value = savedMajor;
   }
 };
+
+document.addEventListener('DOMContentLoaded', function() {
+  const calendarDays = document.getElementById('calendarDays');
+  const currentWeek = document.getElementById('currentWeek');
+  const prevWeekButton = document.getElementById('prevWeek');
+  const nextWeekButton = document.getElementById('nextWeek');
+
+  let currentDate = new Date();
+
+  function renderWeek(date) {
+      calendarDays.innerHTML = '';
+      const startOfWeek = getStartOfWeek(date);
+      const endOfWeek = new Date(startOfWeek);
+      endOfWeek.setDate(endOfWeek.getDate() + 6);
+
+      currentWeek.textContent = `${formatDate(startOfWeek)} - ${formatDate(endOfWeek)}`;
+
+      for (let i = 0; i < 7; i++) {
+          const dayCell = document.createElement('div');
+          dayCell.classList.add('day');
+          const currentDay = new Date(startOfWeek);
+          currentDay.setDate(currentDay.getDate() + i);
+          dayCell.textContent = currentDay.getDate();
+          calendarDays.appendChild(dayCell);
+      }
+  }
+
+  function getStartOfWeek(date) {
+      const day = date.getDay();
+      const diff = date.getDate() - day;
+      const startOfWeek = new Date(date);
+      startOfWeek.setDate(diff);
+      return startOfWeek;
+  }
+
+  function formatDate(date) {
+      return date.toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric'
+      });
+  }
+
+  function changeWeek(offset) {
+      currentDate.setDate(currentDate.getDate() + offset * 7);
+      renderWeek(currentDate);
+  }
+
+  prevWeekButton.addEventListener('click', function() {
+      changeWeek(-1);
+  });
+
+  nextWeekButton.addEventListener('click', function() {
+      changeWeek(1);
+  });
+
+  renderWeek(currentDate);
+});

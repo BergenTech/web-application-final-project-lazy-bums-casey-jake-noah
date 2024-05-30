@@ -8,33 +8,34 @@ from user import search_user
 class Club():
     #initialize club object with its parameters
     #future parameters: google classroom code(?)
-    def __init__(self, id, faculty_name, club_name, club_description, meeting_location, meeting_days):
+    def __init__(self, id, faculty_name, club_name, club_description, meeting_location, meeting_days, logo):
         self.id = id
         self.faculty_name = faculty_name
         self.club_name = club_name
         self.club_description = club_description
         self.meeting_location = meeting_location
         self.meeting_days = meeting_days
+        self.logo = logo
+
 #csv parsing functions
 def parse_csv_data(csv_file):
     reader = csv.reader(csv_file)
     headers = next(reader)
     data = [row for row in reader]
-    # print(data)
     return data
+
 def add_csv_data_to_database(file):
     csv_data = parse_csv_data(file)
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()
     for club in csv_data:
         try:
-            new_club = Club(None, club[0], club[1], club[2], club[3], club[4])
-            # print(new_club.faculty_name)
+            new_club = Club(None, club[0], club[1], club[2], club[3], club[4], None)
             
             db_cursor.execute(
                 """INSERT INTO clubs
-                (faculty_name, club_name, club_description, meeting_location, meeting_days) VALUES (?,?,?,?,?)""",
-                (new_club.faculty_name, new_club.club_name, new_club.club_description, new_club.meeting_location, new_club.meeting_days)
+                (faculty_name, club_name, club_description, meeting_location, meeting_days, logo) VALUES (?,?,?,?,?,?)""",
+                (new_club.faculty_name, new_club.club_name, new_club.club_description, new_club.meeting_location, new_club.meeting_days, new_club.logo)
             )
             db.commit()
         except Exception as e:
@@ -100,7 +101,6 @@ def search_users_of_a_club(id):
     #get the username
     for user_id in data:
         users.append(get_user_by_id(user_id[0]))
-    print(users)
     db.close()
     return users
 
@@ -115,6 +115,21 @@ def add_club_to_user(user_id, club_id):
         db_cursor.execute(
                     """INSERT INTO my_clubs
                     (user_id, club_id) VALUES (?,?)""",
+                    (user_id, club_id)
+        )
+        db.commit()
+    except Exception as e:
+        db.rollback()
+    db.close()
+
+def remove_club_to_user(user_id, club_id):
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    #add to the my_clubs table
+    try: 
+        db_cursor.execute(
+                    """DELETE FROM my_clubs
+                    WHERE user_id=? AND club_id=?""",
                     (user_id, club_id)
         )
         db.commit()

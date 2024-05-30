@@ -33,7 +33,8 @@ def create_tables():
             meeting_location VARCHAR(50),
             meeting_days VARCHAR(50),
             leaders TEXT DEFAULT NULL,
-            tags TEXT
+            tags TEXT,
+            logo BLOB DEFAULT NULL
         ) """,
         """CREATE TABLE IF NOT EXISTS my_clubs (
             id INTEGER PRIMARY KEY,

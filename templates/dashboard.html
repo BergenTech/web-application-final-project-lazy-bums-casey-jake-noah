@@ -14,7 +14,7 @@
                     </a>
                 {% endfor %}
         </div>
-
+        <h1 class="display-5 fw-bold" style="padding-left:240px;padding-top:35px;">Dashboard</h1>
         <div class="clubs">
             {% for i in range(user_clubs|length)%}
                 <a href="{{ url_for('stream', club_name=user_clubs[i]) }}" style="text-decoration: none;">

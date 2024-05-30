@@ -11,7 +11,6 @@ def make_noah_admin():
         db_cursor.execute("""UPDATE users SET isAdmin=1 WHERE email=?""", ("ceasylee@gmail.com",))
         db_cursor.execute("""UPDATE users SET isAdmin=1 WHERE email=?""", ("noahmatiaskim@gmail.com",))
         db.commit()
-        print('success')
     except Exception as e:
         db.rollback()
     db.close()
@@ -25,7 +24,6 @@ def approve_event(event_id):
     try: 
         db_cursor.execute("""UPDATE events SET isApproved = 1 WHERE id = ?""", (event_id,))
         db.commit()
-        print('successful!')
     except Exception as e:
         db.rollback()
 def reject_event(event_id):
@@ -36,7 +34,6 @@ def reject_event(event_id):
     try: 
         db_cursor.execute("""DELETE FROM events WHERE id = ?""", (event_id,))
         db.commit()
-        print('successful!')
     except Exception as e:
         db.rollback()
 
@@ -52,7 +49,6 @@ def remove_club(club_id):
     try: 
         db_cursor.execute("""DELETE FROM clubs WHERE id = ?""", (club_id,))
         db.commit()
-        print('successful!')
     except Exception as e:
         db.rollback()
 
@@ -64,7 +60,6 @@ def promote_teacher(user_id, club_id):
     try: 
         db_cursor.execute("""INSERT INTO leaders (user_id, club_id, isTeacher) VALUES (?,?,?)""", (user_id, club_id, 1,))
         db.commit()
-        print('successful!')
     except Exception as e:
         db.rollback()
 
@@ -81,7 +76,6 @@ def remove_user(user_id):
     try: 
         db_cursor.execute("""DELETE FROM users WHERE id= ?""", (user_id,))
         db.commit()
-        print('successful!')
     except Exception as e:
         db.rollback()
 
