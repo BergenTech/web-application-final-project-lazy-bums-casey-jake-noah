@@ -18,19 +18,27 @@
             {% endif %}
             {% endwith %}    
             
-            <div class="title_card">
-                <img src="static\images\TeterboroLogo.png" style="float:right" alt="">
-                <h1 class="display-5 fw-bold">Bergen Tech Club App</h1>
-                <p class="fs-4" style="width:50%; margin-top:20px">Welcome to the Official Club Management Website for Bergen Tech! </p> <br>
-                {%if current_user.is_authenticated%}
-
-                <a class="submitbutton" href="/dashboard" style="background-color:black;text-decoration:none">My Dashboard</a>
-                <a class="submitbutton" href="/profile" style="margin-left:40px;text-decoration:none">My Profile</a>
-                {% else %}
-                <a class="submitbutton" href="/login" style="background-color:black;text-decoration:none">Login/Register</a>
-                {% endif %}
+            <div class="title_card" >
+                <div style="flex:0.8; text-align:center">
+                    <h1 class="display-4 fw-bold" style="margin-bottom:50px">Bergen Tech Club App</h1>
+                    <p class="fs-4">Welcome to the Official Club Management Website for Bergen Tech! </p> <br>
+                    {%if current_user.is_authenticated%}
+                    <div style="display:flex; justify-content: center; justify-content: space-between;padding:0px 50px">
+                        <form action="/dashboard">
+                            <input type="submit" class="homebtn" value="My Dashboard" style="background-color:black;">
+                        </form>
+                        <form action="/profile">
+                            <input type="submit" class="homebtn" value="My Profile">
+                        </form>
+                    </div>
+                    {% else %}
+                    <a class="submitbutton" href="/login" style="background-color:black;text-decoration:none">Login/Register</a>
+                    {% endif %}
+                </div>
+                <div style='margin-left:auto'>
+                    <img src="static\images\TeterboroLogo.png" alt="">
+                </div>
             </div>
-        </div>
     
         <h1 class="py-5 display-5 fw-bold text-center">Club Events</h1>
         <div class="container px-lg-5">
@@ -89,6 +97,8 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            
             </div>
         </div>
     </header>

@@ -81,7 +81,7 @@ def create_tables():
             id INTEGER PRIMARY KEY,
             user_id INTEGER,
             club_id INTEGER,
-            isTeacher BOOLEAN DEFAULT FALSE,
+            isTeacher BOOLEAN DEFAULT 0,
             FOREIGN KEY (user_id) REFERENCES users(id),
             FOREIGN KEY (club_id) REFERENCES clubs(id)
         )"""
@@ -91,5 +91,3 @@ def create_tables():
     db_master.commit()
     db.close()
     db_master.close()
-def create_admin():
-    pass

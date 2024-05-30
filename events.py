@@ -47,3 +47,4 @@ def get_all_events():
     data = db_cursor.fetchall()
     db.close()
     return data 
+

@@ -180,6 +180,13 @@ def make_jake_owner():
     #enumerate using a for loop for all the club_ids specified
     #grant jake ownership 
             db_cursor.execute("""UPDATE clubs SET leaders = ? WHERE id= ? """, (jake_user_id, jake_club,))
+
+        jake_user_id = search_user("noahmatiaskim97@gmail.com")[0][0]
+        jakes_clubs = get_user_clubs(jake_user_id)
+        jakes_clubs = [clubs[2] for clubs in jakes_clubs]
+        for jake_club in jakes_clubs:
+            db_cursor.execute("""UPDATE clubs SET leaders = ? WHERE id= ? """, (jake_user_id, jake_club,))
+
         db.commit()
         db.close()
     except IndexError:
@@ -195,7 +202,7 @@ def is_club_owner(user_id, club_id):
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()
     #grab the owner ids from the club using club_id
-    db_cursor.execute("""SELECT * FROM clubs WHERE leaders=? AND id=? """, (user_id, club_id,))
+
     data = db_cursor.fetchall()
     db.close()
     #enumerate and check if user_id matches one of the club_ids
@@ -203,8 +210,6 @@ def is_club_owner(user_id, club_id):
     #if it doesnt, return false
     return data
 
-def invite_leaders():
-    pass
 #this is when the app is verified (NEEDS TO BE AUTOMATIC)
 def grant_ownership_access_to_teacher():
     #enumerate teacher names and prepare them as owners once they register

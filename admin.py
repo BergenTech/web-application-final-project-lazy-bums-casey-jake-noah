@@ -1,6 +1,22 @@
 import sqlite3
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from user import *
+
+#create admin
+def make_noah_admin():
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    try:
+        db_cursor.execute("""UPDATE users SET isAdmin=1 WHERE email=?""", ("jakepark2908@gmail.com",))
+        db_cursor.execute("""UPDATE users SET isAdmin=1 WHERE email=?""", ("ceasylee@gmail.com",))
+        db_cursor.execute("""UPDATE users SET isAdmin=1 WHERE email=?""", ("noahmatiaskim97@gmail.com",))
+        db.commit()
+        print('success')
+    except Exception as e:
+        db.rollback()
+    db.close()
+
+
 ###EVENT STUFF
 def approve_event(event_id):
     #change the field from false to true

@@ -108,4 +108,3 @@ class Leader():
         self.isTeacher = isTeacher
 
 
-        

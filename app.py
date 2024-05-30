@@ -130,14 +130,30 @@ def load_user(user_id):
 def admin_required(func):
     @wraps(func)
     def decorated_view(*args, **kwargs):
-        if not current_user.is_authenticated:
+        user_id = session.get('id')
+        new_user = get_user_by_id(user_id)
+        isAdmin = new_user[0][4]
+        print(type(isAdmin))
+        if user_id == None:
             return login_manager.unauthorized()
-        elif not current_user.isAdmin:
+        elif not isAdmin:
             return "You do not have the necessary permissions to access this page.", 403
         return func(*args, **kwargs)
     return decorated_view
 
-
+def teacher_required(func):
+    @wraps(func)
+    def decorated_view(*args, **kwargs):
+        user_id = session.get('id')
+        new_user = get_user_by_id(user_id)
+        isAdmin = new_user[0][4]
+        print(type(isAdmin))
+        if user_id == None:
+            return login_manager.unauthorized()
+        elif not isAdmin:
+            return "You do not have the necessary permissions to access this page.", 403
+        return func(*args, **kwargs)
+    return decorated_view
 
 @app.route('/profile', methods=['GET','POST'])
 @login_required  
@@ -253,6 +269,7 @@ def stream(club_name):
     #if statement to reverse messages so newest is frist
     if request.method == 'GET':
         #determine ownership of club
+        #need to change this 5/29/24
         if is_club_owner(user_id, club_id):
             ownership = True
         #get the messages of the club to get ready to output
@@ -287,7 +304,7 @@ def attendance(club_name):
 @app.route('/stream/create_events/<club_name>', methods=['GET', 'POST'])
 def create_events(club_name):
     if request.method == 'GET':
-        return render_template('events.html', club_name = club_name)
+        return render_template('create_events.html', club_name = club_name)
     elif request.method == 'POST':
         pass
 
@@ -354,5 +371,5 @@ if __name__ == "__main__":
     #create the clubs list
     initialize_clubs()
     #make jake admiN!
-    make_jake_owner()
+    make_noah_admin()
     app.run(host="localhost", port=5000, debug=True)

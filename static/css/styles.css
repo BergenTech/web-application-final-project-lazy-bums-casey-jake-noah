@@ -11607,12 +11607,23 @@ textarea.form-control-lg {
 
 .title_card{
   background-color: white;
-  margin-top:70px;
+  margin-top:50px;
+  margin-bottom:70px;
   padding: 70px;
   border-radius: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   flex:1;
-  min-height: 400px;
+  min-height: 500px;
+  display:flex;
+  flex-direction: row;
+  align-items: center
+}
+
+.event_title{
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding:40px; 
 }
 
 .navstyle {
@@ -11861,6 +11872,11 @@ textarea.form-control-lg {
   margin-top:30px;
   font-size: 20px;
   cursor: pointer;
+  transition: transform 0.3s; 
+}
+
+.submitbutton:hover{
+  transform: scale(1.1); 
 }
 
 .profile{
@@ -11929,5 +11945,22 @@ textarea.form-control-lg {
 }
 
 .updbtn:hover{
+  transform: scale(1.1); 
+}
+
+.homebtn{
+  border-radius: 30px;
+  border: none;
+  background-color: gold; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: white;
+  padding: 15px 50px;
+  margin-top:30px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.3s; 
+}
+
+.homebtn:hover{
   transform: scale(1.1); 
 }
