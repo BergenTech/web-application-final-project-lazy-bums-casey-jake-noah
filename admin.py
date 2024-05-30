@@ -7,9 +7,9 @@ def make_noah_admin():
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()
     try:
-        db_cursor.execute("""UPDATE users SET isAdmin=1 WHERE email=?""", ("jakepark2908@gmail.com",))
+        db_cursor.execute("""UPDATE users SET isAdmin=1 WHERE email=?""", ("themostedgygamerever456@gmail.com",))
         db_cursor.execute("""UPDATE users SET isAdmin=1 WHERE email=?""", ("ceasylee@gmail.com",))
-        db_cursor.execute("""UPDATE users SET isAdmin=1 WHERE email=?""", ("noahmatiaskim97@gmail.com",))
+        db_cursor.execute("""UPDATE users SET isAdmin=1 WHERE email=?""", ("noahmatiaskim@gmail.com",))
         db.commit()
         print('success')
     except Exception as e:
@@ -23,7 +23,7 @@ def approve_event(event_id):
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()
     try: 
-        db_cursor.execute("""UPDATE events SET isApproved = TRUE WHERE id = ?""", (event_id,))
+        db_cursor.execute("""UPDATE events SET isApproved = 1 WHERE id = ?""", (event_id,))
         db.commit()
         print('successful!')
     except Exception as e:
@@ -43,6 +43,7 @@ def reject_event(event_id):
 ### CLUB STUFF
 def approve_club():
     pass
+
 def remove_club(club_id):
     #email the leaders notifying their removal
     #remove the club
@@ -61,7 +62,7 @@ def promote_teacher(user_id, club_id):
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()
     try: 
-        db_cursor.execute("""INSERT INTO leaders (user_id, club_id, isTeacher) """, (user_id, club_id, True))
+        db_cursor.execute("""INSERT INTO leaders (user_id, club_id, isTeacher) VALUES (?,?,?)""", (user_id, club_id, 1,))
         db.commit()
         print('successful!')
     except Exception as e:
@@ -70,6 +71,9 @@ def promote_teacher(user_id, club_id):
 def demote_leader(user_id, club_id):
     #remove user from the leader table
     pass
+
+
+# MAKE SURE THE FUNCTION REMOVES FROM my_clubs, messages, events, etc (may 30)
 def remove_user(user_id):
     #remove the user
     db = sqlite3.connect('db/database.db')

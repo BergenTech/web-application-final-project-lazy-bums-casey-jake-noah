@@ -1,5 +1,6 @@
 {%extends "admin_base.html"%}
 {%block title%}BT CLUB APP{%endblock%}
+{%set active_page = 'admin_events'%}
 {%block content%}
 {% for row in events %}
 <div class="clubdb py-5">
@@ -13,6 +14,8 @@
     {% endfor %}
     {% endif %}
     {% endwith %} 
+
+    {% for row in events%}
     <p class="fs-6">{{ row[0] }} </p>
     <p class="fs-3 fw-bold">{{ row[2] }}</p>
         <p class="fs-6">{{ row[1] }} </p>
@@ -20,9 +23,11 @@
         <p class="fs-6">{{ row[5] }}</p>
         <p class="fs-5">{{ row[3] }}</p><br>
         <p class="fs-5">{{ row[6] }}</p><br>
-        <div class="link-container">
-            <a href="{{ url_for('approve_event', club_name=row[0]) }}" class="btn btn-primary bg-dark" style="border-radius:30px; padding:10px 15px;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">Approve</a>
-        </div>
+        <form action="{{ url_for('manage_events')}}" method="POST">
+            <input type="submit" class="adminbtn" name="approved" value="{{row[0]}}">
+        </form>
+        
+    {% endfor %}
 </div>
 {% endfor %}
 {%endblock%}

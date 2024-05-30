@@ -19,8 +19,15 @@
             </h1>
             <div class="messages">
                 <div class="stream_event">
-                    <a href="{{ url_for('create_events', club_name=club_name) }}">Create Event</a>
                     <p class="fw-bold">Events</p>
+                    {% if ownership %}
+                    <form action="{{ url_for('create_events', club_name=club_name) }}">
+                        <input type="submit" class="adminbtn" value="Create Event">
+                    </form><br>
+                    {%endif%}
+                    {%for event in events%}
+                     {{event}}
+                    {%endfor%}
                     <p>No Events Currently...</p>
                 </div>
                 <div class="message_box">
@@ -34,7 +41,6 @@
                     {%endif%}
                     {% for i in range(messages|length)%}
                     <div class="message">
-
                         <div style="display:flex; flex-direction:row; align-items:center">
                             <img src="{{message_pictures[i]}}" alt="" style="height:40px;width:40px;border-radius:50%;margin-right:20px">
                             <div style="display: flex; flex-direction: column;">

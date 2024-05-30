@@ -63,7 +63,7 @@ def create_tables():
             event_end_date TEXT,
             event_tags TEXT,
             people_interested TEXT,
-            isApproved BOOLEAN DEFAULT NULL,
+            isApproved BOOLEAN DEFAULT 0,
             club_id INTEGER,
             FOREIGN KEY (club_id) REFERENCES clubs
     

@@ -133,7 +133,6 @@ def admin_required(func):
         user_id = session.get('id')
         new_user = get_user_by_id(user_id)
         isAdmin = new_user[0][4]
-        print(type(isAdmin))
         if user_id == None:
             return login_manager.unauthorized()
         elif not isAdmin:
@@ -147,7 +146,6 @@ def teacher_required(func):
         user_id = session.get('id')
         new_user = get_user_by_id(user_id)
         isAdmin = new_user[0][4]
-        print(type(isAdmin))
         if user_id == None:
             return login_manager.unauthorized()
         elif not isAdmin:
@@ -218,21 +216,33 @@ def myclubs():
         for clubs in user_clubs:
             pass
         #get the names of the clubs specified by the club id
-        poster_names = []
+        poster_names,message_dates = [],[]
         for i in range(len(user_clubs)):
             club = search_club_by_id(user_clubs[i][2])[0][2]
             recent_message_from_club = get_most_recent_message(user_clubs[i][2])
             user_clubs_name.append(club)
             recent_messages.append(recent_message_from_club)
+            
+            if recent_message_from_club != []:
+                datetime_str = recent_message_from_club[0][2]
+                datetime_obj = datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S')
+                month_day = datetime_obj.strftime('%B %d')
+                time = datetime_obj.strftime('%H:%M')
+                message_dates.append([month_day,time])
+
             if recent_message_from_club != []:
                 poster_id = recent_message_from_club[0][3]
                 poster = get_user_by_id(poster_id)
-                poster_name = poster[0][1] + ' ' + poster[0][2]
+                print(poster)
+                if poster[0][2] != None:
+                    poster_name = poster[0][1] + ' ' + poster[0][2]
+                else:
+                    poster_name = poster[0][1]
                 poster_names.append(poster_name)
                 #get the most recent messages
             else:
                 poster_names.append(None)
-        return render_template("dashboard.html", user_clubs = user_clubs_name, recent_club_messages = recent_messages, poster_names=poster_names)
+        return render_template("dashboard.html", user_clubs = user_clubs_name, recent_club_messages = recent_messages, poster_names=poster_names, message_dates=message_dates)
 
 ### STREAM OF THE CLASSROOM
 @app.route('/stream/<club_name>', methods=['GET','POST'])
@@ -261,20 +271,26 @@ def stream(club_name):
         message_dates.append([month_day,time])
 
         message_poster = get_user_by_id(message[3])
-        message_name = message_poster[0][1] + ' ' + message_poster[0][2]
+
+        if message_poster[0][2] != None:
+            message_name = message_poster[0][1] + ' ' + message_poster[0][2]
+        else:
+            message_name = message_poster[0][1]
         message_names.append(message_name)
 
         message_picture = message_poster[0][8]
         message_pictures.append(message_picture)
+    #get events for specific club
+    club_event_name = get_event_by_club(club_id)
     #if statement to reverse messages so newest is frist
     if request.method == 'GET':
         #determine ownership of club
         #need to change this 5/29/24
-        if is_club_owner(user_id, club_id):
+        if check_is_leader(user_id, club_id):
             ownership = True
         #get the messages of the club to get ready to output
         #need club name just in case of routing?
-        return render_template('stream.html', ownership=ownership, messages=messages, club_name=club_name, edit_access=True, user_clubs=user_clubs_name, message_dates=message_dates, message_names=message_names, message_pictures=message_pictures)
+        return render_template('stream.html', ownership=ownership, messages=messages, club_name=club_name, club_event_name=club_event_name, edit_access=True, user_clubs=user_clubs_name, message_dates=message_dates, message_names=message_names, message_pictures=message_pictures)
     #for now can only make announcements
     #if the user is an owner, allow for the post announcements functionality
     elif request.method == 'POST':
@@ -296,21 +312,69 @@ def stream(club_name):
 def attendance(club_name):
     club_id = search_clubs(club_name)[0][0]
     users = search_users_of_a_club(club_id)
+    #get the navbar data
+    user_clubs = get_user_clubs(user_id)
+    user_clubs_name = []
+    #get the names of the clubs specified by the club id
+    for i in range(len(user_clubs)):
+        club = search_club_by_id(user_clubs[i][2])[0][2]
+        user_clubs_name.append(club)
+    
+    ### MAIN DATA SENDOFF FUNCTIONALITY 
     if request.method == 'GET':
-        return render_template('attendance.html', users=users)
+        #get session id
+        user_id = session.get('id')
+        # check if session and club id match with the leadership
+        if not check_is_leader(user_id, club_id):
+            flash('you are unauthorized to view this')
+            return redirect(url_for('stream', club_name=club_name, user_clubs = user_clubs_name))
+        else: 
+            #you are a user
+            return render_template('attendance.html', users=users)
     elif request.method == 'POST':
         pass
 
 @app.route('/stream/create_events/<club_name>', methods=['GET', 'POST'])
 def create_events(club_name):
+    user_id = session.get('id')
+    club_id = search_clubs(club_name)[0][0]
+    users = search_users_of_a_club(club_id)
+    #get the navbar data
+    user_clubs = get_user_clubs(user_id)
+    user_clubs_name = []
+    #get the names of the clubs specified by the club id
+    for i in range(len(user_clubs)):
+        club = search_club_by_id(user_clubs[i][2])[0][2]
+        user_clubs_name.append(club)
     if request.method == 'GET':
-        return render_template('create_events.html', club_name = club_name)
+        user_id = session.get('id')
+        # check if session and club id match with the leadership
+        if not check_is_leader(user_id, club_id):
+            flash('you are unauthorized to view this', 'warning')
+            return redirect(url_for('stream', club_name=club_name, user_clubs = user_clubs_name))
+        return render_template('create_events.html', club_name = club_name, user_clubs = user_clubs_name)
     elif request.method == 'POST':
-        pass
+        #get form data here
+        event_title = request.form.get("event_title")
+        event_content = request.form.get("event_content")
+        event_start = str(request.form["start_date"])
+        event_start_time = str(request.form["start_time"])
+        event_start_total = event_start+event_start_time
+        event_end = str(request.form.get("end_date"))
+        event_end_time = str(request.form.get("end_time"))
+        event_end_total = event_end+event_end_time
+        event_tags = ' '.join(request.form.getlist("event_tags"))
+        create_event(club_id, event_title, event_content, event_start_total, event_end_total, event_tags)
+        flash("Event sent to admin successfully!", "success")
+        return redirect(url_for("create_events", club_name=club_name, user_clubs = user_clubs_name))
 
-@app.route('/calendar')
+@app.route('/events')
 def calendar():
-    return render_template("calendar.html")
+    club_names = []
+    events = get_approved_events()
+    for event in events:
+        club_names = event[8]
+    return render_template("events.html", events=events, club_names=club_names)
 
 
 ###ADMIN STUFF
@@ -320,14 +384,23 @@ def calendar():
 @admin_required
 def admin():
     if request.method == 'GET':
-        return render_template("admin_index.html")
+        num_users = len(get_all_users())
+        num_clubs = len(get_all_clubs())
+        return render_template("admin_index.html",num_users=num_users,num_clubs=num_clubs)
+
 @app.route('/admin/manage_users', methods=["GET", "POST"])
 @login_required
 @admin_required
 def manage_users():
     if request.method == 'GET':
-        users = get_all_users()
+        users = get_all_users() 
         return render_template("admin_users.html", users = users)
+    elif request.method == 'POST':
+        deleted_users = request.form.getlist('delete')
+        for user_id in deleted_users:
+            remove_user(user_id)
+        flash('Users removed!','success')
+        return redirect(url_for('manage_users'))
     
 @app.route('/admin/manage_clubs', methods=["GET", "POST"])
 @login_required
@@ -341,22 +414,37 @@ def manage_clubs():
 @login_required
 @admin_required
 def manage_members(club_name):
+    club_id = search_clubs(club_name)[0][0]
     if request.method == 'GET':
-        club_id = search_clubs(club_name)
         members = search_users_of_a_club(club_id)
-        return render_template("admin_members",members=members)
+        print(members)
+        #format the jinja to show approved and unapproved clubs (use the field in the tuple!!)
+        return render_template("admin_members.html", members=members, club_name=club_name)
     if request.method == 'POST':
-        
-        pass
+        user_id_group = request.form.getlist("user_id")
+        print(user_id_group)
+        for user_id in user_id_group:
+            promote_teacher(user_id, club_id)
+            print('this works!')
+        flash("Leaders create successfully!", "success")
+        return redirect(url_for('manage_members', club_name=club_name))
+    
 @app.route('/admin/manage_events', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def manage_events():
     if request.method == 'GET':
         events = get_all_events()
+        print(events)
         return render_template("admin_events.html", events=events)    
-    if request.method == 'POST':
-        pass
+    elif request.method == 'POST':
+        #the value of the form will be the event_id(?)
+        approved_events = request.form.get('approved')
+        for event_id in approved_events:
+            approve_event(event_id)
+        flash('event(s) approved!')
+        return redirect(url_for('manage_events'))
+
 @app.route('/admin/approve_event/<event_id>')
 @login_required
 @admin_required
@@ -364,6 +452,7 @@ def approve_events(event_id):
     approve_event(event_id)
     flash("Approved Event!", "success")
     return redirect(url_for('manage_events'))
+
 
 if __name__ == "__main__":
     #create the tables

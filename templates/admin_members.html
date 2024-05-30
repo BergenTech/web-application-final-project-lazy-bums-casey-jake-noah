@@ -1,0 +1,52 @@
+{%extends "admin_base.html"%}
+{%block title%}BT CLUB APP{%endblock%}
+{%set active_page = 'admin_clubs'%}
+{%block content%}
+<div class="background-img">
+    <header class="pt-5" style="background-color:rgba(255,255,255,0.8); text-align:center">
+        <div class="title">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fw-bold" role="alert">
+                <div>{{message}}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %} 
+            <h1 class="display-5 fw-bold box">Manage {{club_name}}</h1>
+            <div class="user_card">
+                <form method='POST' action="{{url_for('manage_members', club_name=club_name)}}">
+                    <table style="border:2px">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>isLeader</th>
+                            <th>Year</th>
+                            <th>Major</th>
+                            <th>Promote</th>
+                        </tr>
+                        {% for i in range(members|length)%}
+                        {% if members[i] != [] %}
+                            <tr>
+                                <td>{{ members[i][0][0] }} </td>
+                                <td>{%- if members[i][0][2] is not none %} {{ members[i][0][1] + ' ' + members[i][0][2] }} {%- else %} {{ members[i][0][1] }} {%- endif %}</td>
+                                <td>{{ members[i][0][3] }} </td>
+                                <td></td>
+                                <td>{{ members[i][0][5] }} </td>
+                                <td>{{ members[i][0][6] }} </td>
+                                <td><input type="checkbox" name='user_id' value="{{ members[i][0][0] }}"></td>
+                            </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </table>
+                    <input type="submit" class="submitbutton" value="Promote to teacher" style="background-color:black">
+                </form>
+
+            </div>
+    </div>
+</header>
+
+{%endblock%}

@@ -19,7 +19,7 @@ def create_event(club_id, event_title, event_content, event_start_date, event_en
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()
 
-    new_event = Event(None, club_id, event_title, event_content, event_start_date, event_end_date, event_tags)
+    new_event = Event(None, club_id, event_title, event_content, event_start_date, event_end_date, event_tags, None, None)
 
     try: 
         db_cursor.execute(
@@ -40,6 +40,27 @@ def search_event():
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()
     db_cursor.execute("")
+#get event by club
+def get_event_by_club(club_id):
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    db_cursor.execute("SELECT event_title FROM events WHERE club_id=?", (club_id,))
+    data = db_cursor.fetchall()
+    print(data)
+    if data == None:
+        data = []
+    db.close()
+    return data  
+#get the approved events
+def get_approved_events():
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    db_cursor.execute("SELECT * FROM events WHERE isApproved=1")
+    data = db_cursor.fetchall()
+    db.close()
+    return data 
+
+#admin functionality
 def get_all_events():
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()

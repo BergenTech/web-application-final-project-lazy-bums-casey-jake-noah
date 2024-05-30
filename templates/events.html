@@ -1,0 +1,32 @@
+{%extends "base.html"%}
+{%block title%}BT CLUB APP{%endblock%}
+{%set active_page = 'calendar'%}
+{%block content%}
+<!-- Page Content-->
+<!-- Header-->
+<div class="background-img" >
+    <header class="pt-5" style="background-color:rgba(255,255,255,0.8); min-height: 100vh;padding:100px;padding-top:50px;;padding-bottom:10px">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fw-bold" role="alert" style="margin-top:50px">
+            <div>{{message}}</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %} 
+       <div class="clubsdb" style="padding-bottom:40px">
+           {% for row in events %}
+           <div class="clubdb">
+               <p class="fs-3 fw-bold">{{ row[2] }}</p>
+               <p class="fs-6">Advisor : {{ row[1] }} </p>
+               <p class="fs-6 hiddenText" id="hiddenText{{ loop.index }}">Location : {{ row[4] }} <br><br> Club Dates : {{ row[5] }} <br><br> {{ row[3] }}</p>
+              {{row[5]}}
+              {{club_names}}
+           </div>
+       {% endfor %}
+       </div>
+    </header>
+    </div>
+{%endblock%}

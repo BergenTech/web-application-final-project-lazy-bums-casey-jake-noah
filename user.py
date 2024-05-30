@@ -46,6 +46,7 @@ def get_all_users():
     data = db_cursor.fetchall()
     db.close()
     return data
+
 def search_user(email):
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()
@@ -108,3 +109,12 @@ class Leader():
         self.isTeacher = isTeacher
 
 
+#### UNPRIVILEGE LEADERSHIP
+def check_is_leader(user_id, club_id):
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    db_cursor.execute("""SELECT * FROM leaders WHERE user_id=? AND club_id=?""", (user_id, club_id))
+    result = db_cursor.fetchone()
+    print(result)
+    db.close()
+    return result

@@ -99,7 +99,8 @@ def search_users_of_a_club(id):
     users = []
     #get the username
     for user_id in data:
-        users.append(get_user_by_id(user_id[0])[0][1])
+        users.append(get_user_by_id(user_id[0]))
+    print(users)
     db.close()
     return users
 

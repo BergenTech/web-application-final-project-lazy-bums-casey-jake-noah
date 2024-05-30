@@ -1,19 +1,30 @@
 {%extends "admin_base.html"%}
 {%block title%}BT CLUB APP{%endblock%}
+{%set active_page = 'admin_clubs'%}
 {%block content%}
-<div class="clubsdb">
-    {% for row in clubs %}
-            <div class="clubdb">
-                <p class="fs-6">{{ row[0] }} </p>
-                <p class="fs-3 fw-bold">{{ row[2] }}</p>
-                    <p class="fs-6">{{ row[1] }} </p>
-                    <p class="fs-6">{{ row[4] }}</p>
-                    <p class="fs-6">{{ row[5] }}</p>
-                    <p class="fs-5">{{ row[3] }}</p><br>
-                    <div class="link-container">
-                    <a href="#" class="btn btn-primary link" style="background-color:gold">View Info</a>
-                    </div>
-            </div>
-    {% endfor %}
+<div class="background-img">
+    <header class="pt-5" style="background-color:rgba(255,255,255,0.8); text-align:center">
+        <div class="title">
+            <h1 class="display-5 fw-bold box">Club List</h1>
+            <div class="box" style="padding:60px;margin-top:40px;margin-bottom:40px">
+                <table>
+                    <tr>
+                        <th style="width: 50%;">Club</th>
+                        <th style="width: 50%;">Edit</th>
+                    </tr>
+                    {% for row in clubs %}
+                    <tr>
+                        <td style="width: 50%;">{{ row[2] }}</td>
+                        <td style="width: 50%;">                        
+                            <form action="{{url_for('manage_members', club_name=row[2])}}">
+                                <input type="submit" class="adminbtn" value="Manage {{ row[2] }}">
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div> 
+        </div>
+    </header>
 </div>
 {%endblock%}
