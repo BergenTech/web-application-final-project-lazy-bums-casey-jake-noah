@@ -20,14 +20,14 @@
                 <a href="{{ url_for('stream', club_name=user_clubs[i]) }}" style="text-decoration: none;">
                     <div class="club">
                         <div class="fs-4" style="font-weight:bold;text-align:center">
-                            <img src="static\images\placeholder.png" style="width:70px;height:70px;border-radius:50%;border:1px solid #555; margin-right:20px" alt="">
+                            <img src="data:{{user_clubs_logo[i][1]}};base64,{{ user_clubs_logo[i][0] }}" style="width:70px;height:70px;border-radius:50%;border:1px solid #555; margin-right:20px" onerror="this.onerror=null;this.src='/static/images/placeholder.png';" alt="">
                             <div style="margin-top:20px">{{user_clubs[i]}}</div> 
                         </div> 
 
                         <div class="recentmsg fs-7">
                             {% if recent_club_messages[i][0]|length > 0 %}
                             <div class="fs-7">
-                                <span class="fw-bold"><img src="{{recent_club_messages[i][0][5]}}" alt=""style="height:30px;width:30px;border-radius:50%; margin-right:15px">{{poster_names[i]}}</span> -  {{message_dates[0][0]}} - {{message_dates[0][1]}}</div><br>
+                                <span class="fw-bold"><img src="{{recent_club_messages[i][0][5]}}" alt=""style="height:30px;width:30px;border-radius:50%; margin-right:15px">{{poster_names[i]}}</span> -  {{message_dates[0][0]}} - <span class="time">{{message_dates[0][1]}}</span></div><br>
                                 {{recent_club_messages[i][0][1]}}
                             </div>
                             {% else %}
@@ -39,7 +39,27 @@
                 </a>
             {% endfor %}
         </div>
-
+        <script>
+            function updateTime() {
+                const elements = document.getElementsByClassName('time');
+                for (let i = 0; i < elements.length; i++) {
+                    const time24h = elements[i].textContent;
+                    const [hours, minutes] = time24h.split(':');
+                    let time12h;
+                    if (hours == 0) {
+                        time12h = '12:' + minutes + ' AM';
+                    } else if (hours < 12) {
+                        time12h = parseInt(hours, 10)  + ':' + minutes + ' AM';
+                    } else if (hours == 12) {
+                        time12h = '12:' + minutes + ' PM';
+                    } else {
+                        time12h = (hours - 12) + ':' + minutes + ' PM';
+                    }
+                    elements[i].textContent = time12h;
+                }
+            }
+            updateTime();
+        </script>
     </header>
 </div>
 

@@ -8,14 +8,13 @@ from user import search_user
 class Club():
     #initialize club object with its parameters
     #future parameters: google classroom code(?)
-    def __init__(self, id, faculty_name, club_name, club_description, meeting_location, meeting_days, logo):
+    def __init__(self, id, faculty_name, club_name, club_description, meeting_location, meeting_days):
         self.id = id
         self.faculty_name = faculty_name
         self.club_name = club_name
         self.club_description = club_description
         self.meeting_location = meeting_location
         self.meeting_days = meeting_days
-        self.logo = logo
 
 #csv parsing functions
 def parse_csv_data(csv_file):
@@ -30,12 +29,12 @@ def add_csv_data_to_database(file):
     db_cursor = db.cursor()
     for club in csv_data:
         try:
-            new_club = Club(None, club[0], club[1], club[2], club[3], club[4], None)
+            new_club = Club(None, club[0], club[1], club[2], club[3], club[4])
             
             db_cursor.execute(
                 """INSERT INTO clubs
-                (faculty_name, club_name, club_description, meeting_location, meeting_days, logo) VALUES (?,?,?,?,?,?)""",
-                (new_club.faculty_name, new_club.club_name, new_club.club_description, new_club.meeting_location, new_club.meeting_days, new_club.logo)
+                (faculty_name, club_name, club_description, meeting_location, meeting_days) VALUES (?,?,?,?,?)""",
+                (new_club.faculty_name, new_club.club_name, new_club.club_description, new_club.meeting_location, new_club.meeting_days)
             )
             db.commit()
         except Exception as e:
@@ -89,6 +88,7 @@ def search_club_by_id(id):
     data = db_cursor.fetchall()
     db.close()
     return data
+
 #search users of a club
 def search_users_of_a_club(id):
     #db intialization
@@ -103,6 +103,17 @@ def search_users_of_a_club(id):
         users.append(get_user_by_id(user_id[0]))
     db.close()
     return users
+
+# change the club logo
+def change_logo(image_data, id, mime_type):
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    db_cursor.execute("""UPDATE clubs 
+                      SET logo = ?, mime_type = ?
+                      WHERE id=? """, 
+                      (image_data,mime_type,id,))
+    db.commit()
+    db.close()
 
 
 ##### USER CLUB STUFF

@@ -4,7 +4,7 @@ def create_tables():
     db_master = sqlite3.connect('db/database.db')
     db = db_master.cursor()
     #just to make sure initalization does not get appended rather than a new thing being created
-    db.execute("DROP TABLE IF EXISTS clubs")
+    # db.execute("DROP TABLE IF EXISTS clubs")
     #db.execute("DROP TABLE IF EXISTS users")
     # db.execute("DROP TABLE IF EXISTS my_clubs")
     # db.execute("DROP TABLE IF EXISTS messages")
@@ -34,7 +34,8 @@ def create_tables():
             meeting_days VARCHAR(50),
             leaders TEXT DEFAULT NULL,
             tags TEXT,
-            logo BLOB DEFAULT NULL
+            logo BLOB DEFAULT NULL,
+            mime_type TEXT DEFAULT NULL
         ) """,
         """CREATE TABLE IF NOT EXISTS my_clubs (
             id INTEGER PRIMARY KEY,
@@ -60,8 +61,10 @@ def create_tables():
             id INTEGER PRIMARY KEY,
             event_title TEXT,
             event_content TEXT,
-            event_start_date TEXT,
-            event_end_date TEXT,
+            event_start TEXT,
+            event_start_time TEXT,
+            event_end TEXT,
+            event_end_time TEXT,
             event_tags TEXT,
             people_interested TEXT,
             isApproved BOOLEAN DEFAULT 0,

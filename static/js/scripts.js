@@ -93,18 +93,79 @@ document.addEventListener('DOMContentLoaded', function() {
 
           // Add events for the current day
           events.forEach(event => {
-              const eventDate = new Date(event.start_date);
-              if (eventDate.toDateString() === currentDay.toDateString()) {
-                  const eventDiv = document.createElement('div');
-                  eventDiv.classList.add('event');
-                  eventDiv.textContent = event.title;
-                  dayCell.appendChild(eventDiv);
-              }
-          });
+            const eventDate = new Date(event.start_date);
+            const adjustedDay = new Date(currentDay);
+            adjustedDay.setDate(adjustedDay.getDate() - 1);
+            if (eventDate.toDateString() === adjustedDay.toDateString()) {
+                const eventDiv = document.createElement('div');
+                eventDiv.classList.add('event');
+
+                const titleDiv = document.createElement('div');
+                titleDiv.classList.add('event-title');
+                titleDiv.textContent = event.title;
+
+                const nameDiv = document.createElement('div');
+                nameDiv.classList.add('event-name');
+                nameDiv.textContent = event.name;
+
+                const descriptionDiv = document.createElement('div');
+                descriptionDiv.classList.add('event-description');
+                descriptionDiv.textContent = event.description;
+
+                const startTime12Hour = convertTo12Hour(event.start_time);
+                const timeDiv = document.createElement('div');
+                timeDiv.classList.add('event-time');
+                timeDiv.textContent = "Starts at " + startTime12Hour;
+
+
+                eventDiv.appendChild(titleDiv);
+                eventDiv.appendChild(nameDiv);
+                eventDiv.appendChild(descriptionDiv);
+                eventDiv.appendChild(timeDiv);
+                
+                
+                if (event.end_time){
+                    const startTime12Hour = convertTo12Hour(event.end_time);
+                    const end_timeDiv = document.createElement('div');
+                    end_timeDiv.classList.add('event-time');
+                    end_timeDiv.textContent = "Ends at " + startTime12Hour;
+                    eventDiv.appendChild(end_timeDiv);
+                }
+
+                if (event.category){
+                    const capitalizedCategory = event.category.split(' ')
+                        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                        .join(', ');
+                    const tagsDiv = document.createElement('div');
+                    tagsDiv.classList.add('event-tags');
+                    tagsDiv.textContent = "Tags : " + capitalizedCategory;
+                    eventDiv.appendChild(tagsDiv);
+                }
+                dayCell.appendChild(eventDiv);
+            }
+        });
 
           calendarDays.appendChild(dayCell);
       }
   }
+
+  function convertTo12Hour(time) {
+    const [hours, minutes] = time.split(':');
+    let period = 'AM';
+    let hour = parseInt(hours);
+
+    if (hour >= 12) {
+        period = 'PM';
+        if (hour > 12) {
+            hour -= 12;
+        }
+    }
+    if (hour === 0) {
+        hour = 12;
+    }
+
+    return `${hour}:${minutes} ${period}`;
+}
 
   function getStartOfWeek(date) {
       const day = date.getDay();

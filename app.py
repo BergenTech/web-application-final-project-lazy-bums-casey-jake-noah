@@ -152,12 +152,15 @@ def teacher_required(func):
 @app.route('/')
 def home():
     club_names = []
-    events = get_approved_events()
-    for event in events:
-        club_id = event[7]
-        club_name = search_club_by_id(club_id)[0][2]
-        club_names.append(club_name)
-    return render_template("home.html" ,events=events, club_names=club_names)
+    user_id = session.get('id')
+    user_email = session.get('email')
+    user = search_user(user_email)
+    # events = get_approved_events()
+    # for event in events:
+    #     club_id = event[7]
+    #     club_name = search_club_by_id(club_id)[0][2]
+    #     club_names.append(club_name)
+    return render_template("home.html", club_names=club_names)
 
 @app.route('/profile', methods=['GET','POST'])
 @login_required  
@@ -228,12 +231,20 @@ def myclubs():
         user_clubs = get_user_clubs(user_id)
         user_clubs_name = []
         recent_messages = []
+        user_clubs_logo = []
         for clubs in user_clubs:
             pass
         #get the names of the clubs specified by the club id
         poster_names,message_dates = [],[]
         for i in range(len(user_clubs)):
             club = search_club_by_id(user_clubs[i][2])[0][2]
+            logo = search_club_by_id(user_clubs[i][2])[0][8]
+            mime_type = search_club_by_id(user_clubs[i][2])[0][9]
+            if logo == None:
+                user_clubs_logo.append(None)
+            else:
+                encoded_image = base64.b64encode(logo).decode('utf-8')
+                user_clubs_logo.append([encoded_image,mime_type])
             recent_message_from_club = get_most_recent_message(user_clubs[i][2])
             user_clubs_name.append(club)
             recent_messages.append(recent_message_from_club)
@@ -256,7 +267,7 @@ def myclubs():
                 #get the most recent messages
             else:
                 poster_names.append(None)
-        return render_template("dashboard.html", user_clubs = user_clubs_name, recent_club_messages = recent_messages, poster_names=poster_names, message_dates=message_dates)
+        return render_template("dashboard.html", user_clubs_logo=user_clubs_logo, user_clubs = user_clubs_name, recent_club_messages = recent_messages, poster_names=poster_names, message_dates=message_dates)
 
 ### STREAM OF THE CLASSROOM
 @app.route('/stream/<club_name>', methods=['GET','POST'])
@@ -264,6 +275,10 @@ def myclubs():
 def stream(club_name):
     #get the id of the club
     club_id = search_clubs(club_name)[0][0]
+    club_logo = search_clubs(club_name)[0][8]
+    if club_logo != None:
+        club_logo = base64.b64encode(club_logo).decode('utf-8')
+    club_mime_type = search_clubs(club_name)[0][9]
     #check if the user is an owner of the club
     user_id = session.get('id')
     user = get_user_by_id(user_id)
@@ -295,8 +310,22 @@ def stream(club_name):
         message_picture = message_poster[0][8]
         message_pictures.append(message_picture)
     #get events for specific club
-    club_event_name = get_event_by_club(club_id)
-    #if statement to reverse messages so newest is frist
+    club_events = get_event_by_club(club_id)
+    processed_events = [
+    {
+        'title': event[1],
+        'description': event[2],
+        'start_date': event[3],  
+        'start_time': event[4],  
+        'end_date': event[5],
+        'end_time': event[6],    
+        'category': event[7],
+        'name': search_club_by_id(event[10])[0][2]
+    }
+    for event in club_events
+    ]
+    events_json = json.dumps(processed_events)
+    #if statement to reverse messages so newest is first
     if request.method == 'GET':
         #determine ownership of club
         #need to change this 5/29/24
@@ -304,7 +333,7 @@ def stream(club_name):
             ownership = True
         #get the messages of the club to get ready to output
         #need club name just in case of routing?
-        return render_template('stream.html', ownership=ownership, messages=messages, club_name=club_name, club_event_name=club_event_name, edit_access=True, user_clubs=user_clubs_name, message_dates=message_dates, message_names=message_names, message_pictures=message_pictures)
+        return render_template('stream.html', club_logo=club_logo, club_mime_type=club_mime_type, events_json=events_json, ownership=ownership, messages=messages, club_name=club_name, edit_access=True, user_clubs=user_clubs_name, message_dates=message_dates, message_names=message_names, message_pictures=message_pictures)
     #for now can only make announcements
     #if the user is an owner, allow for the post announcements functionality
     elif request.method == 'POST':
@@ -320,12 +349,14 @@ def stream(club_name):
             post_message(user_id, club_id, message, current_time, picture)
 
             #redirect to the stream and flash that post has been successful (? hopefully the posts are there? )
-            return redirect(url_for('stream', club_name=club_name, user_clubs = user_clubs_name))
+            return redirect(url_for('stream', club_events=club_events, club_logo=club_logo, club_mime_type=club_mime_type, club_name=club_name, user_clubs = user_clubs_name))
         elif 'logo_submit' in request.form:
             image_file = request.files['logo']
             image_data = image_file.read()
-            print(image_data)
-            return redirect(url_for('home'))
+            mime_type = image_file.mimetype
+            change_logo(image_data,club_id,mime_type)
+            flash('Changed club logo!','success')
+            return redirect(url_for('stream', club_events=club_events, club_logo=club_logo, club_mime_type=club_mime_type, club_name=club_name))
 
 @app.route('/stream/attendance/<club_name>')
 @login_required
@@ -379,12 +410,10 @@ def create_events(club_name):
         event_content = request.form.get("event_content")
         event_start = str(request.form["start_date"])
         event_start_time = str(request.form["start_time"])
-        event_start_total = event_start+event_start_time
         event_end = str(request.form.get("end_date"))
         event_end_time = str(request.form.get("end_time"))
-        event_end_total = event_end+event_end_time
         event_tags = ' '.join(request.form.getlist("event_tags"))
-        create_event(club_id, event_title, event_content, event_start_total, event_end_total, event_tags)
+        create_event(club_id, event_title, event_content, event_start, event_start_time, event_end, event_end_time, event_tags)
         flash("Event sent to admin successfully!", "success")
         return redirect(url_for("create_events", club_name=club_name, user_clubs = user_clubs_name))
 
@@ -397,19 +426,16 @@ def calendar():
         {
             'title': event[1],
             'description': event[2],
-            'start_date': event[3][:10],  # Extract only the date part
-            'end_date': event[4][:10],    # Extract only the date part
-            'category': event[5]
+            'start_date': event[3],  
+            'start_time': event[4],  
+            'end_date': event[5],
+            'end_time': event[6],    
+            'category': event[7],
+            'name': search_club_by_id(event[10])[0][2]
         }
         for event in events
     ]
     events_json = json.dumps(processed_events)
-    print(events_json)
-
-    for event in events:
-        club_id = event[8]
-        club_name = search_club_by_id(club_id)[0][2]
-        club_names.append(club_name)
     return render_template("events.html", events_json=events_json, club_names=club_names)
 
 

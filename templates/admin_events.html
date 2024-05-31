@@ -24,7 +24,9 @@
                             <th>Event Title</th>
                             <th>Event Content</th>
                             <th>Start Date</th>
+                            <th>Start Time</th>
                             <th>End Date</th>
+                            <th>End Time</th>
                             <th>Tags</th>
                             <th>Admin Approved</th>
                             <th>Approve Event</th>
@@ -37,8 +39,10 @@
                             <td>{{ row[3] }}</td>
                             <td>{{ row[4]}}</td>
                             <td>{{ row[5] }}</td>
+                            <td>{{ row[6] }}</td>
+                            <td>{{ row[7] }}</td>
                             <!-- remove people interested -->
-                            <td>{{ "yes" if row[7] == 1 else "no" }}</td>
+                            <td>{{ "yes" if row[9] == 1 else "no" }}</td>
                             <td><button type="submit" class="adminbtn" name="approved" value="{{ row[0] }}">APPROVE</button></td>
                         </tr>
                         {% endfor %}
