@@ -27,9 +27,6 @@
                             <form action="/dashboard">
                                 <input type="submit" class="homebtn" value="My Dashboard" style="background-color:black;">
                             </form>
-                            <form action="/profile">
-                                <input type="submit" class="homebtn" value="My Profile">
-                            </form>
                         </div>
                         {% else %}
                             <form action="/login">
@@ -42,7 +39,14 @@
                 </div>
                 
             </div>
-    
+
+            <div class="box" style="display:flex;justify-content:center;align-items:center">
+                <a href="/events" class="homelinks box2">Events</a> 
+                    <div class="vl"></div>
+                <a href="/clubs" class="homelinks box2">Clubs</a>
+                    <div class="vl"></div>
+                <a href="/profile" class="homelinks box2">Profile</a>
+            </div>
     </header>
 </div>
 <footer class="bg-dark fixed-bottom" style="padding-top: 1.5rem;padding-bottom: 1.5rem;position:relative;z-index:1000; border-top:3px solid #FFD700">
