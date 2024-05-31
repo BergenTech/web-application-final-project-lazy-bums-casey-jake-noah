@@ -8115,6 +8115,9 @@ textarea.form-control-lg {
 .fs-6 {
   font-size: 1rem !important;
 }
+.fs-7 {
+  font-size: .75rem !important;
+}
 
 .fst-italic {
   font-style: italic !important;
@@ -11604,12 +11607,33 @@ textarea.form-control-lg {
 
 .title_card{
   background-color: white;
-  margin-top:70px;
-  padding: 70px;
+  margin-top:50px;
+  margin-bottom:70px;
+  padding: 50px;
   border-radius: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
   flex:1;
-  min-height: 400px;
+  min-height: 500px;
+  display:flex;
+  flex-direction: row;
+  align-items: center
+}
+
+.user_card{
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+  padding:40px;
+  margin-top:40px
+}
+
+.event_title{
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+  padding:40px; 
+  text-align:center;
+  margin-bottom:50px;
 }
 
 .navstyle {
@@ -11622,12 +11646,13 @@ textarea.form-control-lg {
   margin-top: 0;
   padding: 0;
   width: 200px;
-  background-color: rgb(33, 37, 41) ;
+  background-color: whitesmoke;
   position: fixed;
   height: 100%;
   overflow: auto;
   z-index:1;
-  border-right:3px solid #FFD700
+  color:black;
+  border-right:2px solid var(--bs-gray);
 }
 
 .sidebar a {
@@ -11635,16 +11660,20 @@ textarea.form-control-lg {
   color: white;
   padding: 20px;
   text-decoration: none;
+  transition: transform 0.3s;
 }
  
 .sidebar a.active {
-  background-color: #FFD700;
-  color: white;
+  background-color: white;
+  color: black;
 }
 
 .sidebar a:hover:not(.active) {
-  background-color: #555;
-  color: white;
+  background-color: white;
+  color: black;
+  transform: scale(1.03);
+  border-top:2px solid var(--bs-gray);
+  border-bottom:2px solid var(--bs-gray);
 }
 
 .clubs{
@@ -11657,22 +11686,34 @@ textarea.form-control-lg {
 }
  
 .club {
-  background-color: white;
+  background-color: whitesmoke;
   padding: 20px;
   border-radius: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex; 
   flex-direction: column;
-  align-items: center;
   justify-content: space-between; 
-  text-align: center;
   color:black;
-  min-height:200px;
+  min-height:150px;
+  max-width:1fr;
   transition: transform 0.3s; /* Add a transition for smooth animation */ 
 }
  
+.recentmsg {
+  background-color: white;
+  margin-top:20px;
+  padding: 20px;
+  text-align:left;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+ 
 .club:hover {
-  transform: scale(1.1); /* Scale up by 10% on hover */ 
+  transform: scale(1.03); /* Scale up by 10% on hover */ 
 }
  
 .clubsdb {
@@ -11686,7 +11727,7 @@ textarea.form-control-lg {
   background-color: white;
   padding: 20px;
   border-radius: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
   display: flex; 
   flex-direction: column;
   align-items: center;
@@ -11713,31 +11754,116 @@ textarea.form-control-lg {
   padding-right:40px;
 }
 
+.stream{
+  margin-top:40px;
+  margin-left:240px;
+  margin-right:40px;
+}
+
+.clubtitle{
+  background-color: white;
+  min-height:140px;
+  padding:10px;
+  border-radius: 20px 110px 110px 20px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+}
+
 .messages{
-  padding-top:3rem;
-  padding-left:240px;
-  padding-right:40px;
+  display:flex;
+  justify-content: space-between;
+}
+
+.stream_event{
+  background-color: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+  flex: 0.15; 
+  min-height:200px;
+  margin-top:20px;
+  text-align: center;
+}
+
+.message_box{
+  flex: 0.8; 
+  text-align:center;
+  max-width:80%
 }
 
 .message{
   background-color: white;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex; 
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  color:black;
-  min-height:200px;
-  margin-top:40px
+  padding-top: 20px;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-bottom: 20px;
+  border-radius: 20px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+  margin-top:20px;
+  text-align:left;  
+  max-width: 100%;
+  word-wrap: break-word; 
+  overflow-wrap: break-word;
+}
+
+.stream_buttons{
+  display:flex;
+  justify-content: space-between;
+}
+
+.post_message{
+  text-align:center; 
+  border-radius:30px;
+  border-width:0px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+  padding:15px 20px;
+  font-size:20px;
+  margin-top:20px;
+  width:100%;
+}
+
+.post_btn{
+  border-radius: 30px;
+  border: none;
+  background-color: gold; 
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+  color: white;
+  padding: 15px 30px;
+  font-size: 20px;
+  margin-top:20px;
+  cursor: pointer;
+}
+
+.attendance_btn{
+  border-radius: 30px;
+  border: none;
+  background-color: black; 
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+  color: white;
+  padding:5% 5%;
+  margin-top:30px;
+  font-size: 20px;
+  cursor: pointer;
+  flex:0.45;
+}
+
+.event_btn{
+  border-radius: 30px;
+  border: none;
+  background-color: gold; 
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+  color: white;
+  padding:5% 5%;
+  margin-top:30px;
+  font-size: 20px;
+  cursor: pointer;
+  flex:0.45;
 }
 
 .searchbar{
   text-align:center; 
   border-radius:30px;
   border-width:0px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
   padding:15px 20px;
   font-size:20px;
   margin-top:30px;
@@ -11748,14 +11874,48 @@ textarea.form-control-lg {
   border-radius: 30px;
   border: none;
   background-color: gold; 
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
   color: white;
   padding: 15px 50px;
   margin-top:30px;
   font-size: 20px;
   cursor: pointer;
+  transition: transform 0.3s; 
 }
 
+.submitbutton:hover{
+  transform: scale(1.1); 
+}
+
+.leave{
+  border-radius: 30px;
+  border: none;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+  color: white;
+  padding: 8px 10px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-right:40px;
+  transition: transform 0.3s; 
+  background-color:black;
+  position: relative;
+}
+
+.leave:hover{
+  transform: scale(1.1); 
+}
+
+.file-upload-wrapper {
+  display: flex
+}
+
+.file-upload-input {
+  position: absolute;
+  width: 5.5%;
+  height: 4%;
+  opacity: 0;
+  cursor: pointer;
+}
 .profile{
   padding:100px;
   padding-top:35px;
@@ -11771,7 +11931,7 @@ textarea.form-control-lg {
   background-color: white;
   padding: 40px;
   border-radius: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
   text-align:center;
   flex: 0.3; 
 }
@@ -11780,7 +11940,7 @@ textarea.form-control-lg {
   background-color: white;
   padding: 40px;
   border-radius: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
   flex: 0.6; 
   min-height:500px;
   text-align:center
@@ -11798,8 +11958,8 @@ textarea.form-control-lg {
 .updprofile{
   text-align:center; 
   border-radius:30px;
-  border-width:1px solid black;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-width:1px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
   padding:10px;
   margin-bottom:30px;
   width:100%;
@@ -11814,13 +11974,187 @@ textarea.form-control-lg {
   border-radius: 30px;
   border: none;
   background-color: gold; 
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
   color: white;
-  padding: 10px;
+  padding:2% 5%;
   cursor: pointer;
   transition: transform 0.3s; 
 }
 
 .updbtn:hover{
   transform: scale(1.1); 
+}
+
+.homebtn{
+  border-radius: 30px;
+  border: none;
+  background-color: gold; 
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+  color: white;
+  padding: 15px 50px;
+  margin-top:30px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.3s; 
+}
+
+.homebtn:hover{
+  transform: scale(1.1); 
+}
+
+table {
+  border-collapse: collapse; 
+  width: 100%; 
+}
+
+th, td {
+  border: 1px solid black; 
+  padding: 8px; 
+  text-align:center
+}
+
+.box{
+  padding:20px;
+  background-color:white;
+  border-radius:15px;
+  margin-top:10px
+}
+
+.adminbtn{
+  background-color: whitesmoke;
+  border-radius: 30px;
+  border: 1px solid black;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+  color: black;
+  padding: 15px 50px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.3s; 
+  min-width:70%;
+}
+
+.adminbtn:hover{
+  transform: scale(1.1); 
+}
+
+.event_form{
+  text-align:center; 
+  border-radius:30px;
+  border:1px solid var(--bs-gray-500);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+  padding:10px;   
+  margin-top:10px;
+  margin-bottom:10px;
+  width:100%;
+  transition: transform 0.3s; 
+}
+
+.event_form:hover{
+  transform: scale(1.02); 
+}
+
+.eventpage{
+  padding:40px 170px;
+}
+
+.event{
+  padding:20px;
+  border-radius:15px;
+  background-color:whitesmoke;
+  max-width: 200px;
+  font-size:1rem;
+  word-wrap: break-word; 
+  margin: 0 auto;
+  margin-top:20px;
+  text-align:left
+}
+
+.event-title{
+  font-weight: bold;
+  margin-bottom:0.5rem
+}
+
+.event-time{
+  font-size:0.9rem;
+}
+.event-name{
+  font-size:0.9rem;
+  margin-bottom:0.5rem
+}
+.event-description{
+  font-size:0.75rem;
+  margin-bottom:0.5rem
+}
+.event-tags{
+  font-size:0.75rem;
+  margin-top:0.5rem;
+  margin-bottom:0.5rem
+}
+
+.calendar-container {
+  width: 100%;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding:20px;
+  background-color:white;
+  border-radius:15px;
+  margin-top:40px;
+  min-height:700px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  background-color: white;
+  border-bottom: 1px solid #ccc;
+}
+
+.calendar-header button {
+  background-color: white;
+  color: var(--bs-gray);
+  border: none;
+  border-radius:50%;
+  padding: 0.5em 1em;
+  cursor: pointer;
+}
+
+.calendar-header button:hover {
+  background-color: whitesmoke;
+}
+
+#currentWeek {
+  font-size: 1.2em;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  padding: 1em;
+}
+
+.day-label {
+  text-align: center;
+  padding: 0.5em 0;
+  border:1px solid var(--bs-gray-300);
+  border-bottom: none;
+  border-collapse: collapse;
+}
+
+.day-box {
+  text-align: center;
+  padding: 0.5em 0;
+  border:1px solid var(--bs-gray-300);
+  border-collapse: collapse;
+}
+
+.day {
+  text-align: center;
+  padding: 10px;
+  border-left:1px solid var(--bs-gray-300);
+  border-right:1px solid var(--bs-gray-300);
+  border-bottom:1px solid var(--bs-gray-300);
+  border-collapse: collapse;
+  min-height:500px;
 }

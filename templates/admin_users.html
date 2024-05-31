@@ -1,0 +1,50 @@
+{%extends "admin_base.html"%}
+{%block title%}BT CLUB APP{%endblock%}
+{%set active_page = 'admin_users'%}
+{%block content%}
+<div class="background-img">
+    <header class="pt-5" style="background-color:rgba(255,255,255,0.8); text-align:center">
+        <div class="title">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fw-bold" role="alert">
+                <div>{{message}}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %} 
+            <h1 class="display-5 fw-bold box">User List</h1>
+            <div class="user_card">
+                <form method='POST' action="/admin/manage_users">
+                    <table style="border:2px">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>isAdmin</th>
+                            <th>Year</th>
+                            <th>Major</th>
+                            <th>Select</th>
+                        </tr>
+                        {% for row in users %}
+                        <tr>
+                            <td>{{ row[0] }} </td>
+                            <td>{%- if row[2] is not none %} {{ row[1] + ' ' + row[2] }} {%- else %} {{ row[1] }} {%- endif %}</td>
+                            <td>{{ row[3] }}</td>
+                            <td>{% if row[4] %} Yes {% else %} No {% endif %} </td>
+                            <td>{{ row[5] }}</td>
+                            <td>{{ row[6] }}</td>
+                            <td><input type="checkbox" name='delete' value="{{ row[0] }}"></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    <input type="submit" class="submitbutton" value="Delete Selected" style="background-color:black">
+                </form>
+
+            </div>
+    </div>
+</header>
+
+{%endblock%}

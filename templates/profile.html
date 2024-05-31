@@ -10,24 +10,36 @@
             <h1 class="display-5 fw-bold">Profile</h1>
             <div class="profile_container">
                 <div class="profile_a">
-                    <img src="{{user['picture']}}" referrerPolicy="no-referrer" class="pfp" alt="">
-                    <p class="fs-4" style="margin-top:40px">{{user['name']}}</p>
-                    <p class="fs-4" style="margin-top:40px">{{user['email']}}</p>
+                    <img src="{{picture}}" referrerPolicy="no-referrer" class="pfp" alt="">
+                    <p class="fs-4" style="margin-top:40px">{{name}}</p>
+                    <p class="fs-4" style="margin-top:40px">{{user[0][3]}}</p>
                 </div>
                 <div class="profile_b">
-                    <div class="fw-bold" style="margin-bottom:30px">Update Information</div>
-                    <form action="/profile">
-                        <div><input type="text" class="updprofile" name="grad_year" value="" placeholder="Enter Your Graduation Year" maxlength="4"></div>
-                        <div><select class="updprofile "id="dropdown" name="major" value="" placeholder="Select Your Major" style="border-width:1px solid black;">
-                            <option value="">Computer Science</option>
-                            <option value="">Aerospace Engineering</option>
-                            <option value="">Automotive Engineering</option>
-                            <option value="">Business</option>
-                            <option value="">Fashion</option>
-                            <option value="">Culinary</option>
-                            <option value="">Law and Justice</option>
-                            <option value="">Commercial Art</option>
-                            <option value="">Digital Media</option>
+                    <div class="fw-bold" style="margin-bottom:30px">Update Information
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                        {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fw-bold" role="alert" style="margin-top:20px">
+                            <div>{{message}}</div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                        {% endwith %}
+                    </div>
+                    <form method='POST' action="/profile">
+                        <div><input type="text" class="updprofile" id="grad_year" name="grad_year" value="{% if user[0][5] %}{{ user[0][5] }}{% else %}{% endif %}"  placeholder="Enter Your Graduation Year" maxlength="4"></div>
+                        <div><select class="updprofile "id="dropdown" name="major" style="border-width:1px solid black;">
+                            <option value='None' disabled {{ 'selected' if user[0][6] is none or user[0][6] == 'None'}}>Select Your Major</option>
+                            <option value="Computer Science" {{'selected' if user[0][6] == 'Computer Science'}}>Computer Science</option>
+                            <option value="Aerospace Engineering" {{'selected' if user[0][6] == 'Aerospace Engineering'}}>Aerospace Engineering</option>
+                            <option value="Automotive Engineering"{{'selected' if user[0][6] == 'Automotive Engineering'}}>Automotive Engineering</option>
+                            <option value="Business"{{'selected' if user[0][6] == 'Business'}}>Business</option>
+                            <option value="Fashion"{{'selected' if user[0][6] == 'Fashion'}}>Fashion</option>
+                            <option value="Culinary"{{'selected' if user[0][6] == 'Culinary'}}>Culinary</option>
+                            <option value="Law and Justice"{{'selected' if user[0][6] == 'Law and Justice'}}>Law and Justice</option>
+                            <option value="Commercial Art"{{'selected' if user[0][6] == 'Commercial Art'}}>Commercial Art</option>
+                            <option value="Digital Media"{{'selected' if user[0][6] == 'Digital Media'}}>Digital Media</option>
                         </select>   
                         </div>       
                         <input type="submit" value="Update Information" class="updbtn">
@@ -35,6 +47,7 @@
                 </div>
             </div>
         </div>
-    </header>
 </div>
+    
+</header>
 {%endblock%}

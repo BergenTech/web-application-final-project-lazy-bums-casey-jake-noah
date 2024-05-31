@@ -1,0 +1,53 @@
+{%extends "base.html"%}
+{%block title%}BT CLUB APP{%endblock%}
+{%set active_page = 'events'%}
+{%block content%}
+<div class="background-img">
+    <header class="pt-5" style="background-color:rgba(255,255,255,0.8); display:flex;justify-content: center;">
+        <div class="title " style="max-width:50%;text-align:center">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fw-bold" role="alert">
+                <div>{{message}}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %} 
+            <h1 class="display-5 fw-bold box">Post An Event</h1>
+                <div class="box" style="padding:40px 100px;margin-bottom:40px">
+                    <form action="{{url_for('create_events', club_name=club_name)}}" method="POST">
+                        <label for="event_title" class="fw-bold">Event Title</label>
+                        <input type="text" class="event_form" name="event_title" placeholder="Enter Title" required>
+
+                        <label for="event_title" class="fw-bold">Event Content / Information</label>
+                        <input type="text" class="event_form" name="event_content" placeholder="Enter Content / Information" required >
+
+                        <label for="start_date" class="fw-bold">Start Date</label>
+                        <input type="date" class="event_form" name="start_date" placeholder="Enter Start Date" required >
+
+                        <label for="end_date" class="fw-bold">End Date (Not Required) </label>
+                        <input type="date" class="event_form" name="end_date" placeholder="Enter End Date">
+
+                        <label for="start_time" class="fw-bold">Start Time</label>
+                        <input type="time" class="event_form" name="start_time" placeholder="Enter Start Time" required >
+
+                        <label for="end_time" class="fw-bold">End Time (Not Required) </label>
+                        <input type="time" class="event_form" name="end_time" placeholder="Enter End Time">
+
+                        <label for="fundraising" class="fw-bold">Fundraising</label>
+                        <input type="checkbox" name="event_tags" value="fundraising"> <br>
+
+                        <label for="fundraising" class="fw-bold">Competition</label>
+                        <input type="checkbox" name="event_tags" value="competition"> <br>
+
+                        <label for="fundraising" class="fw-bold" style="padding-bottom:10px">Volunteer</label>
+                        <input type="checkbox" name="event_tags" value="volunteer"> <br>
+                        <input type="submit" class="adminbtn" value="Post Event">
+                    </form>
+                </div>
+        </div>
+    </header>
+</div>
+{%endblock%}

@@ -1,0 +1,37 @@
+{%extends "base.html"%}
+{%block title%}BT CLUB APP{%endblock%}
+{%set active_page = 'events'%}
+{%block content%}
+<!-- Page Content-->
+<!-- Header-->
+<div class="background-img" >
+    <header class="pt-5" style="background-color:rgba(255,255,255,0.8); min-height: 100vh; ">
+        <div class="eventpage">
+            <div class="display-5 fw-bold">Upcoming Events</div>
+            <div style="display:flex;justify-content: center;text-align:center;">
+                <div class="calendar-container" style="text-align:center">
+                    <div class="calendar-header">
+                        <button id="prevWeek" class="fw-bold fs-5" style="margin-left:20%">&lt;</button>
+                        <div id="currentWeek"></div>
+                        <button id="nextWeek" class="fw-bold fs-5" style="margin-right:20%">&gt;</button>
+                    </div>
+                    <div class="calendar-grid">
+                        <div class="day-label">Sun</div>
+                        <div class="day-label">Mon</div>
+                        <div class="day-label">Tue</div>
+                        <div class="day-label">Wed</div>
+                        <div class="day-label">Thu</div>
+                        <div class="day-label">Fri</div>
+                        <div class="day-label">Sat</div>
+                        <div id="calendarDays" class="fs-5" style="display: contents;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            const events = {{ events_json | safe }};
+        </script>
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
+    </header>
+</div>
+{%endblock%}
