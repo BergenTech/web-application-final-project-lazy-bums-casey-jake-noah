@@ -11599,16 +11599,17 @@ textarea.form-control-lg {
 }
 
 .title{
-  padding-left:170px;
-  padding-right:170px;
+  padding-left:12%;
+  padding-right:12%;
   padding-top:30px;
+  padding-bottom:70px;
   min-height: 100vh;
 }
 
 .title_card{
   background-color: white;
   margin-top:50px;
-  margin-bottom:70px;
+  margin-bottom:40px;
   padding: 50px;
   border-radius: 15px;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
@@ -12017,7 +12018,32 @@ th, td {
   padding:20px;
   background-color:white;
   border-radius:15px;
-  margin-top:10px
+  margin-top:10px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.box2{
+  padding:3% 7%;
+  background-color:whitesmoke;
+  border-radius:15px;
+  margin-top:10px;
+  box-sizing: border-box;
+}
+
+.vl {
+  border-left: 2px solid var(--bs-gray-600);
+  height: 10vh;
+  margin-left:4%;
+  margin-right:4%;
+}
+
+.homelinks{
+  text-decoration: none;
+  color:black;
+  font-size: 3.5vw;
+  font-weight: 300;
+  line-height: 1vw;
+
 }
 
 .adminbtn{
@@ -12054,41 +12080,51 @@ th, td {
 }
 
 .eventpage{
-  padding:40px 170px;
+  padding:40px 10%;
+}
+
+.current-day {
+  background-color: var(--bs-gray-200); 
+  border: 3px solid black; 
+} 
+
+.current-day-of-week {
+  font-weight: bold;
 }
 
 .event{
   padding:20px;
   border-radius:15px;
   background-color:whitesmoke;
-  max-width: 200px;
-  font-size:1rem;
+  max-width: 95%;
+  min-width: 95%;
   word-wrap: break-word; 
   margin: 0 auto;
   margin-top:20px;
-  text-align:left
+  text-align:left;
+  box-sizing: border-box;
 }
 
 .event-title{
-  font-weight: bold;
-  margin-bottom:0.5rem
+  font-size:100%;
+  margin-bottom:5%
 }
 
 .event-time{
-  font-size:0.9rem;
+  font-size:60%;
 }
 .event-name{
-  font-size:0.9rem;
-  margin-bottom:0.5rem
+  font-size:60%;
+  margin-bottom:5%
 }
 .event-description{
-  font-size:0.75rem;
-  margin-bottom:0.5rem
+  font-size:50%;
+  margin-bottom:5%
 }
 .event-tags{
-  font-size:0.75rem;
-  margin-top:0.5rem;
-  margin-bottom:0.5rem
+  font-size:50%;
+  margin-top:5%;
+  margin-bottom:5%
 }
 
 .calendar-container {
@@ -12131,7 +12167,6 @@ th, td {
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  padding: 1em;
 }
 
 .day-label {
@@ -12144,14 +12179,14 @@ th, td {
 
 .day-box {
   text-align: center;
-  padding: 0.5em 0;
   border:1px solid var(--bs-gray-300);
   border-collapse: collapse;
 }
 
 .day {
   text-align: center;
-  padding: 10px;
+  padding:1%;
+  min-width:15%;
   border-left:1px solid var(--bs-gray-300);
   border-right:1px solid var(--bs-gray-300);
   border-bottom:1px solid var(--bs-gray-300);
