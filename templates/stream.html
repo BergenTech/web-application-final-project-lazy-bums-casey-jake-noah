@@ -1,17 +1,156 @@
 {%extends "base.html"%}
 {%block title%}BT CLUB APP{%endblock%}
-{%set active_page = 'stream'%}
+{%set active_page = 'dashboard'%}
 {%block content%}
+<!-- Page Content-->
+<!-- Header-->
+<div class="background-img" >
+    <header class="pt-5" style="background-color:rgba(255,255,255,0.8); min-height: 100vh;padding-bottom:40px">
+        <div class="sidebar" style="padding-bottom:100px">
+            {% for club_name in user_clubs%}
+                <a href="{{ url_for('stream', club_name=club_name) }}">
+                <span style="color:black;font-weight:450">{{club_name}}</span>
+                </a>
+            {% endfor %}
+        </div>
+        <div class="stream">
+            <div class="display-7 clubtitle" style="">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fw-bold" role="alert" style="margin-top:30px">
+                    <div>{{message}}</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}    
+                <div style="display:flex;min-height:100px;padding-right:0px">
+                    <div class="display-6 fw-bold" style="flex:0.5;padding:10px;">
+                        {{club_name}}
+                    </div>
+                    <div style="display: flex; justify-content:right;flex:0.5; padding:10px;">
+                        {% if ownership %}
+                        <form action="{{url_for('stream',club_name=club_name)}}" method="POST" enctype="multipart/form-data">
+                            <div class="file-upload-wrapper">
+                                <span class="leave" style="margin-bottom:10px;z-index:1;background-color:gold">Upload Logo</span>
+                                <input type="file" name="logo" class="file-upload-input" style="z-index:2">
+                            </div>
+                            <div style="">
+                                <input type="submit" class="leave" name="logo_submit" value="Submit Logo" >
+                            </div>
+                        </form>
+                        {%endif%}
+                         
+                        <form action="{{url_for("leave_club", club_name=club_name)}}">
+                            <div style="">
+                                <input type="submit" class="leave" value="Leave Club">
+                            </div>
+                        </form>
+                    </div>
+                    <div style="display:flex; justify-content:right;z-index:1000;">
+                        {% if club_logo != None %}
+                        <img src="data:{{club_mime_type}};base64,{{ club_logo }}" alt="" style="height:170px;width:170px;border-radius:50%; border:1px solid black;box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);" onerror="this.onerror=null;this.src='/static/images/placeholder.png';">
+                        {% else %}
+                        <img src="/static/images/placeholder.png" alt="" style="height:170px;width:170px;border-radius:50%; border:1px solid black;box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);">
+                        {% endif %}
+                    </div>
+                    
+                </div>   
 
-{% if ownership %}
-<form action="{{ url_for('stream', club_name=club_name) }}" method="post">
-    <label for="message">Enter your message:</label><br>
-    <textarea id="message" name="message" rows="4" cols="50"></textarea><br>
-    <input type="submit" value="Submit">
-</form>
-{% endif %}
-<h1>{{club_name}}</h1>
-{% for message in messages %}
-    {{ message }}
-{% endfor %}
+            </div>
+            <div class="messages">
+                <div class="stream_event">
+                    <p class="fw-bold fs-4">Events</p>
+                    {% if ownership %}
+                    <form action="{{ url_for('create_events', club_name=club_name) }}">
+                        <input type="submit" class="adminbtn" value="Create Event">
+                    </form>
+                    {%endif%}
+                    {% if events_json != [] %}
+                        <div class="event" id="events-container"></div>
+                    {% else %} 
+                        <p>No Events Currently...</p>
+                    {% endif %}
+                </div>
+                <div class="message_box">
+                    {% if ownership %}
+                        <form action="{{ url_for('stream', club_name=club_name) }}" method="post">
+                            <div class="messages">
+                                <input type="text" class="post_message" name="message" placeholder="Post an Announcement" required >
+                                <input type="submit" class="post_btn" name="message_submit" value="Post">
+                            </div>
+                        </form>
+                    {%endif%}
+                    {% for i in range(messages|length)%}
+                    <div class="message">
+                        <div style="display:flex; flex-direction:row; align-items:center">
+                            <img src="{{message_pictures[i]}}" alt="" style="height:40px;width:40px;border-radius:50%;margin-right:20px">
+                            <div style="display: flex; flex-direction: column;">
+                                <div class="fs-6 fw-bold">{{message_names[i]}}</div>
+                                <div class='fs-7'>{{message_dates[i][0]}} - <span class="time">{{message_dates[i][1]}}</span></div>
+                            </div>
+                        </div>
+                        <div style="margin-top:20px">{{messages[i][1]}}</div>
+                    </div>
+                    {% endfor %}
+                </div> 
+            </div>
+            <script>
+                // Ensure events_json is correctly defined and rendered
+                const eventsJson = {{ events_json|tojson|safe }};
+            
+                // Parsing the JSON data
+                const events = JSON.parse(eventsJson);
+            
+                const currentDateTime = new Date();
+            
+                const upcomingEvents = events.filter(event => {
+                    const endDateTime = new Date(`${event.end_date}T${event.end_time}`);
+                    return endDateTime > currentDateTime;
+                });
+            
+                const eventsContainer = document.getElementById('events-container');
+                
+                if (upcomingEvents.length === 0) {
+                    eventsContainer.innerHTML = '<p>No upcoming events.</p>';
+                } else {
+                    upcomingEvents.forEach(event => {
+                        const eventElement = document.createElement('div');
+                        eventElement.innerHTML = `
+                            <div class="event-title fs-5">${event.title}</div>
+                            <div class="event-description">${event.description}</div>
+                            <div class="event-time" style="font-size:0.8rem">Start : ${event.start_date} <span class="time">${event.start_time}</span></div>
+                            <div class="event-time" style="font-size:0.8rem">End : ${event.end_date} <span class="time">${event.end_time}</span></div>
+                            <hr>
+                        `;
+                        eventsContainer.appendChild(eventElement);
+                    });
+                }
+
+                function updateTime() {
+                    const elements = document.getElementsByClassName('time');
+                    for (let i = 0; i < elements.length; i++) {
+                        const time24h = elements[i].textContent;
+                        const [hours, minutes] = time24h.split(':');
+                        let time12h;
+                        if (hours == 0) {
+                            time12h = '12:' + minutes + ' AM';
+                        } else if (hours < 12) {
+                            time12h = parseInt(hours, 10)  + ':' + minutes + ' AM';
+                        } else if (hours == 12) {
+                            time12h = '12:' + minutes + ' PM';
+                        } else {
+                            time12h = (hours - 12) + ':' + minutes + ' PM';
+                        }
+                        elements[i].textContent = time12h;
+                    }
+                }
+                updateTime();
+            </script>
+        </div>
+</div>
+
 {%endblock%}
+
+
