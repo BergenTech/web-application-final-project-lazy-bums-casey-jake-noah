@@ -24,31 +24,14 @@
                         <div class="day-label">Fri</div>
                         <div class="day-label">Sat</div>
                         <div id="calendarDays" class="fs-5" style="display: contents;"></div>
-
-                        <div class="day-box"></div>
-                        <div class="day-box"></div>
-                        <div class="day-box"></div>
-                        <div class="day-box"></div>
-                        <div class="day-box"></div>
-                        <div class="day-box"></div>
-                        <div class="day-box"></div>
                     </div>
                 </div>
             </div>
         </div>
-
- 
-            <!-- {% for row in events %}
-            <div class="event">
-                <p class="fs-3 fw-bold">{{ row[1] }}</p>
-                <p class="fs-6">Club Name</p>
-                <p class="fs-6">{{ row[2] }} </p>
-                <p class="fs-6">{{ row[3] }} </p>
-                <p class="fs-6"> </p>
-                <p class="fs-6">{{ row[4] }} </p>
-                <p class="fs-6">{{ row[5] }} </p>
-            </div>
-        {% endfor %} -->
+        <script>
+            const events = {{ events_json | safe }};
+        </script>
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
     </header>
 </div>
 {%endblock%}

@@ -90,6 +90,18 @@ document.addEventListener('DOMContentLoaded', function() {
           const currentDay = new Date(startOfWeek);
           currentDay.setDate(currentDay.getDate() + i);
           dayCell.textContent = currentDay.getDate();
+
+          // Add events for the current day
+          events.forEach(event => {
+              const eventDate = new Date(event.start_date);
+              if (eventDate.toDateString() === currentDay.toDateString()) {
+                  const eventDiv = document.createElement('div');
+                  eventDiv.classList.add('event');
+                  eventDiv.textContent = event.title;
+                  dayCell.appendChild(eventDiv);
+              }
+          });
+
           calendarDays.appendChild(dayCell);
       }
   }

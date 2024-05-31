@@ -44,11 +44,6 @@ google = oauth.register(
     server_metadata_url= 'https://accounts.google.com/.well-known/openid-configuration'
 )
 
-@app.route('/')
-def home():
-    events = get_approved_events()
-    return render_template("home.html" ,events=events)
-
 ### LOGIN FUNCTIONALITIES
 @app.route('/login')
 def login():
@@ -153,6 +148,16 @@ def teacher_required(func):
             return "You do not have the necessary permissions to access this page.", 403
         return func(*args, **kwargs)
     return decorated_view
+
+@app.route('/')
+def home():
+    club_names = []
+    events = get_approved_events()
+    for event in events:
+        club_id = event[7]
+        club_name = search_club_by_id(club_id)[0][2]
+        club_names.append(club_name)
+    return render_template("home.html" ,events=events, club_names=club_names)
 
 @app.route('/profile', methods=['GET','POST'])
 @login_required  
@@ -387,9 +392,25 @@ def create_events(club_name):
 def calendar():
     club_names = []
     events = get_approved_events()
+    events_json = json.dumps(events)
+    processed_events = [
+        {
+            'title': event[1],
+            'description': event[2],
+            'start_date': event[3][:10],  # Extract only the date part
+            'end_date': event[4][:10],    # Extract only the date part
+            'category': event[5]
+        }
+        for event in events
+    ]
+    events_json = json.dumps(processed_events)
+    print(events_json)
+
     for event in events:
-        club_names = event[8]
-    return render_template("events.html", events=events, club_names=club_names)
+        club_id = event[8]
+        club_name = search_club_by_id(club_id)[0][2]
+        club_names.append(club_name)
+    return render_template("events.html", events_json=events_json, club_names=club_names)
 
 
 ###ADMIN STUFF

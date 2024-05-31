@@ -2,31 +2,51 @@
 {%block title%}BT CLUB APP{%endblock%}
 {%set active_page = 'admin_events'%}
 {%block content%}
-{% for row in events %}
-<div class="clubdb py-5">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    {% for category, message in messages %}
-    <div class="alert alert-{{ category }} alert-dismissible fw-bold" role="alert" style="margin-top:50px">
-        <div>{{message}}</div>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% endfor %}
-    {% endif %}
-    {% endwith %} 
+<div class="background-img">
+    <header class="pt-5" style="background-color:rgba(255,255,255,0.8); text-align:center">
+        <div class="title">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fw-bold" role="alert">
+                <div>{{message}}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %} 
+            <h1 class="display-5 fw-bold box">User List</h1>
+            <div class="user_card">
+                <form action="{{ url_for('manage_events')}}" method="POST">
+                    <table style="border:2px">
+                        <tr>
+                            <th>ID</th>
+                            <th>Event Title</th>
+                            <th>Event Content</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Tags</th>
+                            <th>Admin Approved</th>
+                            <th>Approve Event</th>
+                        </tr>
+                        {% for row in events%}
+                        <tr>
+                            <td>{{ row[0] }} </td>
+                            <td>{{row[1]}}</td>
+                            <td>{{row[2]}}</td>
+                            <td>{{ row[3] }}</td>
+                            <td>{{ row[4]}}</td>
+                            <td>{{ row[5] }}</td>
+                            <!-- remove people interested -->
+                            <td>{{ "yes" if row[7] == 1 else "no" }}</td>
+                            <td><button type="submit" class="adminbtn" name="approved" value="{{ row[0] }}">APPROVE</button></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </form>
 
-    {% for row in events%}
-    <p class="fs-6">{{ row[0] }} </p>
-    <p class="fs-3 fw-bold">{{ row[1] }}</p>
-        <p class="fs-6">{{ row[2] }} </p>
-        <p class="fs-6">{{ row[3] }}</p>
-        <p class="fs-6">{{ row[4] }}</p>
-        <p class="fs-5">{{ row[5] }}</p><br>
-        <form action="{{ url_for('manage_events')}}" method="POST">
-            <input type="submit" class="adminbtn" name="approved" value="{{row[0]}}">
-        </form>
-        
-    {% endfor %}
-</div>
-{% endfor %}
+            </div>
+    </div>
+</header>
+
 {%endblock%}
