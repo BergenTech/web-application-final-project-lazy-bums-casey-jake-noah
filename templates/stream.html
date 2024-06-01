@@ -48,7 +48,7 @@
                             </div>
                         </form>
                     </div>
-                    <div style="display:flex; justify-content:right;z-index:1000;">
+                    <div style="display:flex; justify-content:right;">
                         {% if club_logo != None %}
                         <img src="data:{{club_mime_type}};base64,{{ club_logo }}" alt="" style="height:170px;width:170px;border-radius:50%; border:1px solid black;box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);" onerror="this.onerror=null;this.src='/static/images/placeholder.png';">
                         {% else %}

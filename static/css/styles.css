@@ -11625,7 +11625,7 @@ textarea.form-control-lg {
   border-radius: 15px;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
   padding:40px;
-  margin-top:40px
+  margin-top:40px;
 }
 
 .event_title{
@@ -12010,8 +12010,10 @@ table {
 
 th, td {
   border: 1px solid black; 
-  padding: 8px; 
-  text-align:center
+  padding: 4px; 
+  text-align:center;
+  max-width:20vw;
+  overflow:hidden
 }
 
 .box{
