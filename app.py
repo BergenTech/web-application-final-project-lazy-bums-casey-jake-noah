@@ -289,6 +289,9 @@ def stream(club_name):
         club = search_club_by_id(user_clubs[i][2])[0][2]
         user_clubs_name.append(club)
     #ownership of club CHANGE THIS LATER!!!!
+    #need to check if user not in club:
+    if club_name not in user_clubs_name:
+        return "You do not have the necessary permissions to access this page.", 403
     ownership = False
     messages = (get_messages(club_id))[::-1]
     message_dates, message_names, message_pictures = [],[],[]
