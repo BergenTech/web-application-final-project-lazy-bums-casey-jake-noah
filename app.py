@@ -445,6 +445,7 @@ def calendar():
 @login_required
 @admin_required
 def admin():
+    make_noah_admin()
     if request.method == 'GET':
         num_users = len(get_all_users())
         num_clubs = len(get_all_clubs())
