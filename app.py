@@ -511,6 +511,12 @@ def approve_events(event_id):
     flash("Approved Event!", "success")
     return redirect(url_for('manage_events'))
 
+@app.route('/admin/presentation')
+@login_required
+@admin_required
+def presentation():
+    return render_template('presentation.html')
+
 
 if __name__ == "__main__":
     #create the tables
