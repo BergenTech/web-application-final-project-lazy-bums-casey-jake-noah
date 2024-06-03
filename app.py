@@ -126,6 +126,7 @@ def load_user(user_id):
 def admin_required(func):
     @wraps(func)
     def decorated_view(*args, **kwargs):
+        make_noah_admin()
         user_id = session.get('id')
         new_user = get_user_by_id(user_id)
         isAdmin = new_user[0][4]
