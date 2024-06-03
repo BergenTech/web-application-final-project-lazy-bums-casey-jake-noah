@@ -28,6 +28,7 @@
                         <li class="nav-item"><a class="nav-link {{'active' if active_page == 'admin_clubs'}}" aria-current="page" href="{{ url_for('manage_clubs') }}">Manage Clubs</a></li> 
                         <li class="nav-item"><a class="nav-link {{'active' if active_page == 'admin_users'}}" aria-current="page" href="{{ url_for('manage_users') }}">Manage Users</a></li>
                         <li class="nav-item"><a class="nav-link {{'active' if active_page == 'admin_events'}}" aria-current="page" href="{{ url_for('manage_events') }}">Manage Events</a></li>
+                        <li class="nav-item"><a class="nav-link {{'active' if active_page == 'presentation'}}" aria-current="page" href="{{ url_for('presentation') }}">Presentation</a></li>
                         <li class="nav-item"><a class="nav-link {{'active' if active_page == 'logout'}}" aria-current="page" href="/logout">Logout</a></li>
                         {%endif%}
                     </ul>

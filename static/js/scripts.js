@@ -213,3 +213,45 @@ document.addEventListener('DOMContentLoaded', function() {
     renderWeek(currentDate);
   });
   
+  
+  let currentSlideIndex = 0;
+
+  function showSlide(index) {
+    const slidesContainer = document.querySelector('.slides-container');
+    const slides = document.getElementsByClassName('slide');
+    if (index >= 0 && index < slides.length) {
+      // Hide all slides
+      for (let i = 0; i < slides.length; i++) {
+        slides[i].classList.add('hidden');
+      }
+      // Show the selected slide
+      slides[index].classList.remove('hidden');
+  
+      slidesContainer.style.transform = `translateX(${-index * 100}%)`;
+      currentSlideIndex = index;
+      updateProgressBar(index, slides.length);
+    }
+  }
+  
+  function nextSlide() {
+    const slides = document.getElementsByClassName('slide');
+    currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+    showSlide(currentSlideIndex);
+  }
+  
+  function previousSlide() {
+    const slides = document.getElementsByClassName('slide');
+    currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
+    showSlide(currentSlideIndex);
+  }
+  
+  function updateProgressBar(index, total) {
+    const progressBar = document.getElementById('progressBar');
+    const percentage = ((index + 1) / (total)) * 100;
+    progressBar.style.width = percentage + '%';
+  }
+  
+  // Initialize by showing the first slide and setting the progress bar to 0%
+  showSlide(currentSlideIndex);
+  updateProgressBar(0, document.getElementsByClassName('slide').length);
+  

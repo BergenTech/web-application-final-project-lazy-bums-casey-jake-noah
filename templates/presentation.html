@@ -1,0 +1,150 @@
+{%extends "admin_base.html"%}
+{%block title%}BT CLUB APP{%endblock%}
+{%set active_page = 'presentation'%}
+{%block content%}
+<div class="background-img">
+    <header style="background-color:rgba(255,255,255,0.8); text-align:center;">
+        <div class="slidetitle">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fw-bold" role="alert">
+                <div>{{message}}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %} 
+            <div class="slides">
+                <div class="slides-container">
+                    <div class="slide" id="slide1">
+                        <div class="slideBox">
+                            <div class="display-1 fw-bold" style="margin-bottom:100px">BT Club4Clubs</div>
+                            <p class="display-5" >Casey Lee, Jake Park, Noah Kim</p>
+                        </div>
+                    </div>
+                    <div class="slide" id="slide2">
+                        <div class="slideBox">
+                            <div class="display-4 fw-bold" >Overview</div><br>
+                            <p class="fs-4 fw-bold" >Our project was created to address the many current issues with how clubs are managed in BT including : </p>
+                            <p class="fs-4" >1. Difficult and obscure access to finding and joining clubs</p>
+                            <p class="fs-4" >2. No centralized hub of information where students can find all information relevant to clubs</p>
+                            <p class="fs-4" >3. Lack of organization of club events and leadership</p>
+                        </div>
+                    </div>
+                    <div class="slide hidden" id="slide3">
+                        <div class="slideBox">
+                            <div class="display-4 fw-bold" style="margin-bottom:30px">Technology Used</div>
+                            <p class="fs-4" >Database Management - SQLite3</p>
+                            <p class="fs-4" >Backend - Python (Flask Framework)</p>
+                            <p class="fs-4"style="margin-bottom:30px">Frontend - HTML/CSS/JavaScript, Bootstrap 5</p>
+                            <div style="display:flex; justify-content:space-between;padding:0 10%">
+                                <img src="/static/images/frontend.jpg" alt="" style="height:20%; width:20%;box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);border-radius: 5px;">
+                                <img src="/static/images/flask.png" alt="" style="height:20%; width:20%;box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);border-radius: 5px;">
+                                <img src="/static/images/sqlite3.png" alt="" style="height:12%; width:12%;box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);border-radius: 5px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide hidden" id="slide4">
+                        <div class="slideBox">
+                            <div class="display-4 fw-bold" style="margin-bottom:30px">Features - Student End</div>
+                            <p class="fs-4" >View clubs directory</p>
+                            <p class="fs-4" >Join / leave clubs</p>
+                            <p class="fs-4" >View admin approved events & calendar</p>
+                            <p class="fs-4" >Have a profile (major, year) </p>
+                            <p class="fs-4" style="margin-bottom:30px">View announcements from club leaders / teachers</p>
+                        </div>
+                    </div>
+                    <div class="slide hidden" id="slide5">
+                        <div class="slideBox" style="display:flex; justify-content:space-between;">
+                            <img src="/static/images/c1.png" alt="" style="height:45%; width:45%;box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);border-radius: 5px;"> 
+                            <img src="/static/images/c2.png" alt="" style="height:45%; width:45%;box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);border-radius: 5px;"> 
+                        </div>
+                    </div>
+                    <div class="slide hidden" id="slide6">
+                        <div class="slideBox">
+                            <div class="display-4 fw-bold" style="margin-bottom:30px">Features - Teacher / Club Leader End</div>
+                            <p class="fs-4" >Teachers must be promoted by admin to lead the club (automation once bergen.org emails approved)</p>
+                            <p class="fs-4" >Teachers can make announcements</p>
+                            <p class="fs-4" >Teachers can create events to admin for approval</p>
+                        </div>
+                    </div>
+                    <div class="slide hidden" id="slide7">
+                        <div class="slideBox" style="display:flex; justify-content:space-between;">
+                            <img src="/static/images/t1.png" alt="" style="height:45%; width:45%;box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);border-radius: 5px;"> 
+                            <img src="/static/images/t2.png" alt="" style="height:45%; width:45%;box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);border-radius: 5px;"> 
+                        </div>
+                    </div>
+                    <div class="slide hidden" id="slide7">
+                        <div class="slideBox">
+                            <div class="display-4 fw-bold" style="margin-bottom:30px">Features - Admin End</div>
+                            <p class="fs-4" >Delete users</p>
+                            <p class="fs-4" >Delete clubs</p>
+                            <p class="fs-4" >Approve event</p>
+                            <p class="fs-4" >Promote users to leader</p>
+                        </div>
+                    </div>
+                    <div class="slide hidden" id="slide8">
+                        <div class="slideBox" style="display:flex; justify-content:space-between; flex-wrap: wrap;">
+                            <img src="/static/images/a2.png" alt="" style="height:45%; width:45%;box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);border-radius: 5px;" > 
+                            <img src="/static/images/a3.png" alt="" style="height:45%; width:45%;box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);border-radius: 5px;"> 
+                        </div>
+                    </div>
+                    <div class="slide hidden" id="slide9">
+                        <div class="slideBox">
+                            <div class="display-4 fw-bold" style="margin-bottom:30px">Challenges</div>
+                            <p class="fs-4" >Jinja errors (displaying recent messages, times, usernames, etc.)</p>
+                            <p class="fs-4" >Admin security errors</p>
+                            <p class="fs-4" >Teacher permission structure (Completely different from user and admin)</p>
+                        </div>
+                    </div>
+                    <div class="slide hidden" id="slide10">
+                        <div class="slideBox">
+                            <div class="display-4 fw-bold" style="margin-bottom:30px">Solutions</div>
+                            <p class="fs-4" style="margin-bottom:30px">Jinja Errors -> Fix: Use elaborate documentation to trace data flow and interaction between front-end templating and back-end data</p>
+                            <p class="fs-4" >Admin security errors -> Fix: Utilize a wrapper function to check if the logged in user possesses the privileges to view the admin page</p>
+                        </div>
+                    </div>
+                    <div class="slide hidden" id="slide11">
+                        <div class="slideBox">
+                            <div class="display-4 fw-bold" style="margin-bottom:30px">Impact</div>
+                            <p class="fs-4" >Centralizes entire BT community in one app</p>
+                            <p class="fs-4" >Helps students explore interests in extracurricular activities</p>
+                            <p class="fs-4" >Establishes a welcoming environment for students confused about the current disorganized state of BT clubs</p>
+                        </div>
+                    </div>
+                    <div class="slide hidden" id="slide12">
+                        <div class="slideBox">
+                            <div class="display-4 fw-bold" style="margin-bottom:30px">Future Ideas / Enhancements </div>
+                            <p class="fs-5" >Attendance system <span style="color:orange">(Medium)</span></p>
+                            <p class="fs-5" >Send join club requests to club advisors rather than simple joining <span style="color:orange">(Medium)</span></p>
+                            <p class="fs-5" >Create club petitions <span style="color:orange">(Medium)</span></p>
+                            <p class="fs-5" >Email to everyone in the school after an event is approved <span style="color:rgb(116, 244, 116)">(Easy)</span></p>
+                            <p class="fs-5" >Upload images to announcements and events <span style="color:rgb(116, 244, 116)">(Easy)</span></p>
+                            <p class="fs-5" >Recommend clubs to users based on interests through machine learning <span style="color:red">(hard)</span></p>
+                            <p class="fs-5" >Finish the admin homepage <span style="color:rgb(116, 244, 116)">(Easy)</span></p>
+                            <p class="fs-5" >Fix the isTeacher column in the manage clubs page <span style="color:rgb(116, 244, 116)">(Easy)</span></p>
+                        </div>
+                    </div>
+                    <div class="slide hidden" id="slide13">
+                        <div class="slideBox">
+                            <div class="display-2 fw-bold" style="margin-bottom:30px">Thank You, </div>
+                            <div class="display-2" style="margin-bottom:30px">Please join us in our Demo now</div>
+                        </div>
+                    </div>
+                </div>
+                  
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+
+                <button style="margin-top: 20px;border-radius: 30px; border:1px solid black; background-color:rgb(102, 137, 253); color:white; padding:10px 20px" onclick="previousSlide()">Back</button>
+                <button style="margin-top: 20px;border-radius: 30px; border:1px solid black; background-color:rgb(102, 137, 253); color:white; padding:10px 20px" onclick="nextSlide()">Next</button>                  
+            </div>
+    </div>
+</header>
+<footer class="bg-dark fixed-bottom" style="padding-top: 1.5rem;padding-bottom: 1.5rem;position:relative;z-index:1000; border-top:3px solid #FFD700">
+    <div class="container"><p class="m-0 text-center text-white">Bergen Tech - 2024</p></div>
+</footer>
+
+{%endblock%}
