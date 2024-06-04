@@ -104,6 +104,13 @@ def search_users_of_a_club(id):
     db.close()
     return users
 
+def search_userids_of_a_club(id):
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    db_cursor.execute("SELECT user_id FROM my_clubs WHERE club_id = ?", (id,))
+    data = db_cursor.fetchall()
+    return data
+
 # change the club logo
 def change_logo(image_data, id, mime_type):
     db = sqlite3.connect('db/database.db')

@@ -483,13 +483,21 @@ def manage_members(club_name):
     club_id = search_clubs(club_name)[0][0]
     if request.method == 'GET':
         members = search_users_of_a_club(club_id)
+        member_ids = search_userids_of_a_club(club_id)
+        leaders = []
+        for user_id in member_ids:
+            isLeader = check_is_leader(user_id[0],club_id)
+            if isLeader == None:
+                leaders.append('No')
+            else:
+                leaders.append('Yes')
         #format the jinja to show approved and unapproved clubs (use the field in the tuple!!)
-        return render_template("admin_members.html", members=members, club_name=club_name)
+        return render_template("admin_members.html", members=members, club_name=club_name, leaders=leaders)
     if request.method == 'POST':
         user_id_group = request.form.getlist("user_id")
         for user_id in user_id_group:
             promote_teacher(user_id, club_id)   
-        flash("Leaders create successfully!", "success")
+        flash("Leaders created successfully!", "success")
         return redirect(url_for('manage_members', club_name=club_name))
     
 @app.route('/admin/manage_events', methods=['GET', 'POST'])
