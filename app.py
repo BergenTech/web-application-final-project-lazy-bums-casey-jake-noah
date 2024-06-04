@@ -509,9 +509,8 @@ def manage_events():
         return render_template("admin_events.html", events=events)    
     elif request.method == 'POST':
         #the value of the form will be the event_id(?)
-        approved_events = request.form.get('approved')
-        for event_id in approved_events:
-            approve_event(event_id)
+        event_id = request.form.get('approved')
+        approve_events(event_id)
         flash('event(s) approved!')
         return redirect(url_for('manage_events'))
 
