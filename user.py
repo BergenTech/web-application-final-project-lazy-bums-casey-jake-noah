@@ -117,6 +117,7 @@ def check_is_leader(user_id, club_id):
     result = db_cursor.fetchone()
     db.close()
     return result
+
 def remove_when_leaving(user_id, club_id):
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()
