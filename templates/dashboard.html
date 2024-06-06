@@ -14,10 +14,10 @@
                     </a>
                 {% endfor %}
         </div>
-        <h1 class="display-5 fw-bold" style="padding-left:240px;padding-top:35px;">Dashboard</h1>
+        <h1 class="display-5 fw-bold dashboard" style="">Dashboard</h1>
         <div class="clubs">
             {% for i in range(user_clubs|length)%}
-                <a href="{{ url_for('stream', club_name=user_clubs[i]) }}" style="text-decoration: none;">
+                <a href="{{ url_for('stream', club_name=user_clubs[i]) }}" style="text-decoration: none;" class="adash">
                     <div class="club">
                         <div class="fs-4" style="font-weight:bold;text-align:center">
                             <img src="data:{{user_clubs_logo[i][1]}};base64,{{ user_clubs_logo[i][0] }}" style="width:70px;height:70px;border-radius:50%;border:1px solid #555; margin-right:20px" onerror="this.onerror=null;this.src='/static/images/placeholder.png';" alt="">

@@ -11617,7 +11617,14 @@ textarea.form-control-lg {
   min-height: 500px;
   display:flex;
   flex-direction: row;
-  align-items: center
+  align-items: center;
+  justify-content: center; 
+  gap: 10%;
+}
+
+.t1{
+  flex:0.8;
+  text-align:center
 }
 
 .user_card{
@@ -11723,6 +11730,12 @@ textarea.form-control-lg {
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjust the minimum and maximum width as needed */
   grid-gap: 40px;
 } 
+
+.clubpage{
+  padding:100px;
+  padding-top:50px;
+  padding-bottom:10px
+}
  
 .clubdb {
   background-color: white;
@@ -11754,6 +11767,7 @@ textarea.form-control-lg {
   padding-left:40px;
   padding-right:40px;
 }
+
 
 .stream{
   margin-top:40px;
@@ -11832,6 +11846,11 @@ textarea.form-control-lg {
   font-size: 20px;
   margin-top:20px;
   cursor: pointer;
+}
+
+.dashboard{
+  padding-left:240px;
+  padding-top:35px;
 }
 
 .attendance_btn{
@@ -11918,7 +11937,7 @@ textarea.form-control-lg {
   cursor: pointer;
 }
 .profile{
-  padding:100px;
+  padding:200px;
   padding-top:35px;
 }
 
@@ -12045,7 +12064,6 @@ th, td {
   font-size: 3.5vw;
   font-weight: 300;
   line-height: 1vw;
-
 }
 
 .adminbtn{
@@ -12256,4 +12274,173 @@ th, td {
   transition: width 0.5s ease;
   border-radius: 0 0 15px 15px;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.i1{
+  width:100%;
+  height:100%
+}
+
+@media only screen and (max-width: 768px) {
+  .title_card{
+    background-color: white;
+    margin-top:50px;
+    margin-bottom:40px;
+    padding: 50px;
+    border-radius: 15px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+    flex:1;
+    min-height: 500px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    gap: 10%;
+  }
+  .t1{
+    text-align:center;
+  }
+
+  .i1{
+    margin-top:20%;
+    width:90%;
+    height:90%
+  }
+
+  .fs-4 {
+  font-size: calc(1.275rem + 0.3vw) !important;
+  padding:0 20px
+}
+.sidebar {
+  margin-top: 0;
+  padding: 0;
+  width: 25vw;
+  background-color: whitesmoke;
+  position: fixed;
+  overflow: auto;
+  z-index:1;
+  color:black;
+  border-right:2px solid var(--bs-gray);
+}
+
+.dashboard{
+  padding-left:30vw;
+  padding-right:5vw;
+}
+
+.clubs{
+  padding-top:3rem;
+  padding-left:30vw;
+  padding-right:5vw;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjust the minimum and maximum width as needed */
+  grid-gap: 40px;
+}
+
+.club {
+  background-color: whitesmoke;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex; 
+  flex-direction: column;
+  justify-content: space-between; 
+  color:black;
+  min-height:150px;
+  max-width:100%;
+  transition: transform 0.3s; /* Add a transition for smooth animation */ 
+}
+.adash{
+  max-width:65vw
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;  
+  background-color: white;
+  border-bottom: 1px solid #ccc;
+}
+
+#currentWeek {
+  font-size: 1.2em;
+}
+.clubpage{
+  padding:10px;
+  padding-top:50px;
+  padding-bottom:10px
+}
+.clubdb:hover {
+  transform: scale(1.05);  
+}
+
+.profile{
+  padding:10px;
+  padding-top:35px;
+}
+
+
+.profile_container{
+  margin-top:35px;
+  display:grid;
+  flex-direction: row;
+  justify-content:center
+}
+
+.profile_a{
+  background-color: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+  text-align:center;
+  flex: 0.3; 
+}
+
+.profile_b{
+  margin-top:40px;
+  background-color: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+  flex: 0.6; 
+  min-height:200px;
+  text-align:center
+}
+
+.pfp{
+  border-radius:50%;
+  border:2px solid black;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5); 
+  width:100px;
+  height:100px;
+  z-index:1000;
+}
+
+.vl {
+  border-left: 2px solid var(--bs-gray-600);
+  height: 5vh;
+  margin-left:4%;
+  margin-right:4%;
+}
+
+.homelinks{
+  text-decoration: none;
+  color:black;
+  font-size: 5vw;
+  font-weight: 300;
+  line-height: 2vw;
+}
+.box2{
+  padding:3% 5%;
+  background-color:whitesmoke;
+  border-radius:15px;
+  margin-top:10px;
+  box-sizing: border-box;
+}
+
+.stream{
+  margin-top:40px;
+  margin-left:30vw;
+  margin-right:5vw;
+}
 }

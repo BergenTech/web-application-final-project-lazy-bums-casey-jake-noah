@@ -5,7 +5,7 @@
 <!-- Page Content-->
 <!-- Header-->
 <div class="background-img">
-    <header class="pt-5" style="background-color:rgba(255,255,255,0.8); ">
+    <header style="background-color:rgba(255,255,255,0.8); ">
         <div class="title">
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -18,10 +18,10 @@
             {% endif %}
             {% endwith %}    
             
-            <div class="title_card" style="display:flex;  justify-content: center; gap: 10%;">
-                <div style="flex:0.8; ; text-align:center">
+            <div class="title_card" style="">
+                <div class="t1">
                         <h1 class="display-4 fw-bold" style="margin-bottom:50px">Club4Clubz</h1>
-                        <p class="fs-4">Welcome to the Official Club Management Website for Bergen Tech! </p> <br>
+                        <p class="fs-4" style="">Welcome to the Official Club Management Website for Bergen Tech! </p> <br>
                         {%if current_user.is_authenticated%}
                         <div style="display:flex; justify-content: center; justify-content: space-around;padding:0px 50px">
                             <form action="/dashboard">
@@ -35,7 +35,7 @@
                         {% endif %}
                 </div>
                 <div style="display: flex;justify-content: center; align-items: center">
-                    <img src="static\images\TeterboroLogo.png" alt="">
+                    <img src="static\images\TeterboroLogo.png" alt="" class="i1">
                 </div>
                 
             </div>
