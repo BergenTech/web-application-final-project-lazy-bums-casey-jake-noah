@@ -10,6 +10,7 @@ def make_noah_admin():
         db_cursor.execute("""UPDATE users SET isAdmin=1 WHERE email=?""", ("themostedgygamerever456@gmail.com",))
         db_cursor.execute("""UPDATE users SET isAdmin=1 WHERE email=?""", ("ceasylee@gmail.com",))
         db_cursor.execute("""UPDATE users SET isAdmin=1 WHERE email=?""", ("noahmatiaskim@gmail.com",))
+        db_cursor.execute("""UPDATE users SET isAdmin=1 WHERE email=?""", ("emregemici@gmail.com",))
         db.commit()
     except Exception as e:
         db.rollback()
