@@ -74,7 +74,17 @@ def get_user_by_id(user_id):
     return data
 #getting the users for the club (need for attendance)
 def get_users_in_club(club_id):
-    pass
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    db_cursor.execute(
+            #have to add the other parameters later
+                """SELECT user_id FROM my_clubs
+                WHERE club_id=?""",
+                (club_id,)
+            )
+    data = db_cursor.fetchall()
+    db.close()
+    return data
 
 def change_pfp(user_id,picture):
     db = sqlite3.connect('db/database.db')

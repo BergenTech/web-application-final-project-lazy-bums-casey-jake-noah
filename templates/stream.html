@@ -29,8 +29,18 @@
                     <div class="display-6 fw-bold" style="flex:0.5;padding:10px;">
                         {{club_name}}
                     </div>
-                    <div style="display: flex; justify-content:right;flex:0.5; padding:10px;">
+                    <div style="display: flex; justify-content:right;flex:0.5; padding:10px;">                         
+                        <form action="{{url_for("leave_club", club_name=club_name)}}">
+                            <div style="">
+                                <input type="submit" class="leave" value="Leave Club">
+                            </div>
+                        </form>
                         {% if ownership %}
+                        <form action="/users">
+                            <div style="">
+                                <input type="submit" class="leave" value="Users / Attendance">
+                            </div>
+                        </form>
                         <form action="{{url_for('stream',club_name=club_name)}}" method="POST" enctype="multipart/form-data">
                             <div class="file-upload-wrapper">
                                 <span class="leave" style="margin-bottom:10px;z-index:1;background-color:gold">Upload Logo</span>
@@ -41,12 +51,6 @@
                             </div>
                         </form>
                         {%endif%}
-                         
-                        <form action="{{url_for("leave_club", club_name=club_name)}}">
-                            <div style="">
-                                <input type="submit" class="leave" value="Leave Club">
-                            </div>
-                        </form>
                     </div>
                     <div style="display:flex; justify-content:right;">
                         {% if club_logo != None %}

@@ -56,6 +56,10 @@ def initialize_clubs():
     with open(csv_file_path, 'r', encoding='utf-8') as file:
         add_csv_data_to_database(file)
 
+#create club
+def create_club():
+    pass
+
 #### CLUB SEARCHING AND GETTING
 #get all clubs by a sql query
 def get_all_clubs():
@@ -243,6 +247,8 @@ def is_club_owner(user_id, club_id):
     #if it does, return true
     #if it doesnt, return false
     return data
+
+
 
 #this is when the app is verified (NEEDS TO BE AUTOMATIC)
 def grant_ownership_access_to_teacher():
