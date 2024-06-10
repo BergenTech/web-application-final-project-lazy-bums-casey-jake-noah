@@ -68,7 +68,6 @@ def demote_leader(user_id, club_id):
     #remove user from the leader table
     pass
 
-
 # MAKE SURE THE FUNCTION REMOVES FROM my_clubs, messages, events, etc (may 30)
 def remove_user(user_id):
     #remove the user

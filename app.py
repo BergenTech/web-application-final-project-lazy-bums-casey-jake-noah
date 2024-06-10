@@ -156,11 +156,6 @@ def home():
     user_id = session.get('id')
     user_email = session.get('email')
     user = search_user(user_email)
-    # events = get_approved_events()
-    # for event in events:
-    #     club_id = event[7]
-    #     club_name = search_club_by_id(club_id)[0][2]
-    #     club_names.append(club_name)
     return render_template("home.html", club_names=club_names)
 
 @app.route('/profile', methods=['GET','POST'])
@@ -361,34 +356,45 @@ def stream(club_name):
             change_logo(image_data,club_id,mime_type)
             flash('Changed club logo!','success')
             return redirect(url_for('stream', club_events=club_events, club_logo=club_logo, club_mime_type=club_mime_type, club_name=club_name))
-
-@app.route('/stream/attendance/<club_name>')
+        elif 'x' in request.form and 'y' in request.form:
+            message_id = request.form.get('submit_value')
+            delete_message(message_id)
+            return redirect(url_for('stream', club_events=club_events, club_logo=club_logo, club_mime_type=club_mime_type, club_name=club_name, user_clubs=user_clubs_name))
+        
+# ATTENDANCE/MEMBER PAGES
+@app.route('/stream/members/<club_name>')
 @login_required
 def attendance(club_name):
+    ownership = False
     club_id = search_clubs(club_name)[0][0]
     users = search_users_of_a_club(club_id)
     #get the navbar data
+    user_id = session.get('id')
     user_clubs = get_user_clubs(user_id)
     user_clubs_name = []
+    teacher_ids = get_all_leaders_of_club(club_id)
+    if check_is_leader(user_id, club_id):
+            ownership = True
+    if teacher_ids != []:
+        teacher_ids = teacher_ids[0]
     #get the names of the clubs specified by the club id
     for i in range(len(user_clubs)):
         club = search_club_by_id(user_clubs[i][2])[0][2]
         user_clubs_name.append(club)
-    
     ### MAIN DATA SENDOFF FUNCTIONALITY 
     if request.method == 'GET':
         #get session id
         user_id = session.get('id')
-        # check if session and club id match with the leadership
-        if not check_is_leader(user_id, club_id):
-            flash('you are unauthorized to view this')
-            return redirect(url_for('stream', club_name=club_name, user_clubs = user_clubs_name))
-        else: 
-            #you are a user
-            return render_template('attendance.html', users=users)
+        return render_template('members.html', ownership=ownership,club_name=club_name,teacher_ids=teacher_ids, users=users,user_clubs=user_clubs_name)
     elif request.method == 'POST':
-        pass
-
+        #get the list of the get list request form 
+        users = request.form.getlist('user')
+        for user in users:
+            commit_attendance(user, club_id)
+        
+    
+        flash('Attendance Done!')
+        return redirect(url_for('attendance', club_name=club_name))
 @app.route('/stream/create_events/<club_name>', methods=['GET', 'POST'])
 def create_events(club_name):
     user_id = session.get('id')

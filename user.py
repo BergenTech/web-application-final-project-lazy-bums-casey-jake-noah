@@ -96,7 +96,6 @@ def change_pfp(user_id,picture):
     db.commit()
     db.close()
 
-
 def add_to_user(user_id,grad_year,major):
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()
@@ -125,6 +124,17 @@ def check_is_leader(user_id, club_id):
     db_cursor = db.cursor()
     db_cursor.execute("""SELECT * FROM leaders WHERE user_id=? AND club_id=?""", (user_id, club_id))
     result = db_cursor.fetchone()
+    db.close()
+    return result
+
+def get_all_leaders_of_club(club_id):
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    db_cursor.execute("""SELECT user_id 
+                      FROM leaders
+                      WHERE club_id=?
+                      """, (club_id,))
+    result = db_cursor.fetchall()
     db.close()
     return result
 

@@ -28,7 +28,7 @@
                         {% endwith %}
                     </div>
                     <form method='POST' action="/profile">
-                        <div><input type="text" class="updprofile" id="grad_year" name="grad_year" value="{% if user[0][5] %}{{ user[0][5] }}{% else %}{% endif %}"  placeholder="Enter Your Graduation Year" maxlength="4"></div>
+                        <div><input type="number" class="updprofile" id="grad_year" name="grad_year" value="{% if user[0][5] %}{{ user[0][5] }}{% else %}{% endif %}"  placeholder="Enter Your Graduation Year" maxlength="4" ></div>
                         <div><select class="updprofile "id="dropdown" name="major" style="border-width:1px solid black;">
                             <option value='None' disabled {{ 'selected' if user[0][6] is none or user[0][6] == 'None'}}>Select Your Major</option>
                             <option value="Computer Science" {{'selected' if user[0][6] == 'Computer Science'}}>Computer Science</option>
