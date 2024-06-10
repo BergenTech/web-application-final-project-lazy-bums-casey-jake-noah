@@ -56,6 +56,22 @@ def initialize_clubs():
     with open(csv_file_path, 'r', encoding='utf-8') as file:
         add_csv_data_to_database(file)
 
+def create_club(faculty_name, club_name, club_description, meeting_location, meeting_days):
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    try:
+        new_club = Club(None, faculty_name, club_name, club_description, meeting_location, meeting_days)
+        
+        db_cursor.execute(
+            """INSERT INTO clubs
+            (faculty_name, club_name, club_description, meeting_location, meeting_days) VALUES (?,?,?,?,?)""",
+            (new_club.faculty_name, new_club.club_name, new_club.club_description, new_club.meeting_location, new_club.meeting_days)
+        )
+        db.commit()
+    except Exception as e:
+        db.rollback()
+    db.close()
+
 #### CLUB SEARCHING AND GETTING
 #get all clubs by a sql query
 def get_all_clubs():

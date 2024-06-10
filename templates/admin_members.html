@@ -26,6 +26,7 @@
                             <th>isLeader</th>
                             <th>Year</th>
                             <th>Major</th>
+                            <th>Is Present Today</th>
                             <th>Promote</th>
                         </tr>
                         {% for i in range(members|length)%}
@@ -37,12 +38,12 @@
                                 <td>{{leaders[i]}}</td>
                                 <td>{{ members[i][0][5] }} </td>
                                 <td>{{ members[i][0][6] }} </td>
+                                <td>{{present[i]}}</td>
                                 <td><input type="checkbox" name='user_id' value="{{ members[i][0][0] }}"></td>
                             </tr>
                         {% endif %}
                         {% endfor %}
                     </table>
-                    <input type="submit" class="submitbutton" value="Promote to teacher" style="background-color:black">
                 </form>
 
             </div>

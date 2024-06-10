@@ -27,6 +27,7 @@ def approve_event(event_id):
         db.commit()
     except Exception as e:
         db.rollback()
+        
 def reject_event(event_id):
     #reject the event
     #email to leaders will be sent that application has been rejected
@@ -67,7 +68,6 @@ def promote_teacher(user_id, club_id):
 def demote_leader(user_id, club_id):
     #remove user from the leader table
     pass
-
 
 # MAKE SURE THE FUNCTION REMOVES FROM my_clubs, messages, events, etc (may 30)
 def remove_user(user_id):

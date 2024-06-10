@@ -7,7 +7,6 @@ def create_tables():
     # db.execute("DROP TABLE IF EXISTS clubs")
     #db.execute("DROP TABLE IF EXISTS users")
     # db.execute("DROP TABLE IF EXISTS my_clubs")
-    # db.execute("DROP TABLE IF EXISTS messages")
     db_master.commit()
     #the queries to create the user and clubs table
     '''is_verified BOOLEAN DEFAULT FALSE,
@@ -77,6 +76,7 @@ def create_tables():
             id INTEGER PRIMARY KEY,
             user_id INTEGER,
             club_id INTEGER,
+            isPresent BOOLEAN DEFAULT 0,
             FOREIGN KEY (user_id) REFERENCES users(id),
             FOREIGN KEY (club_id) REFERENCES clubs(id)
         )        

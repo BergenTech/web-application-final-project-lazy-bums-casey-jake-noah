@@ -44,14 +44,14 @@ def post_message(user_id, club_id, message_content, message_date, picture):
     except Exception as e:
         db.rollback()
 
-def delete_message(club_id,message_limit):
+def delete_message(message_id):
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()
 
     try: 
         db_cursor.execute(
-            """Delete from messages where rowid IN (Select rowid from messages limit message_limit);""",
-            (message_limit,)
+            """DELETE FROM messages WHERE id=?""",
+            (message_id)
         )
         db.commit()
     except Exception as e:

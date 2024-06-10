@@ -59,6 +59,7 @@ def search_user(email):
     data = db_cursor.fetchall()
     db.close()
     return data
+
 #get user by id
 def get_user_by_id(user_id):
     db = sqlite3.connect('db/database.db')
@@ -72,9 +73,20 @@ def get_user_by_id(user_id):
     data = db_cursor.fetchall()
     db.close()
     return data
+
 #getting the users for the club (need for attendance)
 def get_users_in_club(club_id):
-    pass
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    db_cursor.execute(
+            #have to add the other parameters later
+                """SELECT user_id FROM my_clubs
+                WHERE club_id=?""",
+                (club_id,)
+            )
+    data = db_cursor.fetchall()
+    db.close()
+    return data
 
 def change_pfp(user_id,picture):
     db = sqlite3.connect('db/database.db')
@@ -85,7 +97,6 @@ def change_pfp(user_id,picture):
                       (picture,user_id))
     db.commit()
     db.close()
-
 
 def add_to_user(user_id,grad_year,major):
     db = sqlite3.connect('db/database.db')
@@ -115,6 +126,17 @@ def check_is_leader(user_id, club_id):
     db_cursor = db.cursor()
     db_cursor.execute("""SELECT * FROM leaders WHERE user_id=? AND club_id=?""", (user_id, club_id))
     result = db_cursor.fetchone()
+    db.close()
+    return result
+
+def get_all_leaders_of_club(club_id):
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    db_cursor.execute("""SELECT user_id 
+                      FROM leaders
+                      WHERE club_id=?
+                      """, (club_id,))
+    result = db_cursor.fetchall()
     db.close()
     return result
 

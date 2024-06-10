@@ -20,6 +20,7 @@ from clubs import *
 from messages import *
 from admin import *
 from events import *
+from attendance import *
 import os
 from functools import wraps
 
@@ -152,16 +153,11 @@ def teacher_required(func):
 
 @app.route('/')
 def home():
-    club_names = []
-    user_id = session.get('id')
-    user_email = session.get('email')
-    user = search_user(user_email)
-    # events = get_approved_events()
-    # for event in events:
-    #     club_id = event[7]
-    #     club_name = search_club_by_id(club_id)[0][2]
-    #     club_names.append(club_name)
-    return render_template("home.html", club_names=club_names)
+    if current_user.is_authenticated:
+        user_id = session.get('id')
+        user = get_user_by_id(user_id)
+        return render_template("home.html", isAdmin=user[0][4])
+    return render_template("home.html")
 
 @app.route('/profile', methods=['GET','POST'])
 @login_required  
@@ -270,6 +266,12 @@ def myclubs():
                 poster_names.append(None)
         return render_template("dashboard.html", user_clubs_logo=user_clubs_logo, user_clubs = user_clubs_name, recent_club_messages = recent_messages, poster_names=poster_names, message_dates=message_dates)
 
+#create club
+@app.route('/stream/club_petition', methods=['GET','POST'])
+@login_required
+def club_petition():
+    pass
+
 ### STREAM OF THE CLASSROOM
 @app.route('/stream/<club_name>', methods=['GET','POST'])
 @login_required
@@ -361,34 +363,45 @@ def stream(club_name):
             change_logo(image_data,club_id,mime_type)
             flash('Changed club logo!','success')
             return redirect(url_for('stream', club_events=club_events, club_logo=club_logo, club_mime_type=club_mime_type, club_name=club_name))
-
-@app.route('/stream/attendance/<club_name>')
+        elif 'x' in request.form and 'y' in request.form:
+            message_id = request.form.get('submit_value')
+            delete_message(message_id)
+            return redirect(url_for('stream', club_events=club_events, club_logo=club_logo, club_mime_type=club_mime_type, club_name=club_name, user_clubs=user_clubs_name))
+        
+# ATTENDANCE/MEMBER PAGES
+@app.route('/stream/members/<club_name>', methods=['GET','POST'])
 @login_required
-def attendance(club_name):
+def members(club_name):
+    ownership = False
     club_id = search_clubs(club_name)[0][0]
     users = search_users_of_a_club(club_id)
     #get the navbar data
+    user_id = session.get('id')
     user_clubs = get_user_clubs(user_id)
     user_clubs_name = []
+    teacher_ids = get_all_leaders_of_club(club_id)
+    teacher_ids_list = []
+    for tpl in teacher_ids:
+        teacher_ids_list.append(tpl[0])
+    if check_is_leader(user_id, club_id):
+            ownership = True
     #get the names of the clubs specified by the club id
     for i in range(len(user_clubs)):
         club = search_club_by_id(user_clubs[i][2])[0][2]
         user_clubs_name.append(club)
-    
     ### MAIN DATA SENDOFF FUNCTIONALITY 
     if request.method == 'GET':
         #get session id
         user_id = session.get('id')
-        # check if session and club id match with the leadership
-        if not check_is_leader(user_id, club_id):
-            flash('you are unauthorized to view this')
-            return redirect(url_for('stream', club_name=club_name, user_clubs = user_clubs_name))
-        else: 
-            #you are a user
-            return render_template('attendance.html', users=users)
+        return render_template('members.html', ownership=ownership,club_name=club_name,teacher_ids=teacher_ids_list, users=users,user_clubs=user_clubs_name)
     elif request.method == 'POST':
-        pass
-
+        #get the list of the get list request form 
+        users = request.form.getlist('users')
+        for user in users:
+            commit_attendance(user, club_id)
+        flash('Attendance Done!')
+        return redirect(url_for('members', club_name=club_name))
+    
 @app.route('/stream/create_events/<club_name>', methods=['GET', 'POST'])
 def create_events(club_name):
     user_id = session.get('id')
@@ -418,7 +431,7 @@ def create_events(club_name):
         event_end_time = str(request.form.get("end_time"))
         event_tags = ' '.join(request.form.getlist("event_tags"))
         create_event(club_id, event_title, event_content, event_start, event_start_time, event_end, event_end_time, event_tags)
-        flash("Event sent to admin successfully!", "success")
+        flash("Event Request Sent!", "success")
         return redirect(url_for("create_events", club_name=club_name, user_clubs = user_clubs_name))
 
 @app.route('/events')
@@ -451,8 +464,21 @@ def calendar():
 def admin():
     if request.method == 'GET':
         num_users = len(get_all_users())
+        users = get_all_users()
         num_clubs = len(get_all_clubs())
-        return render_template("admin_index.html",num_users=num_users,num_clubs=num_clubs)
+        clubs = get_all_clubs()
+        return render_template("admin_index.html",num_users=num_users,users=users,num_clubs=num_clubs,clubs=clubs)
+    elif request.method == 'POST':
+        club_name = request.form.get('club_title')
+        faculty_name = request.form.get('club_advisor')
+        club_description = request.form.get('description')
+        meeting_location = request.form.get('location')
+        meeting_days = request.form.get('days')
+
+        create_club(faculty_name,club_name,club_description,meeting_location,meeting_days)
+
+        flash('Created Club!','success')
+        return redirect(url_for('admin'))
 
 @app.route('/admin/manage_users', methods=["GET", "POST"])
 @login_required
@@ -485,14 +511,23 @@ def manage_members(club_name):
         members = search_users_of_a_club(club_id)
         member_ids = search_userids_of_a_club(club_id)
         leaders = []
+        present = []
         for user_id in member_ids:
             isLeader = check_is_leader(user_id[0],club_id)
+            
             if isLeader == None:
                 leaders.append('No')
             else:
                 leaders.append('Yes')
+            #check is present (attendance)
+            isPresent = check_is_present(user_id[0], club_id)
+            print(isPresent)
+            if isPresent == None:
+                present.append('No')
+            else:
+                present.append('Yes')
         #format the jinja to show approved and unapproved clubs (use the field in the tuple!!)
-        return render_template("admin_members.html", members=members, club_name=club_name, leaders=leaders)
+        return render_template("admin_members.html", members=members, club_name=club_name, leaders=leaders, present=present)
     if request.method == 'POST':
         user_id_group = request.form.getlist("user_id")
         for user_id in user_id_group:
@@ -506,21 +541,45 @@ def manage_members(club_name):
 def manage_events():
     if request.method == 'GET':
         events = get_all_events()
-        return render_template("admin_events.html", events=events)    
-    elif request.method == 'POST':
-        #the value of the form will be the event_id(?)
-        event_id = request.form.get('approved')
-        approve_events(event_id)
-        flash('event(s) approved!')
-        return redirect(url_for('manage_events'))
 
-@app.route('/admin/approve_event/<event_id>')
-@login_required
-@admin_required
-def approve_events(event_id):
-    approve_event(event_id)
-    flash("Approved Event!", "success")
-    return redirect(url_for('manage_events'))
+        dates,times,clubs = [],[],[]
+        for event in events:
+            start_str = event[3]
+            start_obj = datetime.strptime(start_str, '%Y-%m-%d')
+            start_date = start_obj.strftime('%B %d')
+
+            end_str = event[5]
+            end_obj = datetime.strptime(end_str, '%Y-%m-%d')
+            end_date = end_obj.strftime('%B %d')
+
+            start_time_str = event[4]
+            start_time_obj = datetime.strptime(start_time_str, '%H:%M')
+            start_time = start_time_obj.strftime('%I:%M %p')
+            
+            end_time_str = event[6]
+            end_time_obj = datetime.strptime(end_time_str, '%H:%M')
+            end_time = end_time_obj.strftime('%I:%M %p')
+
+            club = search_club_by_id(event[10])
+            club = club[0][2]
+
+            dates.append([start_date,end_date])
+            times.append([start_time,end_time])
+            clubs.append(club)
+        return render_template("admin_events.html", clubs=clubs, times=times, dates=dates, events=events)    
+    elif request.method == 'POST':
+        if 'approved' in request.form:
+            #the value of the form will be the event_id(?)
+            event_id = request.form.get('approved')
+            approve_event(event_id)
+            flash('Event Approved!', 'success')
+            return redirect(url_for('manage_events'))
+        elif 'deleted' in request.form:
+            event_id = request.form.get('deleted')
+            reject_event(event_id)
+            flash('Event Deleted!', 'success')
+            return redirect(url_for('manage_events'))
+
 
 @app.route('/admin/presentation')
 @login_required
