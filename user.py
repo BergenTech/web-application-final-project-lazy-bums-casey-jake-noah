@@ -59,6 +59,7 @@ def search_user(email):
     data = db_cursor.fetchall()
     db.close()
     return data
+
 #get user by id
 def get_user_by_id(user_id):
     db = sqlite3.connect('db/database.db')
@@ -72,6 +73,7 @@ def get_user_by_id(user_id):
     data = db_cursor.fetchall()
     db.close()
     return data
+
 #getting the users for the club (need for attendance)
 def get_users_in_club(club_id):
     db = sqlite3.connect('db/database.db')

@@ -30,12 +30,12 @@
                         {{club_name}}
                     </div>
                     <div style="display: flex; justify-content:right;flex:0.5; padding:10px;">        
-                        <form action="{{url_for('attendance', club_name=club_name)}}">
+                        <form action="{{url_for('members', club_name=club_name)}}">
                             <div style="">
                                 <input type="submit" class="leave" value="Club Members">
                             </div>
                         </form>                 
-                        <form action="{{url_for("leave_club", club_name=club_name)}}">
+                        <form action="{{url_for('leave_club', club_name=club_name)}}">
                             <div style="">
                                 <input type="submit" class="leave" value="Leave Club">
                             </div>
@@ -43,7 +43,7 @@
                         {% if ownership %}
                         <form action="{{url_for('stream',club_name=club_name)}}" method="POST" enctype="multipart/form-data">
                             <div class="file-upload-wrapper">
-                                <span class="leave" style="margin-bottom:10px;z-index:1;background-color:gold">Upload Logo</span>
+                                <span class="leave" style="margin-bottom:10px;z-index:1;background-color:gold">Upload File</span>
                                 <input type="file" name="logo" class="file-upload-input" style="z-index:2">
                             </div>
                             <div style="">
@@ -73,8 +73,6 @@
                     {%endif%}
                     {% if events_json != [] %}
                         <div class="event" id="events-container"></div>
-                    {% else %} 
-                        <p>No Events Currently...</p>
                     {% endif %}
                 </div>
                 <div class="message_box">
@@ -132,8 +130,8 @@
                         eventElement.innerHTML = `
                             <div class="event-title fs-5">${event.title}</div>
                             <div class="event-description">${event.description}</div>
-                            <div class="event-time" style="font-size:0.8rem">Start : ${event.start_date} <span class="time">${event.start_time}</span></div>
-                            <div class="event-time" style="font-size:0.8rem">End : ${event.end_date} <span class="time">${event.end_time}</span></div>
+                            <div class="event-time" style="font-size:0.8rem">Start : ${event.start_date} @ <span class="time">${event.start_time}</span></div>
+                            <div class="event-time" style="font-size:0.8rem">End : ${event.end_date} @ <span class="time">${event.end_time}</span></div>
                             <hr>
                         `;
                         eventsContainer.appendChild(eventElement);

@@ -23,11 +23,26 @@
                         <h1 class="display-4 fw-bold" style="margin-bottom:50px">BT Clubs</h1>
                         <p class="fs-4" style="">Welcome to the Official Club Management Website for Bergen Tech! </p> <br>
                         {%if current_user.is_authenticated%}
-                        <div style="display:flex; justify-content: center; justify-content: space-around;padding:0px 50px">
-                            <form action="/dashboard">
-                                <input type="submit" class="homebtn" value="My Dashboard" style="background-color:black;">
-                            </form>
+                        {% if isAdmin %}
+                        <div style="display:flex;justify-content:space-between">
+                        {%endif%}
+                            <div style="display:flex; justify-content: center; justify-content: space-around;padding:0px 50px">
+                                <form action="/dashboard">
+                                    <input type="submit" class="homebtn" value="My Dashboard" style="background-color:black;">
+                                </form>
+                            </div>
+                            <!-- ADMIN ONLY-->
+                            {% if isAdmin %}
+                            <div style="display:flex; justify-content: center; justify-content: space-around;padding:0px 50px">
+                                <form action="/admin">
+                                    <input type="submit" class="homebtn" value="Admin Panel" style="background-color:black;">
+                                </form>
+                            </div>
+                            {% endif %}
+                            <!-- -------------- -->
+                        {% if isAdmin %}
                         </div>
+                        {%endif%}
                         {% else %}
                             <form action="/login">
                                 <input type="submit" class="homebtn" value="Login / Register" style="background-color:black;">

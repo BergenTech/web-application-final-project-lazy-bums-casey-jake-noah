@@ -33,8 +33,9 @@
                     <div class="display-6 fw-bold">Members</div>
                     <div class="h1"></div>
                     <!-- HERE IS FORM FOR ATTENDANCE -->
-                    <form action="">
+                    <form method='POST' action="{{url_for('members', club_name=club_name)}}">
                         {% if ownership%}
+                        
                         <div style="display:flex;margin:0 0 2% 0">
                                 <div class="fw-bold">
                                     Select Students To Mark Them Present &#8594
@@ -50,10 +51,12 @@
                                 {{member[0][1]}}
                                 {{member[0][2]}}
                                 {% if ownership%}
+                                
                                     <div style="margin-left:auto">
                                         <!-- CHECKBOX ATTENDANCE -->
-                                        <input type="checkbox" class="" name="user" value="{{ member[0][0] }}">
+                                        <input type="checkbox" class="" name="users" value="{{ member[0][0] }}">
                                     </div>
+                                
                                 {%endif%}
                             </div>
                             <div style="border-bottom:1px solid lightgrey; height:3px; width:100%; margin:1% 0"></div>

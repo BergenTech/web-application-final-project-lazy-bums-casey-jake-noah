@@ -27,6 +27,7 @@ def approve_event(event_id):
         db.commit()
     except Exception as e:
         db.rollback()
+        
 def reject_event(event_id):
     #reject the event
     #email to leaders will be sent that application has been rejected
