@@ -11,7 +11,7 @@ class Club():
     def __init__(self, id, faculty_name, club_name, club_description, meeting_location, meeting_days):
         self.id = id
         self.faculty_name = faculty_name
-        self.club_name = club_name
+        self.club_name = club_name.replace(" ","-")
         self.club_description = club_description
         self.meeting_location = meeting_location
         self.meeting_days = meeting_days
