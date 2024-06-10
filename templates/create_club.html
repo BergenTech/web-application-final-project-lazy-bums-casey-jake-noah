@@ -1,0 +1,43 @@
+{%extends "base.html"%}
+{%block title%}BT CLUB APP{%endblock%}
+{%set active_page = 'events'%}
+{%block content%}
+<div class="background-img">
+    <header style="background-color:rgba(255,255,255,0.8); display:flex;justify-content: center;padding-top:70px">
+        <div class="title " style="max-width:80%;text-align:center">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fw-bold" role="alert">
+                <div>{{message}}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %} 
+            <div class="box">
+                <div class="display-4 fw-bold" style="margin-bottom:30px">Petition For A Club</div>
+                <form action="">
+                    <label for="club_title" class="fw-bold">Club Title</label>
+                    <input type="text" class="club_form" name="club_title" placeholder="Enter Title" required>
+
+                    <label for="club_advisor" class="fw-bold">Advisor</label>
+                    <input type="text" class="club_form" name="club_advisor" placeholder="Enter Advisor" required>
+
+                    <label for="description" class="fw-bold">Description</label>
+                    <input type="text" class="club_form" name="description" placeholder="Enter Description" required>
+                    
+
+                    <label for="location" class="fw-bold">Meeting Location</label>
+                    <input type="text" class="club_form" name="location" placeholder="Enter Location" required>
+                    
+                    <label for="days" class="fw-bold">Meeting Days</label>
+                    <input type="text" class="club_form" name="days" placeholder="Enter Days" required>
+
+                    <input type="submit" class="adminbtn" value="Create Club">
+                </form>
+            </div>
+        </div>
+    </header>
+</div>
+{%endblock%}
