@@ -10,6 +10,7 @@ def make_noah_admin():
         db_cursor.execute("""UPDATE users SET isAdmin=1 WHERE email=?""", ("themostedgygamerever456@gmail.com",))
         db_cursor.execute("""UPDATE users SET isAdmin=1 WHERE email=?""", ("ceasylee@gmail.com",))
         db_cursor.execute("""UPDATE users SET isAdmin=1 WHERE email=?""", ("noahmatiaskim@gmail.com",))
+        db_cursor.execute("""UPDATE users SET isAdmin=1 WHERE email=?""", ("emregemici@gmail.com",))
         db.commit()
     except Exception as e:
         db.rollback()
@@ -26,6 +27,7 @@ def approve_event(event_id):
         db.commit()
     except Exception as e:
         db.rollback()
+        
 def reject_event(event_id):
     #reject the event
     #email to leaders will be sent that application has been rejected
@@ -66,7 +68,6 @@ def promote_teacher(user_id, club_id):
 def demote_leader(user_id, club_id):
     #remove user from the leader table
     pass
-
 
 # MAKE SURE THE FUNCTION REMOVES FROM my_clubs, messages, events, etc (may 30)
 def remove_user(user_id):

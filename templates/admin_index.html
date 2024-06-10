@@ -2,12 +2,69 @@
 {%block title%}BT CLUB APP{%endblock%}
 {%set active_page = 'admin_index'%}
 {%block content%}
-<br><br>
-<div class="title">
-    <div class="display-1 ">hello admin</div>
-    <div class="display-1 ">please let me go to sleep</div>
-    <h1><div>There are {{num_users}} users!</div></h1>
-    <h1><div>There are {{num_clubs}} clubs!</div></h1>
+<div class="background-img">
+    <header class="pt-5" style="background-color:rgba(255,255,255,0.8); ">
+        <div class="title" style="display:flex;justify-content:space-between;text-align:center">
+            <div style="width:30%">
+                <div class="box">
+                <div class="display-4 fw-bold" style="margin-bottom:30px">Number of Users: {{num_users}}</div>
+                {% for user in users%}
+                    <div style="text-align:left;margin:2% 10%">
+                        <img src="{{user[8]}}" alt="" style="height:30px;width:30px;border-radius:50%;margin-right:20px"> 
+                        {{user[1]}}
+                        {{user[2]}}    
+                    </div>
+                    <div style="border-bottom:1px solid lightgrey; height:3px; width:80%; margin:2% 10%"></div>
+                {%endfor%}
+                </div>  
+            </div>
+            <div style="width:30%">
+                <div class="box">
+                <div class="display-4 fw-bold" style="margin-bottom:30px">Number of Clubs: {{num_clubs}}</div>
+                {% for club in clubs%}
+                    <div style="text-align:left;margin:2% 10%">
+                        {{club[2]}} - {{club[1]}}
+                    </div>
+                    <div style="border-bottom:1px solid lightgrey; height:3px; width:80%; margin:2% 10%"></div>
+                {%endfor%}
+                </div>  
+            </div>
+            <div style="width:30%">
+                <div class="box">
+                    <div class="display-4 fw-bold" style="margin-bottom:30px">Create A Club</div>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fw-bold" role="alert">
+                        <div>{{message}}</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %} 
+                    <form method="POST" action="{{url_for('admin')}}">
+                        <label for="club_title" class="fw-bold">Club Title</label>
+                        <input type="text" class="club_form" name="club_title" placeholder="Enter Title" required>
+
+                        <label for="club_advisor" class="fw-bold">Advisor</label>
+                        <input type="text" class="club_form" name="club_advisor" placeholder="Enter Advisor" required>
+
+                        <label for="description" class="fw-bold">Description</label>
+                        <input type="text" class="club_form" name="description" placeholder="Enter Description" required>
+                        
+
+                        <label for="location" class="fw-bold">Meeting Location</label>
+                        <input type="text" class="club_form" name="location" placeholder="Enter Location" required>
+                        
+                        <label for="days" class="fw-bold">Meeting Days</label>
+                        <input type="text" class="club_form" name="days" placeholder="Enter Days" style="margin-bottom:30px" required>
+
+                        <input type="submit" class="adminbtn" value="Create Club">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
 </div>
 
 {%endblock%}

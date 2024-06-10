@@ -5,7 +5,7 @@
 <!-- Page Content-->
 <!-- Header-->
 <div class="background-img">
-    <header class="pt-5" style="background-color:rgba(255,255,255,0.8); ">
+    <header style="background-color:rgba(255,255,255,0.8); padding-top:40px">
         <div class="title">
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -18,19 +18,31 @@
             {% endif %}
             {% endwith %}    
             
-            <div class="title_card" style="display:flex;  justify-content: center; gap: 10%;">
-                <div style="flex:0.8; ; text-align:center">
-                        <h1 class="display-4 fw-bold" style="margin-bottom:50px">Club4Clubz</h1>
-                        <p class="fs-4">Welcome to the Official Club Management Website for Bergen Tech! </p> <br>
+            <div class="title_card" style="">
+                <div class="t1">
+                        <h1 class="display-4 fw-bold" style="margin-bottom:50px">BT Clubs</h1>
+                        <p class="fs-4" style="">Welcome to the Official Club Management Website for Bergen Tech! </p> <br>
                         {%if current_user.is_authenticated%}
-                        <div style="display:flex; justify-content: center; justify-content: space-around;padding:0px 50px">
-                            <form action="/dashboard">
-                                <input type="submit" class="homebtn" value="My Dashboard" style="background-color:black;">
-                            </form>
-                            <form action="/profile">
-                                <input type="submit" class="homebtn" value="My Profile">
-                            </form>
+                        {% if isAdmin %}
+                        <div style="display:flex;justify-content:space-between">
+                        {%endif%}
+                            <div style="display:flex; justify-content: center; justify-content: space-around;padding:0px 50px">
+                                <form action="/dashboard">
+                                    <input type="submit" class="homebtn" value="My Dashboard" style="background-color:black;">
+                                </form>
+                            </div>
+                            <!-- ADMIN ONLY-->
+                            {% if isAdmin %}
+                            <div style="display:flex; justify-content: center; justify-content: space-around;padding:0px 50px">
+                                <form action="/admin">
+                                    <input type="submit" class="homebtn" value="Admin Panel" style="background-color:black;">
+                                </form>
+                            </div>
+                            {% endif %}
+                            <!-- -------------- -->
+                        {% if isAdmin %}
                         </div>
+                        {%endif%}
                         {% else %}
                             <form action="/login">
                                 <input type="submit" class="homebtn" value="Login / Register" style="background-color:black;">
@@ -38,11 +50,18 @@
                         {% endif %}
                 </div>
                 <div style="display: flex;justify-content: center; align-items: center">
-                    <img src="static\images\TeterboroLogo.png" alt="">
+                    <img src="static\images\TeterboroLogo.png" alt="" class="i1">
                 </div>
                 
             </div>
-    
+
+            <div class="box" style="display:flex;justify-content:center;align-items:center">
+                <a href="/events" class="homelinks box2">Events</a> 
+                    <div class="vl"></div>
+                <a href="/clubs" class="homelinks box2">Clubs</a>
+                    <div class="vl"></div>
+                <a href="/profile" class="homelinks box2">Profile</a>
+            </div>
     </header>
 </div>
 <footer class="bg-dark fixed-bottom" style="padding-top: 1.5rem;padding-bottom: 1.5rem;position:relative;z-index:1000; border-top:3px solid #FFD700">

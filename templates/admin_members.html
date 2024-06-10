@@ -26,6 +26,7 @@
                             <th>isLeader</th>
                             <th>Year</th>
                             <th>Major</th>
+                            <th>Is Present Today</th>
                             <th>Promote</th>
                         </tr>
                         {% for i in range(members|length)%}
@@ -34,9 +35,10 @@
                                 <td>{{ members[i][0][0] }} </td>
                                 <td>{%- if members[i][0][2] is not none %} {{ members[i][0][1] + ' ' + members[i][0][2] }} {%- else %} {{ members[i][0][1] }} {%- endif %}</td>
                                 <td>{{ members[i][0][3] }} </td>
-                                <td></td>
+                                <td>{{leaders[i]}}</td>
                                 <td>{{ members[i][0][5] }} </td>
                                 <td>{{ members[i][0][6] }} </td>
+                                <td>{{present[i]}}</td>
                                 <td><input type="checkbox" name='user_id' value="{{ members[i][0][0] }}"></td>
                             </tr>
                         {% endif %}
@@ -44,7 +46,6 @@
                     </table>
                     <input type="submit" class="submitbutton" value="Promote to teacher" style="background-color:black">
                 </form>
-
             </div>
     </div>
 </header>

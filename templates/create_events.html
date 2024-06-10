@@ -3,8 +3,8 @@
 {%set active_page = 'events'%}
 {%block content%}
 <div class="background-img">
-    <header class="pt-5" style="background-color:rgba(255,255,255,0.8); display:flex;justify-content: center;">
-        <div class="title " style="max-width:50%;text-align:center">
+    <header style="background-color:rgba(255,255,255,0.8); display:flex;justify-content: center;padding-top:70px">
+        <div class="title " style="max-width:80%;text-align:center">
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
             {% for category, message in messages %}
@@ -27,14 +27,14 @@
                         <label for="start_date" class="fw-bold">Start Date</label>
                         <input type="date" class="event_form" name="start_date" placeholder="Enter Start Date" required >
 
-                        <label for="end_date" class="fw-bold">End Date (Not Required) </label>
-                        <input type="date" class="event_form" name="end_date" placeholder="Enter End Date">
+                        <label for="end_date" class="fw-bold">End Date </label>
+                        <input type="date" class="event_form" name="end_date" placeholder="Enter End Date" required>
 
                         <label for="start_time" class="fw-bold">Start Time</label>
                         <input type="time" class="event_form" name="start_time" placeholder="Enter Start Time" required >
 
-                        <label for="end_time" class="fw-bold">End Time (Not Required) </label>
-                        <input type="time" class="event_form" name="end_time" placeholder="Enter End Time">
+                        <label for="end_time" class="fw-bold">End Time </label>
+                        <input type="time" class="event_form" name="end_time" placeholder="Enter End Time" required>
 
                         <label for="fundraising" class="fw-bold">Fundraising</label>
                         <input type="checkbox" name="event_tags" value="fundraising"> <br>

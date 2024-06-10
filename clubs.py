@@ -11,7 +11,7 @@ class Club():
     def __init__(self, id, faculty_name, club_name, club_description, meeting_location, meeting_days):
         self.id = id
         self.faculty_name = faculty_name
-        self.club_name = club_name
+        self.club_name = club_name.replace(" ","-")
         self.club_description = club_description
         self.meeting_location = meeting_location
         self.meeting_days = meeting_days
@@ -55,6 +55,22 @@ def initialize_clubs():
     csv_file_path = os.path.join(current_directory, 'init', '2324ClubList.csv')
     with open(csv_file_path, 'r', encoding='utf-8') as file:
         add_csv_data_to_database(file)
+
+def create_club(faculty_name, club_name, club_description, meeting_location, meeting_days):
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    try:
+        new_club = Club(None, faculty_name, club_name, club_description, meeting_location, meeting_days)
+        
+        db_cursor.execute(
+            """INSERT INTO clubs
+            (faculty_name, club_name, club_description, meeting_location, meeting_days) VALUES (?,?,?,?,?)""",
+            (new_club.faculty_name, new_club.club_name, new_club.club_description, new_club.meeting_location, new_club.meeting_days)
+        )
+        db.commit()
+    except Exception as e:
+        db.rollback()
+    db.close()
 
 #### CLUB SEARCHING AND GETTING
 #get all clubs by a sql query
@@ -103,6 +119,13 @@ def search_users_of_a_club(id):
         users.append(get_user_by_id(user_id[0]))
     db.close()
     return users
+
+def search_userids_of_a_club(id):
+    db = sqlite3.connect('db/database.db')
+    db_cursor = db.cursor()
+    db_cursor.execute("SELECT user_id FROM my_clubs WHERE club_id = ?", (id,))
+    data = db_cursor.fetchall()
+    return data
 
 # change the club logo
 def change_logo(image_data, id, mime_type):

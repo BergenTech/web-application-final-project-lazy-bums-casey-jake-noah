@@ -1,0 +1,72 @@
+{%extends "base.html"%}
+{%block title%}BT CLUB APP{%endblock%}
+{%set active_page = 'dashboard'%}
+{%block content%}
+<div class="background-img">
+    <header class="pt-5" style="background-color:rgba(255,255,255,0.8); min-height: 100vh;">
+        <div class="sidebar" style="padding-bottom:100px">
+            {% for club_name in user_clubs%}
+                <a href="{{ url_for('stream', club_name=club_name) }}">
+                <span style="color:black;font-weight:450">{{club_name}}</span>
+                </a>
+            {% endfor %}
+        </div>
+        
+        <div class="attendancebox">
+            <div class="display-6 fw-bold" style="padding-bottom:5vh">
+                {{club_name}}
+            </div>
+            <div styles="display:flex">
+                <div class="members">
+                    <div class="display-6 fw-bold">Leaders</div>
+                    <div class="h1"></div>
+                    {% for member in users%}
+                        {%if member[0][0] in teacher_ids%}
+                            <div class="member">
+                                <img src="{{member[0][8]}}" alt="" style="height:30px;width:30px;border-radius:50%;margin-right:20px"> 
+                                {{member[0][1]}}
+                                {{member[0][2]}}
+                            </div>
+                            <div style="border-bottom:1px solid lightgrey; height:3px; width:100%; margin:1% 0"></div>
+                        {%endif%}
+                    {%endfor%}
+                    <div class="display-6 fw-bold">Members</div>
+                    <div class="h1"></div>
+                    <!-- HERE IS FORM FOR ATTENDANCE -->
+                    <form method='POST' action="{{url_for('members', club_name=club_name)}}">
+                        {% if ownership%}
+                        
+                        <div style="display:flex;margin:0 0 2% 0">
+                                <div class="fw-bold">
+                                    Select Students To Mark Them Present &#8594
+                                </div>
+                            <!-- SUBMIT BUTTON ATTENDANCE -->
+                            <input type="submit" class="attendance" value="Submit Attendance" style="margin-left:auto">
+                        </div>
+                        {%endif%}
+                        {% for member in users%}
+                            {%if member[0][0] not in teacher_ids%}
+                            <div class="member">
+                                <img src="{{member[0][8]}}" alt="" style="height:30px;width:30px;border-radius:50%;margin-right:20px"> 
+                                {{member[0][1]}}
+                                {{member[0][2]}}
+                                {% if ownership%}
+                                
+                                    <div style="margin-left:auto">
+                                        <!-- CHECKBOX ATTENDANCE -->
+                                        <input type="checkbox" class="" name="users" value="{{ member[0][0] }}">
+                                    </div>
+                                
+                                {%endif%}
+                            </div>
+                            <div style="border-bottom:1px solid lightgrey; height:3px; width:100%; margin:1% 0"></div>
+                            {%endif%}
+                        {%endfor%}
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+</div>
+{%endblock%}

@@ -15,13 +15,14 @@
             {% endfor %}
             {% endif %}
             {% endwith %} 
-            <h1 class="display-5 fw-bold box">User List</h1>
+            <h1 class="display-5 fw-bold box">Approve Events</h1>
             <div class="user_card">
                 <form action="{{ url_for('manage_events')}}" method="POST">
                     <table style="border:2px">
                         <tr>
                             <th>ID</th>
                             <th>Event Title</th>
+                            <th>Club</th>
                             <th>Event Content</th>
                             <th>Start Date</th>
                             <th>Start Time</th>
@@ -30,20 +31,23 @@
                             <th>Tags</th>
                             <th>Admin Approved</th>
                             <th>Approve Event</th>
+                            <th>Delete Event</th>
                         </tr>
-                        {% for row in events%}
+                        {% for i in range(events|length)%}
                         <tr>
-                            <td>{{ row[0] }} </td>
-                            <td>{{row[1]}}</td>
-                            <td>{{row[2]}}</td>
-                            <td>{{ row[3] }}</td>
-                            <td>{{ row[4]}}</td>
-                            <td>{{ row[5] }}</td>
-                            <td>{{ row[6] }}</td>
-                            <td>{{ row[7] }}</td>
+                            <td>{{ events[i][0] }} </td>
+                            <td>{{ events[i][1]}}</td>
+                            <td>{{ clubs[i]}}</td>
+                            <td>{{ events[i][2]}}</td>
+                            <td>{{ dates[i][0] }}</td>
+                            <td>{{ times[i][0]}}</td>
+                            <td>{{ dates[i][1] }}</td>
+                            <td>{{ times[i][1] }}</td>
+                            <td>{{ events[i][7] }}</td>
                             <!-- remove people interested -->
-                            <td>{{ "yes" if row[9] == 1 else "no" }}</td>
-                            <td><button type="submit" class="adminbtn" name="approved" value="{{ row[0] }}">APPROVE</button></td>
+                            <td>{{ "yes" if events[i][9] == 1 else "no" }}</td>
+                            <td><button type="submit" class="adminbtn" name="approved" value="{{ events[i][0] }}">APPROVE</button></td>
+                            <td><button type="submit" class="adminbtn" name="deleted" value="{{ events[i][0] }}">DELETE</button></td>
                         </tr>
                         {% endfor %}
                     </table>
