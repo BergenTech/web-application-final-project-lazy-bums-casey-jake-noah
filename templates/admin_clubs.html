@@ -9,15 +9,21 @@
             <div class="box" style="padding:60px;margin-top:40px;margin-bottom:40px">
                 <table>
                     <tr>
-                        <th style="width: 50%;">Club</th>
-                        <th style="width: 50%;">Edit</th>
+                        <th style="width: 40%;">Club</th>
+                        <th style="width: 20%;">Edit</th>
+                        <th style="width: 20%;">Attendance File</th>
                     </tr>
                     {% for row in clubs %}
                     <tr>
-                        <td style="width: 50%;">{{ row[2] }}</td>
-                        <td style="width: 50%;">                        
+                        <td style="width: 40%;">{{ row[2] }}</td>
+                        <td style="width: 20%;">                        
                             <form action="{{url_for('manage_members', club_name=row[2])}}">
-                                <input type="submit" class="adminbtn" value="Manage Users Of {{ row[2] }}">
+                                <input type="submit" class="adminbtn" value="Manage Users">
+                            </form>
+                        </td>
+                        <td style="width: 20%;">                        
+                            <form action="{{url_for('attendance_page', club_name=row[2])}}">
+                                <input type="submit" class="adminbtn" value="View">
                             </form>
                         </td>
                     </tr>

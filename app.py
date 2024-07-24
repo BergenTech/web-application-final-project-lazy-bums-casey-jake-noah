@@ -23,6 +23,7 @@ from events import *
 from attendance import *
 import os
 from functools import wraps
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = "SUPER_SECRET_KEY"  # Change this to a secure ENCRYPTED key
@@ -521,7 +522,8 @@ def manage_members(club_name):
             else:
                 leaders.append('Yes')
             #check is present (attendance)
-            isPresent = check_is_present(user_id[0], club_id)
+            current_date = str(datetime.now().date())
+            isPresent = check_if_present_day(user_id[0], club_id, current_date)
             print(isPresent)
             if isPresent == None:
                 present.append('No')
@@ -536,6 +538,10 @@ def manage_members(club_name):
         flash("Leaders created successfully!", "success")
         return redirect(url_for('manage_members', club_name=club_name))
     
+@app.route('/attendance_page')
+def attendance_page():
+    return render_template("attendance.html")
+
 @app.route('/admin/manage_events', methods=['GET', 'POST'])
 @login_required
 @admin_required

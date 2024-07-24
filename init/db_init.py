@@ -1,4 +1,7 @@
 import sqlite3
+import os
+import csv
+#initialize official clubs using club list from official 2324 club list
 
 def create_tables():
     db_master = sqlite3.connect('db/database.db')
@@ -76,7 +79,7 @@ def create_tables():
             id INTEGER PRIMARY KEY,
             user_id INTEGER,
             club_id INTEGER,
-            isPresent BOOLEAN DEFAULT 0,
+            date_present TEXT,
             FOREIGN KEY (user_id) REFERENCES users(id),
             FOREIGN KEY (club_id) REFERENCES clubs(id)
         )        

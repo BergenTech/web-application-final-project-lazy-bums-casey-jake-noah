@@ -1,5 +1,6 @@
 import sqlite3
 import os
+from datetime import datetime
 from user import *
 
 class attendance():
@@ -9,11 +10,12 @@ class attendance():
         self.isPresent = isPresent
 #this is for the initial members
 
-def check_is_present(user_id, club_id):
+def check_if_present_day(user_id, club_id, date_present):
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()
     #get all attendance from a clubId
-    db_cursor.execute("""SELECT * FROM attendance WHERE user_id=? AND club_id = ? AND isPresent=1""",(user_id, club_id))
+    #get the current date
+    db_cursor.execute("""SELECT * FROM attendance WHERE user_id=? AND club_id = ? AND date_present=?""",(user_id, club_id, date_present))
     data = db_cursor.fetchone()
     db.close()
     return data
@@ -32,11 +34,8 @@ def commit_attendance(user_id, club_id):
     db_cursor = db.cursor()
     try:
         #check if the person exists first in attendance:
-        person_exists = check_is_present(user_id, club_id)
-        if person_exists:
-            db_cursor.execute("""UPDATE attendance SET isPresent=1 WHERE user_id=? AND club_id=?""", (user_id, club_id,))
-        else:
-            db_cursor.execute("""INSERT INTO attendance (user_id,club_id, isPresent) VALUES (?,?,?)""", (user_id, club_id, 1,))
+        current_date = str(datetime.now().date())
+        db_cursor.execute("""INSERT INTO attendance (user_id,club_id, date_present) VALUES (?,?,?)""", (user_id, club_id, current_date,))
         print("success")
         db.commit()
     except Exception as e:
