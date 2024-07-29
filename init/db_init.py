@@ -77,10 +77,9 @@ def create_tables():
         """,
         """CREATE TABLE IF NOT EXISTS attendance (
             id INTEGER PRIMARY KEY,
-            user_id INTEGER,
-            club_id INTEGER,
+            users TEXT,
             date_present TEXT,
-            FOREIGN KEY (user_id) REFERENCES users(id),
+            club_id INTEGER,
             FOREIGN KEY (club_id) REFERENCES clubs(id)
         )        
         """,

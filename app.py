@@ -398,8 +398,7 @@ def members(club_name):
     elif request.method == 'POST':
         #get the list of the get list request form 
         users = request.form.getlist('users')
-        for user in users:
-            commit_attendance(user, club_id)
+        commit_attendance(club_id, users)
         flash('Attendance Done!')
         return redirect(url_for('members', club_name=club_name))
     
@@ -523,8 +522,8 @@ def manage_members(club_name):
                 leaders.append('Yes')
             #check is present (attendance)
             current_date = str(datetime.now().date())
-            isPresent = check_if_present_day(user_id[0], club_id, current_date)
-            print(isPresent)
+            isPresent = None
+            #isPresent = check_if_present_day(user_id[0], club_id, current_date)
             if isPresent == None:
                 present.append('No')
             else:
@@ -538,9 +537,19 @@ def manage_members(club_name):
         flash("Leaders created successfully!", "success")
         return redirect(url_for('manage_members', club_name=club_name))
     
-@app.route('/attendance_page')
-def attendance_page():
-    return render_template("attendance.html")
+@app.route('/attendance_page/members/<club_name>')
+def attendance_page(club_name):
+    club_id = search_clubs(club_name)[0][0]
+    user_attendance_data = get_attendance_from_club(club_id)
+    members = search_users_of_a_club(club_id)
+    member_ids = search_userids_of_a_club(club_id)
+    member_ids = [str(tpl[0]) for tpl in member_ids]
+    print(member_ids)
+    users_present = []
+    for day in user_attendance_data:
+        users_present.append(day[1].split())
+    print(users_present)
+    return render_template("attendance.html", members=members,member_ids=member_ids, users_present=users_present, user_attendance_data=user_attendance_data, )
 
 @app.route('/admin/manage_events', methods=['GET', 'POST'])
 @login_required

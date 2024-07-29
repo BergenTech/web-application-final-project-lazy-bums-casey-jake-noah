@@ -1,0 +1,47 @@
+{%extends "admin_base.html"%}
+{%block title%}BT CLUB APP{%endblock%}
+{%set active_page = 'admin_clubs'%}
+{%block content%}
+<div class="background-img">
+    <header class="pt-5" style="background-color:rgba(255,255,255,0.8); text-align:center">
+        <div class="title">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fw-bold" role="alert">
+                <div>{{message}}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %} 
+            <h1 class="display-5 fw-bold box">Attendance</h1>
+            <div class="user_card">
+                <form method='POST' action="/admin/manage_users">
+                    <table style="border:3px solid black">
+                        <tr style="border:3px solid black">
+                            <th style="border:3px solid black"></th>
+                            {% for i in range(members|length)%}
+                                <th style="border:3px solid black">{%- if members[i][0][2] is not none %} {{ members[i][0][1] + ' ' + members[i][0][2] }} {%- else %} {{ members[i][0][1] }} {%- endif %}</th>
+                            {%endfor%}
+                        </tr>
+                        {%for day in range(user_attendance_data|length)%}
+                        <tr style="border:3px solid black">
+                            <th style="border:3px solid black">{{user_attendance_data[day][2]}}</th>
+                                {%for id in member_ids%}
+                                    <!-- <td>{{id}}</td> -->
+                                    <td {% if id in users_present[day] %}style="background-color:#6bff70;border:3px solid black"{% else %}style="background-color:#ff3c36;border:3px solid black"{% endif %}></td>
+                                    {%endfor%}
+                        {%endfor%}
+                        </tr>
+                        <tr>
+                            
+                        </tr>
+                    </table>
+                </form>
+
+            </div>
+    </div>
+</header>
+
+{%endblock%}

@@ -10,12 +10,12 @@ class attendance():
         self.isPresent = isPresent
 #this is for the initial members
 
-def check_if_present_day(user_id, club_id, date_present):
+def check_if_already_present(club_id, date_present):
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()
     #get all attendance from a clubId
     #get the current date
-    db_cursor.execute("""SELECT * FROM attendance WHERE user_id=? AND club_id = ? AND date_present=?""",(user_id, club_id, date_present))
+    db_cursor.execute("""SELECT * FROM attendance WHERE club_id = ? AND date_present=?""",(club_id, date_present))
     data = db_cursor.fetchone()
     db.close()
     return data
@@ -29,19 +29,27 @@ def get_attendance_from_club(club_id):
     db.close()
     return data
 
-def commit_attendance(user_id, club_id):
+def commit_attendance(club_id, members):
     db = sqlite3.connect('db/database.db')
     db_cursor = db.cursor()
     try:
+        #process the club form data as a list and cast to a string
+        members = ' '.join(members)
         #check if the person exists first in attendance:
         current_date = str(datetime.now().date())
-        db_cursor.execute("""INSERT INTO attendance (user_id,club_id, date_present) VALUES (?,?,?)""", (user_id, club_id, current_date,))
+        check_if_alr = check_if_already_present(club_id, current_date)
+        if check_if_alr: 
+            db_cursor.execute("""UPDATE attendance SET users=? WHERE club_id=?""", (members,club_id))
+        else: 
+            db_cursor.execute("""INSERT INTO attendance (users, date_present, club_id) VALUES (?,?,?)""", (members, current_date, club_id,))
         print("success")
         db.commit()
     except Exception as e:
         db.rollback()
     db.close()
     pass
+
+
 
 def reset_attendance():
     db = sqlite3.connect('db/database.db')
