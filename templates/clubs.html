@@ -25,7 +25,7 @@
    <div class="clubsdb" style="padding-bottom:40px">
        {% for row in clubs %}
        <div class="clubdb">
-           <p class="fs-3 fw-bold">{{ row[2] }}</p>
+           <p class="fs-3 fw-bold" name="club_name">{{ row[2] | replace("-", " ")}}</p>
            <p class="fs-6">Advisor : {{ row[1] }} </p>
            <p class="fs-6 hiddenText" id="hiddenText{{ loop.index }}">Location : {{ row[4] }} <br><br> Club Dates : {{ row[5] }} <br><br> {{ row[3] }}</p>
            <div class="link-container">
