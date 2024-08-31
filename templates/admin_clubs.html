@@ -14,7 +14,7 @@
                     </tr>
                     {% for row in clubs %}
                     <tr>
-                        <td style="width: 50%;">{{ row[2] }}</td>
+                        <td style="width: 50%;">{{ row[2] | replace("-", " ")}}</td>
                         <td style="width: 50%;">                        
                             <form action="{{url_for('manage_members', club_name=row[2])}}">
                                 <input type="submit" class="adminbtn" value="Manage Users Of {{ row[2] }}">
